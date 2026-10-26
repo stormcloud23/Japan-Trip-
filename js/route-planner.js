@@ -63,8 +63,22 @@
         if(!best||score<best.score)best={day,score};
       }
       if(!best)continue;
+      // Insert at the position that creates the least extra geographic detour.
+      // Existing user-specified stop order is preserved.
       const members=byDay.get(best.day);
-      const order=Math.max(0,...members.map(x=>Number(x.order)||0))+0.5;
+      const stops=[...members].sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0));
+      let position=stops.length,extraKm=Infinity;
+      for(let i=0;i<=stops.length;i++){
+        const before=stops[i-1],after=stops[i];
+        const cost=(before?distanceKm(before,p):0)+(after?distanceKm(p,after):0)
+          -(before&&after?distanceKm(before,after):0);
+        if(cost<extraKm){extraKm=cost;position=i;}
+      }
+      const before=stops[position-1],after=stops[position];
+      const left=before?Number(before.order)||0:null;
+      const right=after?Number(after.order)||0:null;
+      const order=left==null?(right==null?1:right-0.5):
+        right==null?left+0.5:(left+right)/2;
       const copy={...p,day:best.day,order,suggested:true};
       suggested.push(copy);members.push(copy);
     }
