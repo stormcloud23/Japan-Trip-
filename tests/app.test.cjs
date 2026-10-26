@@ -111,8 +111,7 @@ test('day navigation isolates a day and draws only its travel legs',async()=>{
   const features=app.map.sources['trip-places'].data.features;
   assert.deepEqual(features.map(f=>f.properties.name).sort(),['Dotonbori / Tombori Riverwalk','Osaka Castle','Tempozan Harbor Village (Osaka Bay)'].sort());
   for(const feature of app.map.sources['trip-route'].data.features){
-    assert.equal(feature.properties.fromDay,10);
-    assert.equal(feature.properties.toDay,10);
+    assert.equal(feature.properties.toDay,10,'incoming travel should be visible on its arrival day');
   }
   assert.ok(app.el('map-context').textContent.includes('Day 10'));
   assert.ok(app.map.camera.some(x=>x.type==='fitBounds'));
@@ -208,7 +207,7 @@ test('day zoom does not include distant flights, and filters focus the selected 
   assert.equal(day3Camera.type,'easeTo','single Hokkaido sightseeing stop should focus locally');
   assert.ok(day3Camera.options.center[1]>40,'flight day should stay focused on Hokkaido');
   select.value='12';select.listeners.change({target:select});
-  const search=app.el('search');search.value='Akihabara';search.listeners.input({target:search});
+  const search=app.el('search');search.value='Electric Town';search.listeners.input({target:search});
   assert.equal(app.map.sources['trip-places'].data.features.length,1);
   const lastCamera=app.map.camera.at(-1);
   assert.equal(lastCamera.type,'easeTo','filtered local point should zoom in rather than fit long rail');
