@@ -64,9 +64,21 @@ The webpage displays five route styles: **magenta dashed lines for flights**, gr
 
 **Unscheduled alternatives** presently include Minakami's Takaragawa Onsen, Lake Toya, Niseko's Zaborin, other Hokkaido ryokan choices, Osaka Aquarium Kaiyukan and Hikone Castle.
 
+## Actual railway track overlays
+
+The rail-first route planner now has a second, **offline cached GIS layer**. The map attempts to overlay each scheduled `rail` or `shinkansen` leg with geographic railway centerlines rather than a straight line.
+
+- `data/rail-corridors.json` contains **8 corridor shapes covering 9 currently scheduled train legs** (Kyoto–Himeji is used in both directions). Its combined size is about 13 KB.
+- The shapes were calculated from **国土数値情報（鉄道データ）(国土交通省) / Japan MLIT National Land Numerical Information N02 railway data (2024)**, sourced through the archived processed GIS sections at [antfu/mlit-json](https://github.com/antfu/mlit-json). [Official 2024 dataset](https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N02-2024.html) · [MLIT data terms](https://nlftp.mlit.go.jp/ksj/other/agreement_02.html). **We processed, selected, routed, and simplified the source GIS centerlines** using shortest connected railway paths; this is not a map issued by the Japanese government.
+- `js/rail-geometry.js` matches start and end geographic coordinates and mode to cached track corridors, automatically reverses directional paths, and builds separate **amber local-access connectors** where a destination is away from the track/station. Those access connectors are straight approximations rather than walking navigation.
+- All other connections (including both flights, local ground transfers, and newly scheduled train connections not yet in the cached dataset) remain **straight-line schematic fallbacks**. No external railway-geometry API or paid account is required at page load; the rail snapshot loads after the itinerary and never blocks the map.
+- `tests/rail-geometry.test.cjs` verifies railway source metadata, reverse trips, approximate station access, all 9 mapped legs, and graceful fallback.
+
+These geographical alignments **do not prove a direct service** between the chosen endpoints and **do not include train timetables, platform routing, real footpaths, or changes made after the 2024 dataset**. Verify route/service availability when planning real rail tickets. In day view, intercity lines appear on the **arrival day**, so Kyoto → Tokyo displays on Day 12.
+
 ### Route regression tests
 
-Run `node --test tests/*.test.cjs` with Node.js 22 or later. Tests cover the 14-day route, flights/train segments, optional stops, packed-day warnings and automatic additions. A mocked MapLibre/browser test also exercises day navigation, pins, cluster setup, filters and full-map reset without a live map provider.
+Run `node --test tests/*.test.cjs` with Node.js 22 or later. Tests cover the 14-day route, flights/train segments, optional stops, packed-day warnings and automatic additions. A mocked MapLibre/browser test also exercises day navigation, pins, cluster setup, cached curved rail shapes and full-map reset without a live map provider.
 
 GitHub Actions runs these on route-code, website or destination updates via `.github/workflows/validate-routing.yml`. Superseded workflow runs are canceled automatically to avoid redundant test jobs.
 
