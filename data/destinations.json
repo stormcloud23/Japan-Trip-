@@ -450,7 +450,7 @@
         "day": null,
         "destination_id": "miyamasou-hanase-kyoto",
         "status": "research",
-        "notes": "A remote mountain dining inn, not central Kyoto. If selected, allow significant transport time or consider an overnight substitution. Official transport notes bus route 32 around 1h40 with only two round trips daily, and reservations are by phone. Compare dinner (~¥33,880 pp from) versus inn stay (~¥88,550 pp from incl meals), reconfirm availability, pickup and return travel."
+        "notes": "A remote mountain dining inn, not central Kyoto. If selected, allow significant transport time or consider an overnight substitution. Bus route 32 about 1h40 and only two return trips per day (verify), or arrange vehicle transfer. Official Japanese price tiers list meals from ¥22,770 pp and stays from ¥75,900 pp including dinner/breakfast; English page displays higher course/package prices. Confirm booking conditions, pickup and return travel by phone."
       }
     ]
   },
@@ -1054,9 +1054,9 @@
       "order": null,
       "proposed_day": 9,
       "estimated_minutes": 180,
-      "price_guide_jpy": "Dining from ¥33,880 pp including tax/service; overnight from ¥88,550 pp including dinner and breakfast (current official website, confirm 2027)",
+      "price_guide_jpy": "Japanese official site: dinner/lunch ¥22,770 / ¥27,830 / ¥33,880 pp incl tax/service; overnight from ¥75,900 pp incl dinner + breakfast. English official page lists ¥33,880 dining and ¥88,550 overnight. Confirm available course/package and 2027 pricing.",
       "url": "https://miyamasou.jp/en/",
-      "notes": "REMOTE HONEYMOON EXPERIENCE: historic mountain ryokan/restaurant specializing in tsumikusa (wild-foraged herbs, river fish, mountain produce and game) amid tranquil forests and streams in Hanase. Not sushi. Could replace part/all of northern Kyoto Day 9 or become a Kyoto-region overnight alternative; don't treat as an ordinary Gion dinner. Official public transport is Kyoto Bus 32 from Kitaoji or Demachiyanagi to Daihiyama (about 1h40 bus, only two round trips per day), plus access to the inn; discuss pickup/return and luggage with the property. If driving, inn recommends approach via Kurama Onsen (Route 38), not narrow Momoi Pass. Dining and accommodation bookings by phone (+81 75-746-0231). Coordinates derived from mapped venue location. NOT BOOKED."
+      "notes": "REMOTE HONEYMOON EXPERIENCE: historic mountain ryokan/restaurant specializing in tsumikusa (wild-foraged herbs, river fish, mountain produce and game) amid tranquil forests and streams in Hanase. Not sushi. Could replace part/all of northern Kyoto Day 9 or become a Kyoto-region overnight alternative; don't treat as an ordinary Gion dinner. Official public transport is Kyoto Bus 32 from Kitaoji or Demachiyanagi to Daihiyama (about 1h40 bus, only two round trips per day), plus access to the inn; discuss pickup/return and luggage with the property. If driving, inn recommends approach via Kurama Onsen (Route 38), not narrow Momoi Pass. Official Japanese and English pages list different price tiers; confirm the available 2027 meal and overnight packages. Dining and accommodation bookings by phone (+81 75-746-0231). Coordinates derived from mapped venue location. NOT BOOKED."
     },
     {
       "id": "sukiyabashi-jiro-ginza-honten",
