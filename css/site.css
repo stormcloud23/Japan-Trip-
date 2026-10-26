@@ -72,3 +72,37 @@ input::placeholder{color:#a5bac7}
 @media(max-width:900px){.layout{grid-template-columns:1fr}#map{height:440px}.list{max-height:400px}}
 @media(max-width:530px){main{padding:14px 12px}.panel{padding:13px}.stats{gap:8px}.stat{padding:10px 12px;min-width:calc(50% - 4px)}.stat strong{font-size:21px}#map{height:385px}.days{grid-template-columns:1fr 1fr;gap:8px}.day-card-button{padding:10px}.day-card details{padding:8px 10px 10px}.day-card h3{font-size:12px}.day-head{flex-direction:column;gap:2px}.day-tools .tiny-btn{padding:8px}.day-tools select{min-width:130px}.legend{gap:6px 10px}}
 @media(max-width:360px){.days{grid-template-columns:1fr}.day-tools .tiny-btn{font-size:12px}}
+
+
+/* Overnight bases and reservations — planning-only, never booking confirmations. */
+.logistics-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:18px 0 22px}
+.logistics-stats>div{border:1px solid #345161;background:#1b3342;border-radius:12px;padding:12px 14px}
+.logistics-stats strong{display:block;font-size:22px;line-height:1.1}
+.logistics-stats span{display:block;margin-top:5px;font-size:12px;color:#b9cbd5}
+.subheading{font-size:17px;margin:18px 0 6px;color:#f0f5f8}
+.stay-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:11px}
+.stay-card{background:#182d3a;border:1px solid #2b4657;border-radius:12px;padding:14px;min-width:0}
+.stay-card-top{display:flex;gap:8px;justify-content:space-between;align-items:center}
+.stay-card .pill{background:#304b5b;color:#e8f0f5}
+.stay-duration{font-size:11px;color:#b9ceda;white-space:nowrap}
+.stay-card h4{margin:12px 0 4px;font-size:15px;color:#f1f5f8}
+.stay-card p{font-size:12px;line-height:1.48;margin:5px 0 8px;color:#bbccd6}
+.stay-candidate{font-size:12px;background:#253b4a;border-radius:8px;padding:8px 10px;margin-top:9px;color:#e3ebf0}
+.stay-candidate span{color:#a8c2d2}
+.stay-unselected{font-style:italic;color:#93aebb!important}
+.booking-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:24px 0 9px}
+.booking-heading .subheading{margin:0 0 4px}
+.booking-heading p{margin:0}
+#booking-filter{min-width:180px;max-width:100%}
+.booking-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:11px}
+.booking-task{border:1px solid #304b5b;background:#182d3a;border-radius:12px;padding:14px;min-width:0}
+.booking-title{display:flex;justify-content:space-between;align-items:flex-start;gap:9px;flex-wrap:wrap}
+.booking-title h4{font-size:14px;line-height:1.4;margin:0;flex:1 1 170px}
+.priority-tag{font-size:11px;border-radius:999px;padding:3px 8px;background:#34495b;color:#d8e8ef;white-space:nowrap}
+.priority-tag.high{background:#594630;color:#f8d8a2}
+.booking-meta{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0}
+.booking-meta span{font-size:11px;color:#bcd1db;background:#284254;border-radius:999px;padding:2px 7px}
+.booking-task p{font-size:12px;line-height:1.55;color:#b9cad5;margin:8px 0}
+.booking-task a{font-size:12px}
+@media(max-width:850px){.logistics-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:530px){.stay-grid,.booking-grid{grid-template-columns:1fr}.logistics-stats>div{padding:10px}.logistics-stats strong{font-size:20px}}
