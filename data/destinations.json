@@ -4,7 +4,7 @@
     "duration_days": 14,
     "start_date": null,
     "end_date": null,
-    "notes": "AUTOMATIC schematic route builder active: on every website visit, js/route-planner.js derives ordered legs from scheduled destinations plus trip.travel_anchors, preferring Shinkansen and rail where practical. Added nearby wishlist destinations (without a day) can be suggested into suitable not-overfull days; route_preference=alternative preserves optional venues unconnected. Provisional autumn 2027, late September / early October, exact dates and all flights/tickets unconfirmed. Hokkaido is days 3–6 between Tokyo and Kyoto, requiring flights Tokyo→Asahikawa and New Chitose→Osaka to preserve a relaxed 14-day schedule. Rail-first for Hokkaido intercity connections, Kyoto↔Osaka, Kyoto↔Himeji, Kyoto→Tokyo. Mount Asahidake access and Biei require ground transport. Hokkaido Shinkansen currently terminates at Shin-Hakodate-Hokuto, far short of Sapporo; all-train route is possible but uses substantially more time. Map legs are straight-line schematic symbols, never real service geometry or tickets. Day-by-day travel minutes are rough planning allowances, not actual timetables; on-site planner adds attraction durations, same-day local transfer estimates and a 45-minute break allowance and highlights overloaded days. Activity times and transport allowances may need revision when exact 2027 dates and bookings are known.",
+    "notes": "AUTOMATIC schematic route builder active: on every website visit, js/route-planner.js derives ordered legs from scheduled destinations plus trip.travel_anchors, preferring Shinkansen and rail where practical. Added nearby wishlist destinations (without a day) can be suggested into suitable not-overfull days; route_preference=alternative preserves optional venues unconnected. Provisional autumn 2027, late September / early October, exact dates and all flights/tickets unconfirmed. Hokkaido is days 3–6 between Tokyo and Kyoto, requiring flights Tokyo→Asahikawa and New Chitose→Osaka to preserve a relaxed 14-day schedule. Rail-first for Hokkaido intercity connections, Kyoto↔Osaka, Kyoto↔Himeji, Kyoto→Tokyo. Mount Asahidake access and Biei require ground transport. Hokkaido Shinkansen currently terminates at Shin-Hakodate-Hokuto, far short of Sapporo; all-train route is possible but uses substantially more time. Map legs are straight-line schematic symbols, never real service geometry or tickets. Day-by-day travel minutes are rough planning allowances, not actual timetables; on-site planner adds attraction durations, same-day local transfer estimates and a 45-minute break allowance and highlights overloaded days. Activity times and transport allowances may need revision when exact 2027 dates and bookings are known. Added provisional overnight bases for nights 1–13 and a reservation readiness checklist. These are proposed locations and unconfirmed booking tasks only, not confirmed hotels, tickets or reservations. Keep trip.stays and trip.booking_tasks current when plans change.",
     "days": [
       {
         "day": 1,
@@ -286,6 +286,142 @@
         "lat": 35.6812,
         "lng": 139.7671,
         "arrival_mode": "shinkansen"
+      }
+    ],
+    "stays": [
+      {
+        "id": "tokyo-arrival",
+        "first_night": 1,
+        "last_night": 2,
+        "base": "Tokyo",
+        "note": "First Tokyo base; choose a hotel with convenient airport and east-Tokyo transit access."
+      },
+      {
+        "id": "asahikawa-biei",
+        "first_night": 3,
+        "last_night": 3,
+        "base": "Asahikawa / Biei",
+        "note": "After Asahidake; stay closer to Biei if using a rental car or local shuttle."
+      },
+      {
+        "id": "sapporo",
+        "first_night": 4,
+        "last_night": 4,
+        "base": "Sapporo",
+        "note": "Convenient JR hub for the following Hokkaido leg."
+      },
+      {
+        "id": "jozankei",
+        "first_night": 5,
+        "last_night": 5,
+        "base": "Jozankei Onsen",
+        "candidate_destination_ids": [
+          "jozankei-suizantei"
+        ],
+        "note": "Potential first traditional hot-spring ryokan night. Alternative properties welcome."
+      },
+      {
+        "id": "noboribetsu",
+        "first_night": 6,
+        "last_night": 6,
+        "base": "Noboribetsu Onsen",
+        "candidate_destination_ids": [
+          "daiichi-takimotokan"
+        ],
+        "note": "Potential second onsen stay, conveniently paired with Hell Valley."
+      },
+      {
+        "id": "kyoto",
+        "first_night": 7,
+        "last_night": 11,
+        "base": "Kyoto",
+        "note": "One Kyoto hotel for five nights; make Osaka and Himeji day trips rather than changing hotels."
+      },
+      {
+        "id": "tokyo-return",
+        "first_night": 12,
+        "last_night": 13,
+        "base": "Tokyo",
+        "note": "Final Tokyo base; consider easy access to the departure airport."
+      }
+    ],
+    "booking_tasks": [
+      {
+        "id": "international-flights",
+        "title": "International flights to/from Tokyo",
+        "type": "transport",
+        "priority": "high",
+        "day": 1,
+        "status": "research",
+        "notes": "Dates and arrival/departure airports are not yet confirmed; coordinate Tokyo hotel nights once decided."
+      },
+      {
+        "id": "hokkaido-flights",
+        "title": "Domestic flights: Tokyo → Asahikawa; New Chitose → Osaka",
+        "type": "transport",
+        "priority": "high",
+        "day": 3,
+        "status": "research",
+        "notes": "Check 2027 schedules after choosing the exact dates; the itinerary currently allows two domestic flights."
+      },
+      {
+        "id": "ghibli-tickets",
+        "title": "Ghibli Museum timed-entry tickets",
+        "type": "experience",
+        "priority": "high",
+        "day": 13,
+        "destination_id": "ghibli-museum-mitaka",
+        "status": "research",
+        "notes": "Tickets are advance-only. Confirm the current international release rules for your travel month; don't assume entry at the door."
+      },
+      {
+        "id": "ryokan-jozankei",
+        "title": "Choose and reserve a Jozankei ryokan",
+        "type": "hotel",
+        "priority": "high",
+        "day": 5,
+        "destination_id": "jozankei-suizantei",
+        "status": "research",
+        "notes": "Optional honeymoon ryokan night; confirm bath type, meal plan, cancellation policy and transport."
+      },
+      {
+        "id": "ryokan-noboribetsu",
+        "title": "Choose and reserve a Noboribetsu onsen hotel",
+        "type": "hotel",
+        "priority": "high",
+        "day": 6,
+        "destination_id": "daiichi-takimotokan",
+        "status": "research",
+        "notes": "Optional hot-spring stay. Compare room options and whether you'd prefer two nights in one place."
+      },
+      {
+        "id": "cafe-capyba",
+        "title": "Cafe Capyba animal-café reservation",
+        "type": "experience",
+        "priority": "medium",
+        "day": 2,
+        "destination_id": "cafe-capyba-hikifune",
+        "status": "research",
+        "notes": "Advance booking and opening days may change; check the official booking window near your travel date."
+      },
+      {
+        "id": "hikiniku-to-kome",
+        "title": "Hikiniku to Kome Kyoto dining",
+        "type": "experience",
+        "priority": "medium",
+        "day": 8,
+        "destination_id": "hikiniku-to-kome-kyoto",
+        "status": "research",
+        "notes": "Check reservation/registration rules and closed days before deciding the Kyoto dining date."
+      },
+      {
+        "id": "shinkansen",
+        "title": "Kyoto → Tokyo Shinkansen seats",
+        "type": "transport",
+        "priority": "medium",
+        "day": 12,
+        "status": "research",
+        "notes": "Choose preferred departure time once hotel and flight details are fixed; this is a rail-first leg."
       }
     ]
   },
