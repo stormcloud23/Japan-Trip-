@@ -31,6 +31,17 @@ Example destination object (coordinates are decimal degrees; use verified coordi
 
 Valid statuses: `wishlist`, `planned`, `booked`, `visited`. `day` is `null` for optional/unscheduled stops, or an integer from 1 to 14 for proposed stops. Use `order` to sequence stops within a day. Proposed days are not bookings. Omit uncertain coordinates until verified.
 
+## Using the map and itinerary
+
+- **Choose a day:** Use the day selector above the map, its Previous/Next buttons, or click a day card below the map. The map zooms to that day's sightseeing stops and displays only that day's schematic travel legs. Choose **All Japan** to reset the view and filters.
+- **Clustered destinations:** On the whole-trip map, nearby places merge into numbered clusters as you zoom out. Click a cluster to zoom in. A single pin has a day number; in day view, its number is that day's stop order.
+- **Color-coded pins:** Sightseeing (coral), nature (green), history (purple), food (gold), shopping (blue), onsen/hotels (lavender). Unscheduled or alternative destinations are **gray**.
+- **Filters:** Region, category, scheduled vs. optional, booking status, and text search all narrow the wishlist and visible map markers. Use **Show on map** on a destination card to zoom straight to it.
+- **Daily workload estimates:** Each day card has a provisional activity+travel workload indicator and expandable breakdown. The calculation sums attraction duration estimates, a coarse allowance for significant train/flight/road legs stored in `trip.days[].travel_minutes_estimate`, rough between-stop transfer times derived from geographic distance, and 45 minutes for a break. It compares that total with a configurable daily comfort target (generally 600 minutes). **Busy** exceeds 85% of the target and **Packed** exceeds it. These are not confirmed train timetables or ticketed schedules.
+- The app does **not** remove wishlist entries when a day looks crowded. The current schedule flags Days **3, 10, 12, and 13** as packed based on these planning estimates. They can be relaxed later by shifting dates or activities.
+
+The UI is implemented in `js/app.js` and `css/site.css`, so the map/controls are separate from the pure routing logic in `js/route-planner.js`.
+
 ## Provisional route (autumn 2027)
 
 **Tokyo → flight to Asahikawa → Asahidake → Biei → limited-express train toward Sapporo → Jozankei → train to Noboribetsu → train to New Chitose Airport → flight to Osaka → Kyoto home base with Osaka/Himeji train day trips → Tokaido Shinkansen to Tokyo.**
@@ -43,7 +54,7 @@ The **source of truth** is `data/destinations.json`. Every website load runs the
 
 1. Reads proposed `day` and `order` for attractions, plus `trip.travel_anchors` (airport/station waypoints and their arrival transport mode).
 2. Merges those in chronological order and **automatically redraws** all connected legs. Adding or moving a day-assigned attraction requires **no manual edits to route coordinates**.
-3. For a newly added item with `day: null`, attempts a **tentative suggested day** near already scheduled places, subject to proximity, a time budget and protected travel days. The engine inserts a suggested stop at the within-day position with the least additional geographic detour, preserving the order of existing stops. Suggested placements appear as *Suggested* in the page but are **not stored as confirmed assignments**. Itineraries for distant or oversized additions need a human decision.
+3. For a newly added item with `day: null`, attempts a **tentative suggested day** near already scheduled places, subject to proximity, the day workload model (activities + travel + transfer estimates), and protected travel days. The engine inserts a suggested stop at the within-day position with the least additional geographic detour, preserving the order of existing stops. Suggested placements appear as *Suggested* in the page but are **not stored as confirmed assignments**. Itineraries for distant or oversized additions need a human decision.
 4. `route_preference: "alternative"` (or `"unplanned"`) prevents auto-scheduling optional resorts, replacement attractions and wishlist-only locations. Existing alternatives have this flag.
 5. For intercity routes, rail is preferred on supported corridors: `shinkansen` for Kyoto–Tokyo and Kyoto–Himeji; `rail` for Kyoto–Osaka and suitable Hokkaido train connections. An anchor's optional `arrival_mode` overrides this inference (e.g. `flight` at Asahikawa/Osaka airports). Unknown very-long-distance transfers are tagged `review`, rather than invented as an air or rail service.
 
@@ -55,7 +66,7 @@ The webpage displays five route styles: **magenta dashed lines for flights**, gr
 
 ### Route regression tests
 
-Run `node --test tests/route-planner.test.cjs` with Node.js 22 or later. Tests cover the current 14-day data, flights and train segments, optional destinations, added unscheduled Kyoto sights and new planned Osaka stops.
+Run `node --test tests/*.test.cjs` with Node.js 22 or later. Tests cover the 14-day route, flights/train segments, optional stops, packed-day warnings and automatic additions. A mocked MapLibre/browser test also exercises day navigation, pins, cluster setup, filters and full-map reset without a live map provider.
 
 GitHub Actions runs these on route-code, website or destination updates via `.github/workflows/validate-routing.yml`. Superseded workflow runs are canceled automatically to avoid redundant test jobs.
 
