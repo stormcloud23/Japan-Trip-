@@ -72,7 +72,7 @@ The webpage displays five route styles: **magenta dashed lines for flights**, gr
 
 | Style | Restaurant | Region | Possible dinner | Booking / trade-off |
 |---|---|---|---|---|
-| Premium omakase | Sushi Ginza Onodera Souhonten | Tokyo (Ginza) | One Tokyo evening, tentatively Day 12 | Dinner from roughly ¥27,500 + 10% service (2026). Don't add to already packed Day 12 without rearranging |
+| Premium omakase | Sushi Ginza Onodera Souhonten | Tokyo (Ginza) | Tentatively Day 2 | Dinner from roughly ¥27,500 + 10% service (2026). Day 2 is preferable to already packed Day 12 |
 | Premium omakase | Sushi Gion Matsudaya | Kyoto (Gion) | Day 8 or another Kyoto night | 6-seat Edomae sushi counter, omakase from around ¥41,800 (2026). An alternative to the existing Hikiniku to Kome dinner |
 | Premium omakase | Sushizen Honten | Sapporo (Maruyama) | Day 4 | Traditional Hokkaido seafood omakase (from ¥36,000, plus 10% service in 2026), closed Tuesdays/Wednesdays currently |
 | Casual / conveyor | Nemuro Hanamaru, JR Tower Stellar Place | Sapporo Station | Day 4 | Excellent Hokkaido seafood, no reservations; queue at the station branch |
