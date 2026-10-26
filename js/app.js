@@ -419,7 +419,9 @@ fetch('./data/rail-corridors.json',{cache:'no-store'})
     railCatalog=catalog;
     if(routePlan){
       displayRoute=JapanRailGeometry.applyCorridors(routePlan.geojson,railCatalog);
-      render(false);
+      // Refit a selected day once the true curved rail alignment becomes available.
+      // Leave the full-country map alone so a user's manual pan is not interrupted.
+      render(state.day!==null);
     }
   })
   .catch(error=>console.warn('Using schematic connections for railway routes:',error));
