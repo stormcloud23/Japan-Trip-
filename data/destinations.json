@@ -212,10 +212,11 @@
         "city": "Chitose",
         "day": 7,
         "order": -18,
-        "lat": 42.7752,
-        "lng": 141.6923,
+        "lat": 42.7878,
+        "lng": 141.68077,
         "region": "Hokkaido",
-        "arrival_mode": "rail"
+        "arrival_mode": "rail",
+        "notes": "Airport rail station on the terminal B1 level; mapped railway line ends at the station, not runway center."
       },
       {
         "name": "Osaka Itami Airport (ITM)",
