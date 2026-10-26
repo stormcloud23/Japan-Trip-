@@ -75,6 +75,23 @@
       "estimated_minutes": 1440,
       "url": "https://www.takaragawa.com/english.html",
       "notes": "Suggested one-night traditional ryokan stay, not booked. Riverside open-air baths; mixed bathing areas use provided bathing garments. From Tokyo take Joetsu Shinkansen to Jomo-Kogen (~70 min), then prebook overnight-guest shuttle or use local buses. Potential Tokyo-area excursion; do not assume it is directly en route to Kyoto. Confirm shuttle schedule, availability, bath policies and rates for travel dates."
+    },
+    {
+      "id": "ghibli-museum-mitaka",
+      "name": "Ghibli Museum, Mitaka",
+      "city": "Mitaka",
+      "region": "Tokyo Metropolis",
+      "address": "1-1-83 Shimorenjaku, Mitaka, Tokyo 181-0013, Japan",
+      "lat": 35.69624,
+      "lng": 139.57043,
+      "category": "museum",
+      "status": "wishlist",
+      "priority": "high",
+      "day": null,
+      "order": null,
+      "estimated_minutes": 180,
+      "url": "https://www.ghibli-museum.jp/en/",
+      "notes": "Advance timed-entry ticket required; no tickets sold at museum. International ticket releases are typically on the 10th of the preceding month at 10:00 JST; verify current rules when dates are set. Pair with Inokashira Park/Kichijoji; west of central Tokyo, not near Sumida."
     }
   ]
 }
