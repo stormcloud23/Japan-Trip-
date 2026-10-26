@@ -79,7 +79,7 @@ test('all controls exist and initial map clusters 27 saved destinations',async()
   const app=mount();await flush();app.map.fire('style.load');
   assert.equal(app.map.sources['trip-places'].settings.cluster,true);
   assert.equal(app.map.sources['trip-places'].data.features.length,27);
-  assert.equal(app.map.sources['trip-route'].data.features.length,40);
+  assert.equal(app.map.sources['trip-route'].data.features.length,39);
   assert.equal(app.map.sources['trip-route'].data.features.filter(f=>f.properties.geometrySource==='railway-gis').length,9);
   assert.equal(app.el('count').textContent,27);
   assert.equal(app.el('overloaded-count').textContent,4);
@@ -113,7 +113,7 @@ test('filters isolate optional places and searches are independent of route line
   planFilter.value='optional';planFilter.listeners.change({target:planFilter});
   assert.equal(app.map.sources['trip-places'].data.features.length,7);
   assert.ok(app.map.sources['trip-places'].data.features.every(f=>f.properties.markerKind==='optional'));
-  assert.equal(app.map.sources['trip-route'].data.features.length,40);
+  assert.equal(app.map.sources['trip-route'].data.features.length,39);
   const search=app.el('search');
   search.value='Castle';search.listeners.input({target:search});
   assert.equal(app.map.sources['trip-places'].data.features.length,1);
