@@ -1,25 +1,90 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101d27"><title>Japan | Honeymoon Planner</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.css" crossorigin="">
 <style>
-:root{font-family:Inter,system-ui,-apple-system,sans-serif;color:#f1f5f8;background:#0d1720}*{box-sizing:border-box}body{margin:0}header{padding:24px clamp(18px,4vw,60px);border-bottom:1px solid #273b47;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}h1{margin:3px 0;font-size:clamp(24px,3vw,38px)}h2{font-size:20px;margin:0 0 12px}p{color:#a8b9c5}.eyebrow{letter-spacing:.16em;text-transform:uppercase;font-size:11px;color:#e9bca5}main{max-width:1550px;margin:auto;padding:24px clamp(16px,3vw,44px)}.stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}.stat,.panel{background:#142530;border:1px solid #29404e;border-radius:16px}.stat{padding:13px 22px;min-width:130px}.stat strong{display:block;font-size:24px}.stat span{font-size:12px;color:#b2c4cf}.layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(310px,1fr);gap:20px}.panel{padding:18px}#map{height:570px;border-radius:12px;background:#1e3441}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}.chip,button,select,input{border:1px solid #3b5868;background:#1e3543;color:#f1f5f8;border-radius:9px;padding:9px 12px;font:inherit}.chip{cursor:pointer}.chip.active{background:#a45d51;border-color:#d7957e}button{cursor:pointer}button:hover,.chip:hover{border-color:#e8b9a5}.list{max-height:490px;overflow:auto}.place{padding:13px 0;border-bottom:1px solid #2c4654}.place h3{margin:0 0 5px;font-size:16px}.meta{color:#a8b9c5;font-size:12px;margin:4px 0}.pill{display:inline-block;background:#2c4654;border-radius:20px;padding:3px 8px;font-size:11px;margin-right:5px}.place a{color:#f2bca6}.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.day{border:1px solid #2b4554;border-radius:12px;padding:14px;background:#182d3a;min-height:120px}.day h3{margin:0 0 10px;font-size:14px}.day p{margin:5px 0;font-size:13px}.empty{padding:30px 12px;text-align:center;color:#adc0cc}.footer{font-size:12px;margin-top:18px}a{color:#f2bca6}#error{color:#ffb7a5}@media(max-width:850px){.layout{grid-template-columns:1fr}#map{height:390px}.list{max-height:370px}} 
+:root{font-family:Inter,system-ui,-apple-system,sans-serif;color:#f1f5f8;background:#0d1720}*{box-sizing:border-box}body{margin:0}header{padding:24px clamp(18px,4vw,60px);border-bottom:1px solid #273b47;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}h1{margin:3px 0;font-size:clamp(24px,3vw,38px)}h2{font-size:20px;margin:0 0 12px}p{color:#a8b9c5}.eyebrow{letter-spacing:.16em;text-transform:uppercase;font-size:11px;color:#e9bca5}main{max-width:1550px;margin:auto;padding:24px clamp(16px,3vw,44px)}.stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}.stat,.panel{background:#142530;border:1px solid #29404e;border-radius:16px}.stat{padding:13px 22px;min-width:130px}.stat strong{display:block;font-size:24px}.stat span{font-size:12px;color:#b2c4cf}.layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(310px,1fr);gap:20px}.panel{padding:18px}#map{height:570px;border-radius:12px;background:#1e3441}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}.chip,button,select,input{border:1px solid #3b5868;background:#1e3543;color:#f1f5f8;border-radius:9px;padding:9px 12px;font:inherit}.chip{cursor:pointer}.chip.active{background:#a45d51;border-color:#d7957e}button{cursor:pointer}button:hover,.chip:hover{border-color:#e8b9a5}.list{max-height:490px;overflow:auto}.place{padding:13px 0;border-bottom:1px solid #2c4654}.place h3{margin:0 0 5px;font-size:16px}.meta{color:#a8b9c5;font-size:12px;margin:4px 0}.pill{display:inline-block;background:#2c4654;border-radius:20px;padding:3px 8px;font-size:11px;margin-right:5px}.place a{color:#f2bca6}.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.day{border:1px solid #2b4554;border-radius:12px;padding:14px;background:#182d3a;min-height:120px}.day h3{margin:0 0 10px;font-size:14px}.day p{margin:5px 0;font-size:13px}.empty{padding:30px 12px;text-align:center;color:#adc0cc}.footer{font-size:12px;margin-top:18px}a{color:#f2bca6}.maplibregl-popup-content{background:#142530;color:#f1f5f8;border:1px solid #29404e;border-radius:9px}.maplibregl-popup-close-button{color:#f1f5f8}#map-warning{color:#ffb7a5}#error{color:#ffb7a5}@media(max-width:850px){.layout{grid-template-columns:1fr}#map{height:390px}.list{max-height:370px}} 
 </style></head><body><header><div><div class="eyebrow">Our adventure • Japan</div><h1>Honeymoon Planner</h1><p style="margin:5px 0">A living wishlist, map & 14-day itinerary</p></div><a href="https://github.com/stormcloud23/Japan-Trip-/blob/main/data/destinations.json" target="_blank" rel="noopener">View destination data ↗</a></header>
 <main><section class="stats"><div class="stat"><strong>14</strong><span>Days to plan</span></div><div class="stat"><strong id="count">0</strong><span>Saved destinations</span></div><div class="stat"><strong id="booked">0</strong><span>Booked</span></div></section>
-<div class="layout"><section class="panel"><h2>Explore the map</h2><div id="map" aria-label="Map of Japan and saved destinations"></div><p class="footer">Map © OpenStreetMap contributors. Pins show saved places; lines connect scheduled places in day order, not verified transit routes.</p></section>
+<div class="layout"><section class="panel"><h2>Explore the map</h2><div id="map" aria-label="Map of Japan and saved destinations"></div><p class="footer">English-first map © OpenFreeMap, OpenMapTiles &amp; OpenStreetMap contributors. Pins show saved places; dashed lines connect scheduled places in day order, not verified transit routes. <span id="map-warning"></span></p></section>
 <section class="panel"><h2>Destination wishlist</h2><div class="toolbar"><input id="search" type="search" placeholder="Search places…" aria-label="Search destinations" style="flex:1;min-width:130px"><select id="status" aria-label="Filter by status"><option value="all">All statuses</option><option value="wishlist">Wishlist</option><option value="planned">Planned</option><option value="booked">Booked</option><option value="visited">Visited</option></select></div><div id="places" class="list"><div class="empty">Your wishlist starts here. Send a link in ChatGPT to add a place.</div></div></section></div>
 <section class="panel" style="margin-top:20px"><h2>14-day itinerary</h2><p>These days are intentionally open until we know the dates and the destinations you want to prioritize.</p><div id="days" class="days"></div></section><p class="footer" id="error"></p></main>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
 <script>
-const map=L.map('map').setView([36.2,138.25],5);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
-const pins=L.featureGroup().addTo(map),routes=L.layerGroup().addTo(map);let destinations=[];
+const fallbackStyle={
+  version:8,
+  sources:{osm:{type:'raster',tiles:['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],tileSize:256,attribution:'© OpenStreetMap contributors'}},
+  layers:[{id:'osm-tiles',type:'raster',source:'osm'}]
+};
+let usingFallback=false,styleReady=false,destinations=[],markers=[],visiblePlaces=[];
+const map=new maplibregl.Map({
+  container:'map',
+  style:'https://tiles.openfreemap.org/styles/positron',
+  center:[138.25,36.2],zoom:5
+});
+map.addControl(new maplibregl.NavigationControl({showCompass:false}),'top-right');
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const validLink=u=>{try{let v=new URL(u);return ['https:','http:'].includes(v.protocol)?v.href:null}catch{return null}};
-function render(){let term=document.querySelector('#search').value.toLowerCase(),status=document.querySelector('#status').value;let shown=destinations.filter(p=>(status==='all'||p.status===status)&&[p.name,p.city,p.region,p.category,p.notes].some(s=>String(s||'').toLowerCase().includes(term)));document.querySelector('#count').textContent=destinations.length;document.querySelector('#booked').textContent=destinations.filter(p=>p.status==='booked').length;
-document.querySelector('#places').innerHTML=shown.length?shown.map(p=>'<article class="place"><h3>'+safe(p.name)+'</h3><div class="meta">'+safe([p.city,p.region].filter(Boolean).join(', '))+'</div><span class="pill">'+safe(p.status||'wishlist')+'</span><span class="pill">'+safe(p.category||'place')+'</span>'+(p.day?'<span class="pill">Day '+safe(p.day)+'</span>':'')+(p.notes?'<p>'+safe(p.notes)+'</p>':'')+(validLink(p.url)?'<div><a target="_blank" rel="noopener noreferrer" href="'+safe(validLink(p.url))+'">Original link ↗</a></div>':'')+'</article>').join(''):'<div class="empty">No destinations match yet. Send your first Japan link in ChatGPT!</div>';
-pins.clearLayers();routes.clearLayers();for(const p of shown){if(Number.isFinite(p.lat)&&Number.isFinite(p.lng)&&Math.abs(p.lat)<=90&&Math.abs(p.lng)<=180)L.marker([p.lat,p.lng]).bindPopup('<strong>'+safe(p.name)+'</strong><br>'+safe(p.city||'')+(p.day?'<br>Day '+safe(p.day):'')).addTo(pins)}
-let scheduled=shown.filter(p=>Number.isInteger(p.day)&&p.day>=1&&p.day<=14&&Number.isFinite(p.lat)&&Number.isFinite(p.lng)).sort((a,b)=>a.day-b.day||(a.order||0)-(b.order||0));if(scheduled.length>1)L.polyline(scheduled.map(p=>[p.lat,p.lng]),{color:'#b75c4b',weight:2,dashArray:'5 7'}).addTo(routes);
-let days=Array.from({length:14},(_,i)=>{let day=i+1,items=destinations.filter(p=>p.day===day).sort((a,b)=>(a.order||0)-(b.order||0));return '<div class="day"><h3>Day '+day+'</h3>'+(items.length?items.map(p=>'<p>• '+safe(p.name)+'</p>').join(''):'<p>Open for planning</p>')+'</div>'});document.querySelector('#days').innerHTML=days.join('');
-if(pins.getLayers().length)map.fitBounds(pins.getBounds().pad(.25),{maxZoom:10})}
+const nameFields=['name:en','name_en','name:latin','name_int','name'];
+const languageExpression=['coalesce',...nameFields.map(field=>['get',field])];
+const labelSourceLayers=new Set(['place','poi','park','water_name','waterway','mountain_peak','aerodrome_label','transportation_name']);
+function setEnglishNames(){
+  if(usingFallback)return;
+  for(const layer of map.getStyle().layers||[]){
+    if(layer.type!=='symbol'||!labelSourceLayers.has(layer['source-layer'])||!layer.layout?.['text-field'])continue;
+    // Prefer English, then Romanized name, falling back to the original local label.
+    map.setLayoutProperty(layer.id,'text-field',languageExpression);
+  }
+}
+function syncMap(){
+  for(const marker of markers)marker.remove();
+  markers=[];
+  const bounds=new maplibregl.LngLatBounds();
+  let count=0;
+  for(const p of visiblePlaces){
+    if(!Number.isFinite(p.lat)||!Number.isFinite(p.lng)||Math.abs(p.lat)>90||Math.abs(p.lng)>180)continue;
+    const coordinates=[p.lng,p.lat];
+    const popup=new maplibregl.Popup({offset:22}).setHTML('<strong>'+safe(p.name)+'</strong><br>'+safe(p.city||'')+(p.day?'<br>Day '+safe(p.day):''));
+    markers.push(new maplibregl.Marker({color:'#b75c4b'}).setLngLat(coordinates).setPopup(popup).addTo(map));
+    bounds.extend(coordinates);count++;
+  }
+  const scheduled=visiblePlaces.filter(p=>Number.isInteger(p.day)&&p.day>=1&&p.day<=14&&Number.isFinite(p.lat)&&Number.isFinite(p.lng)).sort((a,b)=>a.day-b.day||(a.order||0)-(b.order||0));
+  if(styleReady&&map.getSource('travel-route')){
+    const coordinates=scheduled.map(p=>[p.lng,p.lat]);
+    map.getSource('travel-route').setData({type:'FeatureCollection',features:coordinates.length>1?[{type:'Feature',properties:{},geometry:{type:'LineString',coordinates}}]:[]});
+  }
+  if(count)map.fitBounds(bounds,{padding:44,maxZoom:10,duration:0});
+}
+map.on('style.load',()=>{
+  styleReady=true;
+  setEnglishNames();
+  map.addSource('travel-route',{type:'geojson',data:{type:'FeatureCollection',features:[]}});
+  map.addLayer({id:'travel-route',type:'line',source:'travel-route',paint:{'line-color':'#b75c4b','line-width':2,'line-dasharray':[2,3]}});
+  syncMap();
+});
+map.on('error',e=>{
+  console.warn('Map provider error:',e.error||e);
+  if(!usingFallback){
+    usingFallback=true;styleReady=false;
+    document.querySelector('#map-warning').textContent='English tiles unavailable; switched to the OpenStreetMap backup.';
+    map.setStyle(fallbackStyle);
+  }
+});
+function render(){
+  const term=document.querySelector('#search').value.toLowerCase();
+  const status=document.querySelector('#status').value;
+  const shown=destinations.filter(p=>(status==='all'||p.status===status)&&[p.name,p.city,p.region,p.category,p.notes].some(s=>String(s||'').toLowerCase().includes(term)));
+  document.querySelector('#count').textContent=destinations.length;
+  document.querySelector('#booked').textContent=destinations.filter(p=>p.status==='booked').length;
+  document.querySelector('#places').innerHTML=shown.length?shown.map(p=>'<article class="place"><h3>'+safe(p.name)+'</h3><div class="meta">'+safe([p.city,p.region].filter(Boolean).join(', '))+'</div><span class="pill">'+safe(p.status||'wishlist')+'</span><span class="pill">'+safe(p.category||'place')+'</span>'+(p.day?'<span class="pill">Day '+safe(p.day)+'</span>':'')+(p.notes?'<p>'+safe(p.notes)+'</p>':'')+(validLink(p.url)?'<div><a target="_blank" rel="noopener noreferrer" href="'+safe(validLink(p.url))+'">Original link ↗</a></div>':'')+'</article>').join(''):'<div class="empty">No destinations match yet. Send a Japan destination in ChatGPT!</div>';
+  visiblePlaces=shown;
+  syncMap();
+  const days=Array.from({length:14},(_,i)=>{
+    const day=i+1,items=destinations.filter(p=>p.day===day).sort((a,b)=>(a.order||0)-(b.order||0));
+    return '<div class="day"><h3>Day '+day+'</h3>'+(items.length?items.map(p=>'<p>• '+safe(p.name)+'</p>').join(''):'<p>Open for planning</p>')+'</div>';
+  });
+  document.querySelector('#days').innerHTML=days.join('');
+}
 for(const id of ['search','status'])document.getElementById(id).addEventListener(id==='search'?'input':'change',render);
-fetch('./data/destinations.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Could not load destinations');return r.json()}).then(data=>{if(!Array.isArray(data.destinations))throw Error('Invalid destinations data');destinations=data.destinations;render()}).catch(e=>{document.querySelector('#error').textContent='Unable to load destination data: '+e.message;render()});render();
+fetch('./data/destinations.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Could not load destinations');return r.json()}).then(data=>{if(!Array.isArray(data.destinations))throw Error('Invalid destinations data');destinations=data.destinations;render()}).catch(e=>{document.querySelector('#error').textContent='Unable to load destination data: '+e.message;render()});
+render();
 </script></body></html>
