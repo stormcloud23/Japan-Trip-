@@ -49,7 +49,7 @@
         '</article>';
     }).join('');
   }
-  let current=null,initializedFilter=false;
+  let current=null;const initializedFilters=new WeakSet();
   function filterTasks(model,filter){
     if(filter==='high')return model.tasks.filter(task=>task.priority==='high');
     if(['hotel','transport','experience'].includes(filter))return model.tasks.filter(task=>task.type===filter);
@@ -59,7 +59,10 @@
     const documentRef=doc||(typeof document!=='undefined'?document:null);
     if(!documentRef)throw Error('Document is required to display logistics');
     if(!data||!data.trip||!Array.isArray(data.destinations))throw Error('Trip data missing');
-    const model=JapanStayPlanner.buildLogistics(data.trip,data.destinations);
+    const planner=typeof JapanStayPlanner!=='undefined'?JapanStayPlanner:
+      (typeof require==='function'?require('./stay-planner.js'):null);
+    if(!planner)throw Error('Stay planner script is missing');
+    const model=planner.buildLogistics(data.trip,data.destinations);
     const $=id=>documentRef.getElementById(id);
     $('night-count').textContent=model.coveredNights;
     $('hotel-count').textContent=model.stays.length;
@@ -74,7 +77,7 @@
       $('booking-tasks').innerHTML=tasksMarkup(filterTasks(current,filter));
     };
     // Register the change handler only once, even if destination data is reloaded.
-    if(!initializedFilter){selector.addEventListener('change',update);initializedFilter=true;}
+    if(!initializedFilters.has(selector)){selector.addEventListener('change',update);initializedFilters.add(selector);}
     update();
     return model;
   }
