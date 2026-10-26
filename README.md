@@ -33,7 +33,9 @@ Valid statuses: `wishlist`, `planned`, `booked`, `visited`. `day` is `null` for 
 
 ## Using the map and itinerary
 
-- **Choose a day:** Use the day selector above the map, its Previous/Next buttons, or click a day card below the map. The map zooms to that day's sightseeing stops and displays only that day's schematic travel legs. Choose **All Japan** to reset the view and filters.
+- **Choose a day:** Use the day selector above the map, its Previous/Next buttons, or click a day card below the map. The map zooms to the attractions and incoming travel connections for that day. For longer rail legs, it fits the mapped tracks as well as the stops (without zooming out for long flight paths). Choose **All Japan** to reset the view and filters.
+- **Share a specific day:** Click **Copy Day N link** to share a URL ending in `#day=N` (for example, `#day=12`). Opening the URL restores that selected day automatically. The URL includes no private travel data; browsers without clipboard access display the link for manual copying.
+- **Print / Save PDF:** Click the button above the 14-day itinerary to open your browser's print dialog. Print styles omit the interactive map and include all itinerary cards, proposed overnight bases and the booking checklist. Most browsers can use **Save as PDF** as the print destination.
 - **Clustered destinations:** On the whole-trip map, nearby places merge into numbered clusters as you zoom out. Click a cluster to zoom in. A single pin has a day number; in day view, its number is that day's stop order.
 - **Color-coded pins:** Sightseeing (coral), nature (green), history (purple), food (gold), shopping (blue), onsen/hotels (lavender). Unscheduled or alternative destinations are **gray**.
 - **Filters:** Region, category, scheduled vs. optional, booking status, and text search all narrow the wishlist and visible map markers. Use **Show on map** on a destination card to zoom straight to it.
