@@ -133,6 +133,20 @@ Run `node --test tests/*.test.cjs` with Node.js 22 or later. Tests cover the 14-
 
 GitHub Actions runs these on route-code, website or destination updates via `.github/workflows/validate-routing.yml`. Superseded workflow runs are canceled automatically to avoid redundant test jobs.
 
+## Keeping updates fast
+
+This is a **static GitHub Pages app**, not a hosted backend. The Japanese rail overlay is already pre-simplified into 8 cached railway corridors (around **13 KB** of JSON), with no live route solver.
+
+- New destinations always fetch fresh; the static rail cache now uses normal browser HTTP caching.
+- The map maintains stable GeoJSON per selected day and **does not resend identical railway geometry to MapLibre** for simple search/category/status changes.
+- Filter changes only update visible destination cards and map pins, not all 14 itinerary cards or workload summaries.
+- Assigned vs. optional membership uses a `Set` instead of repeatedly scanning the whole wishlist.
+- Browser tests derive destination counts, sushi totals, optional pins and booking counts from current data, so adding an unscheduled restaurant does not require modifying multiple tests.
+- For future multi-file changes, **make one atomic commit** rather than separate commits for the destination data, test adjustments, and documentation. This means only one GitHub Actions run and one Pages deployment. The workflow already cancels superseded runs.
+- Railway geometry, timetable estimates and bookings remain subject to verification. When rail cache is absent, the app falls back to straight schematic legs.
+
+Run `node --test tests/*.test.cjs` for the full check suite.
+
 ## Notes
 - The map uses MapLibre GL JS with OpenFreeMap vector tiles (Liberty style with colored vegetation and water), preferring English and Romanized place names where available. No account, API key or paid tier is required for OpenFreeMap’s public instance. If the vector map fails, the page attempts a raster OpenStreetMap fallback. Internet access and a modern WebGL-capable browser are required.
 - Mapped rail overlays approximate real railway track centerlines from 2024 GIS data. Flights, local transfers, and unmatched train legs remain schematic; no lines represent confirmed service, walking or driving directions.

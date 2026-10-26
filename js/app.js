@@ -29,6 +29,8 @@ function writeDayHash(){
   browserWindow.history.replaceState(null,'',path+(state.day===null?'':'#day='+state.day));
 }
 let destinations=[],trip={},routePlan=null,railCatalog=null,displayRoute=null,styleReady=false,usingFallback=false,providerErrors=0,initialFocus=true;
+// Cache day-specific GeoJSON to avoid unnecessary MapLibre line-source updates.
+let cachedRouteSource=null,cachedRouteViews=new Map(),lastAppliedRouteData=null;
 const map=new maplibregl.Map({
   container:'map',
   style:'https://tiles.openfreemap.org/styles/liberty',
@@ -197,12 +199,16 @@ function markerFeature(p){
 }
 function routesToDisplay(){
   if(!routePlan)return emptyCollection();
-  // Cached railway shapes are recalculated with the route whenever the wishlist changes.
   const routes=displayRoute||routePlan.geojson;
-  if(state.day===null)return routes;
-  // The arrival day owns an overnight intercity transfer (e.g. Kyoto → Tokyo).
-  return {type:'FeatureCollection',features:routes.features.filter(f=>
-    f.properties.toDay===state.day)};
+  if(routes!==cachedRouteSource){
+    cachedRouteSource=routes;
+    cachedRouteViews=new Map([['all',routes]]);
+  }
+  const key=state.day===null?'all':state.day;
+  if(cachedRouteViews.has(key))return cachedRouteViews.get(key);
+  const view={type:'FeatureCollection',features:routes.features.filter(f=>f.properties.toDay===key)};
+  cachedRouteViews.set(key,view);
+  return view;
 }
 function focusMap(shown,force=false){
   if(!styleReady||!routePlan||(!force&&!initialFocus))return;
@@ -245,7 +251,13 @@ function updateMap(shown,fit=false){
   if(!styleReady||!routePlan)return;
   const points=shown.filter(p=>Number.isFinite(p.lat)&&Number.isFinite(p.lng));
   map.getSource('trip-places')?.setData({type:'FeatureCollection',features:points.map(markerFeature)});
-  map.getSource('trip-route')?.setData(routesToDisplay());
+  const route=routesToDisplay();
+  const source=map.getSource('trip-route');
+  // Re-uploading identical rail lines makes MapLibre needlessly reprocess geometry.
+  if(source&&route!==lastAppliedRouteData){
+    source.setData(route);
+    lastAppliedRouteData=route;
+  }
   focusMap(points,fit);
 }
 function renderPlaces(shown){
@@ -321,6 +333,12 @@ function render(fit=false){
   const shown=visiblePlaces();
   renderStats();renderDayControls();renderPlaces(shown);renderDays();updateMap(shown,fit);
 }
+function renderFiltered(fit=true){
+  if(!routePlan)return;
+  // Wishlist filters do not change any day cards, workload totals, or trip statistics.
+  const shown=visiblePlaces();
+  renderDayControls();renderPlaces(shown);updateMap(shown,fit);
+}
 function changeDay(value,scroll,updateUrl=true){
   state.day=value===null?null:Math.max(1,Math.min(14,Number(value)));
   state.plan='all';$('#plan-filter').value='all';
@@ -378,7 +396,7 @@ function setupEvents(){
     $('#map').scrollIntoView({behavior:'smooth',block:'center'});
   });
   for(const [id,key,eventName] of [['search','search','input'],['status','status','change'],['area-filter','area','change'],['kind-filter','kind','change'],['plan-filter','plan','change']]){
-    $(('#'+id)).addEventListener(eventName,event=>{state[key]=event.target.value;render(true)});
+    $(('#'+id)).addEventListener(eventName,event=>{state[key]=event.target.value;renderFiltered(true)});
   }
 }
 function setupDayOptions(){
@@ -392,6 +410,8 @@ function setupDayOptions(){
 }
 map.on('style.load',()=>{
   styleReady=true;
+  // The style replaces the actual sources, so re-upload even if the route is unchanged.
+  lastAppliedRouteData=null;
   preferEnglishLabels();
   addMapLayers();
   render(initialFocus);
@@ -426,16 +446,23 @@ fetch('./data/destinations.json',{cache:'no-store'})
     $('#error').textContent='Unable to load destination data: '+error.message;
   });
 // The cached railway dataset is optional: straight-line routes remain if it cannot load.
-fetch('./data/rail-corridors.json',{cache:'no-store'})
+fetch('./data/rail-corridors.json',{cache:'default'})
   .then(response=>{if(!response.ok)throw Error('Railway cache unavailable ('+response.status+')');return response.json()})
   .then(catalog=>{
     if(!Array.isArray(catalog.corridors))throw Error('Invalid railway corridor data');
     railCatalog=catalog;
     if(routePlan){
       displayRoute=JapanRailGeometry.applyCorridors(routePlan.geojson,railCatalog);
-      // Refit a selected day once the true curved rail alignment becomes available.
-      // Leave the full-country map alone so a user's manual pan is not interrupted.
-      render(state.day!==null);
+      // Update the map only. Do not redraw the wishlist and fourteen day cards.
+      if(styleReady){
+        const route=routesToDisplay();
+        const source=map.getSource('trip-route');
+        if(source&&route!==lastAppliedRouteData){
+          source.setData(route);
+          lastAppliedRouteData=route;
+        }
+        if(state.day!==null)focusMap(visiblePlaces(),true);
+      }
     }
   })
   .catch(error=>console.warn('Using schematic connections for railway routes:',error));

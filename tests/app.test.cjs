@@ -11,6 +11,13 @@ const planner=require('../js/route-planner.js');
 const railway=require('../js/rail-geometry.js');
 const data=JSON.parse(fs.readFileSync(path.join(root,'data/destinations.json'),'utf8'));
 const railCatalog=JSON.parse(fs.readFileSync(path.join(root,'data/rail-corridors.json'),'utf8'));
+const currentPlan=planner.buildPlan(data.trip,data.destinations);
+const currentRail=railway.applyCorridors(currentPlan.geojson,railCatalog);
+const optionalPlaces=data.destinations.filter(p=>!currentPlan.dayById.has(p.id));
+const sushiPlaces=data.destinations.filter(p=>/sushi/i.test(p.category||''));
+const optionalSushi=optionalPlaces.filter(p=>/sushi/i.test(p.category||''));
+const omakase=sushiPlaces.filter(p=>p.dining_style==='omakase');
+const casualSushi=sushiPlaces.filter(p=>p.dining_style==='casual');
 
 function mount(options={}){
   const selectedHash=options.hash||'';
@@ -44,6 +51,7 @@ function mount(options={}){
     queried.add(id);
     return el(id);
   }};
+  const requests=[];
   const maps=[];
   class FakeBounds{
     constructor(){this.coordinates=[]}
@@ -65,7 +73,8 @@ function mount(options={}){
     getStyle(){return {layers:[]}}
     addControl(){}
     addSource(name,settings){
-      this.sources[name]={settings,data:settings.data,setData(next){this.data=next},
+      this.sources[name]={settings,data:settings.data,updateCount:0,
+        setData(next){this.data=next;this.updateCount++},
         getClusterExpansionZoom:async()=>13};
     }
     getSource(name){return this.sources[name]}
@@ -82,20 +91,20 @@ function mount(options={}){
     document,URL,console,window:browser,
     maplibregl:{Map:FakeMap,LngLatBounds:FakeBounds,NavigationControl:class{},Popup:FakePopup},
     JapanRoutePlanner:planner,JapanRailGeometry:railway,
-    fetch:async(url)=>({ok:true,json:async()=>url.includes('rail-corridors.json')?railCatalog:data})
+    fetch:async(url,options)=>{requests.push({url,cache:options?.cache});return {ok:true,json:async()=>url.includes('rail-corridors.json')?railCatalog:data}}
   };
   vm.runInNewContext(source,context,{filename:'app.js'});
-  return {map:maps[0],el,queried,browser};
+  return {map:maps[0],el,queried,browser,requests};
 }
 const flush=async()=>{await new Promise(resolve=>setImmediate(resolve))};
 
-test('all controls exist and initial map clusters 37 saved destinations',async()=>{
+test('all controls exist and initial map clusters all saved destinations',async()=>{
   const app=mount();await flush();app.map.fire('style.load');
   assert.equal(app.map.sources['trip-places'].settings.cluster,true);
-  assert.equal(app.map.sources['trip-places'].data.features.length,37);
-  assert.equal(app.map.sources['trip-route'].data.features.length,39);
+  assert.equal(app.map.sources['trip-places'].data.features.length,data.destinations.length);
+  assert.equal(app.map.sources['trip-route'].data.features.length,currentRail.features.length);
   assert.equal(app.map.sources['trip-route'].data.features.filter(f=>f.properties.geometrySource==='railway-gis').length,9);
-  assert.equal(app.el('count').textContent,37);
+  assert.equal(app.el('count').textContent,data.destinations.length);
   assert.equal(app.el('overloaded-count').textContent,4);
   assert.ok(app.el('days').innerHTML.includes('Day 12'));
   assert.ok(app.el('days').innerHTML.includes('Packed'));
@@ -124,16 +133,16 @@ test('filters isolate optional places and searches are independent of route line
   const app=mount();await flush();app.map.fire('style.load');
   const planFilter=app.el('plan-filter');
   planFilter.value='optional';planFilter.listeners.change({target:planFilter});
-  assert.equal(app.map.sources['trip-places'].data.features.length,17);
+  assert.equal(app.map.sources['trip-places'].data.features.length,optionalPlaces.length);
   assert.ok(app.map.sources['trip-places'].data.features.every(f=>f.properties.isOptional===true));
-  assert.equal(app.map.sources['trip-places'].data.features.filter(f=>f.properties.markerKind==='sushi').length,7);
-  assert.equal(app.map.sources['trip-places'].data.features.filter(f=>f.properties.markerKind==='optional').length,10);
-  assert.equal(app.map.sources['trip-route'].data.features.length,39);
+  assert.equal(app.map.sources['trip-places'].data.features.filter(f=>f.properties.markerKind==='sushi').length,optionalSushi.length);
+  assert.equal(app.map.sources['trip-places'].data.features.filter(f=>f.properties.markerKind==='optional').length,optionalPlaces.length-optionalSushi.length);
+  assert.equal(app.map.sources['trip-route'].data.features.length,currentRail.features.length);
   const search=app.el('search');
   search.value='Castle';search.listeners.input({target:search});
   assert.equal(app.map.sources['trip-places'].data.features.length,1);
   app.el('reset-map').listeners.click();
-  assert.equal(app.map.sources['trip-places'].data.features.length,37);
+  assert.equal(app.map.sources['trip-places'].data.features.length,data.destinations.length);
   assert.equal(app.el('day-select').value,'all');
 });
 
@@ -143,7 +152,7 @@ test('clicking a day card focuses it without discarding destination data',async(
   app.el('days').listeners.click({target:{closest:()=>dayButton}});
   assert.ok(app.el('map-context').textContent.includes('Day 13'));
   assert.equal(app.map.sources['trip-places'].data.features.length,4);
-  assert.equal(app.el('count').textContent,37);
+  assert.equal(app.el('count').textContent,data.destinations.length);
   assert.equal(app.el('map').scrolled,true);
 });
 
@@ -191,7 +200,7 @@ test('selecting a day updates the shareable URL; copying and printing work',asyn
 
 test('hashchange navigation handles valid and invalid day links',async()=>{
   const app=mount({hash:'#day=99'});await flush();app.map.fire('style.load');
-  assert.equal(app.map.sources['trip-places'].data.features.length,37);
+  assert.equal(app.map.sources['trip-places'].data.features.length,data.destinations.length);
   app.browser.location.hash='#day=11';
   app.browser.listeners.hashchange();
   assert.equal(app.el('day-select').value,'11');
@@ -199,7 +208,7 @@ test('hashchange navigation handles valid and invalid day links',async()=>{
   app.browser.location.hash='#unknown';
   app.browser.listeners.hashchange();
   assert.equal(app.el('day-select').value,'all');
-  assert.equal(app.map.sources['trip-places'].data.features.length,37);
+  assert.equal(app.map.sources['trip-places'].data.features.length,data.destinations.length);
 });
 
 test('day zoom does not include distant flights, and filters focus the selected place',async()=>{
@@ -220,7 +229,7 @@ test('sushi restaurants keep distinctive pink S markers despite being unschedule
   const kind=app.el('kind-filter');
   kind.value='sushi';kind.listeners.change({target:kind});
   const pins=app.map.sources['trip-places'].data.features;
-  assert.equal(pins.length,7);
+  assert.equal(pins.length,sushiPlaces.length);
   assert.ok(pins.every(pin=>pin.properties.markerKind==='sushi'));
   assert.ok(pins.every(pin=>pin.properties.markerLabel==='S'));
   assert.ok(pins.every(pin=>pin.properties.isOptional===true));
@@ -232,21 +241,21 @@ test('sushi restaurants keep distinctive pink S markers despite being unschedule
   assert.match(list,/¥41,800/);
 });
 
-test('omakase filter shows four and casual filter shows three, without changing the route',async()=>{
+test('omakase and casual filters match the current sushi wishlist',async()=>{
   const app=mount();await flush();app.map.fire('style.load');
   const kind=app.el('kind-filter');
   kind.value='sushi-omakase';kind.listeners.change({target:kind});
-  assert.equal(app.map.sources['trip-places'].data.features.length,4);
+  assert.equal(app.map.sources['trip-places'].data.features.length,omakase.length);
   assert.match(app.el('places').innerHTML,/Sushi Gion Matsudaya/);
   assert.match(app.el('places').innerHTML,/Sushi Ginza Onodera/);
   assert.match(app.el('places').innerHTML,/Sushizen Honten/);
   assert.match(app.el('places').innerHTML,/Sukiyabashi Jiro/);
   kind.value='sushi-casual';kind.listeners.change({target:kind});
-  assert.equal(app.map.sources['trip-places'].data.features.length,3);
+  assert.equal(app.map.sources['trip-places'].data.features.length,casualSushi.length);
   assert.match(app.el('places').innerHTML,/Harukoma Sushi Honten/);
   assert.match(app.el('places').innerHTML,/Nemuro Hanamaru/);
   assert.match(app.el('places').innerHTML,/Sushi no Midori/);
-  assert.equal(app.map.sources['trip-route'].data.features.length,39);
+  assert.equal(app.map.sources['trip-route'].data.features.length,currentRail.features.length);
 });
 
 test('requested onigiri shops and mountain kaiseki appear as optional food pins with useful hints',async()=>{
@@ -267,11 +276,38 @@ test('requested onigiri shops and mountain kaiseki appear as optional food pins 
 test('new destinations stay unscheduled; onigiri Asakusa remains available on day 2 by search',async()=>{
   const app=mount();await flush();app.map.fire('style.load');
   const optional=app.el('plan-filter');optional.value='optional';optional.listeners.change({target:optional});
-  assert.equal(app.map.sources['trip-places'].data.features.length,17);
+  assert.equal(app.map.sources['trip-places'].data.features.length,optionalPlaces.length);
   const search=app.el('search');search.value='Yadoroku';search.listeners.input({target:search});
   const matching=app.map.sources['trip-places'].data.features;
   assert.equal(matching.length,1);
   assert.equal(matching[0].properties.name,'Onigiri Asakusa Yadoroku');
   assert.equal(matching[0].properties.markerKind,'optional');
   assert.equal(matching[0].properties.isOptional,true);
+});
+
+test('wishlist filters do not re-upload the railway geometry or re-render day cards',async()=>{
+  const app=mount();await flush();app.map.fire('style.load');
+  const rail=app.map.sources['trip-route'],markers=app.map.sources['trip-places'];
+  const before=rail.updateCount,previousMarkers=markers.updateCount;
+  const dayCards=app.el('days').innerHTML;
+  const search=app.el('search');search.value='Tokyo';search.listeners.input({target:search});
+  search.value='Kyoto';search.listeners.input({target:search});
+  const kind=app.el('kind-filter');kind.value='sushi';kind.listeners.change({target:kind});
+  assert.equal(rail.updateCount,before,'do not reprocess railway lines on filters');
+  assert.ok(markers.updateCount>previousMarkers,'pin markers must update');
+  assert.equal(app.el('days').innerHTML,dayCards,'day cards should be preserved');
+  const day=app.el('day-select');day.value='12';day.listeners.change({target:day});
+  assert.equal(rail.updateCount,before+1,'day changes do update the route');
+  const afterDay=rail.updateCount;
+  search.value='Electric Town';search.listeners.input({target:search});
+  assert.equal(rail.updateCount,afterDay);
+});
+
+test('railway GeoJSON can use browser caching, unlike the changing destination list',async()=>{
+  const app=mount();await flush();app.map.fire('style.load');
+  const rail=app.requests.find(x=>x.url.includes('rail-corridors.json'));
+  const places=app.requests.find(x=>x.url.includes('destinations.json'));
+  assert.ok(rail&&places);
+  assert.equal(rail.cache,'default');
+  assert.equal(places.cache,'no-store');
 });

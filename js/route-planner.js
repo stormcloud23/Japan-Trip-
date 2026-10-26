@@ -144,10 +144,12 @@
         geometry:{type:'LineString',coordinates:[[a.lng,a.lat],[b.lng,b.lat]]}
       });
     }
-    const dailyLoads=Array.from({length:14},(_,i)=>assessDayLoad(trip,i+1,[...scheduled,...suggested]));
+    const assigned=[...scheduled,...suggested];
+    const dailyLoads=Array.from({length:14},(_,i)=>assessDayLoad(trip,i+1,assigned));
+    const assignedIds=new Set(assigned.map(p=>p.id));
     return {
       points:ordered,scheduled,suggested,dailyLoads,
-      unplanned:destinations.filter(p=>!scheduled.some(x=>x.id===p.id)&&!suggested.some(x=>x.id===p.id)),
+      unplanned:destinations.filter(p=>!assignedIds.has(p.id)),
       geojson:{type:'FeatureCollection',features},
       dayById:new Map([...scheduled,...suggested].map(p=>[p.id,{day:p.day,order:p.order,suggested:!!p.suggested}])),
       modes:features.reduce((obj,f)=>(obj[f.properties.mode]=(obj[f.properties.mode]||0)+1,obj),{})

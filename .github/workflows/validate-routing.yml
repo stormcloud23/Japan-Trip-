@@ -5,6 +5,8 @@ on:
     paths:
       - 'data/destinations.json'
       - 'js/route-planner.js'
+      - 'js/rail-geometry.js'
+      - 'data/rail-corridors.json'
       - 'tests/**'
       - 'index.html'
       - 'css/site.css'
@@ -16,6 +18,8 @@ on:
     paths:
       - 'data/destinations.json'
       - 'js/route-planner.js'
+      - 'js/rail-geometry.js'
+      - 'data/rail-corridors.json'
       - 'tests/**'
       - 'index.html'
       - 'css/site.css'
