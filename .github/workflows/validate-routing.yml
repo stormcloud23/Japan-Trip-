@@ -5,15 +5,19 @@ on:
     paths:
       - 'data/destinations.json'
       - 'js/route-planner.js'
-      - 'tests/route-planner.test.cjs'
+      - 'tests/**'
       - 'index.html'
+      - 'css/site.css'
+      - 'js/app.js'
       - '.github/workflows/validate-routing.yml'
   pull_request:
     paths:
       - 'data/destinations.json'
       - 'js/route-planner.js'
-      - 'tests/route-planner.test.cjs'
+      - 'tests/**'
       - 'index.html'
+      - 'css/site.css'
+      - 'js/app.js'
   workflow_dispatch:
 
 # Superseded commits don't waste minutes running outdated route checks.
@@ -34,4 +38,4 @@ jobs:
         with:
           node-version: '22'
       - name: Test data-driven itinerary generation
-        run: node --test tests/route-planner.test.cjs
+        run: node --test tests/*.test.cjs
