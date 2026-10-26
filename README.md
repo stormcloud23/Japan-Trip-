@@ -31,6 +31,16 @@ Example destination object (coordinates are decimal degrees; use verified coordi
 
 Valid statuses: `wishlist`, `planned`, `booked`, `visited`. `day` is `null` for optional/unscheduled stops, or an integer from 1 to 14 for proposed stops. Use `order` to sequence stops within a day. Proposed days are not bookings. Omit uncertain coordinates until verified.
 
+## Destination photo slideshow
+
+The homepage showcases **10 credited photographs** of real, scheduled destinations across Tokyo, Hokkaido, Kyoto, Osaka and Himeji. Every source is a Wikimedia Commons image with its photographer, license and original-file link shown underneath the slideshow. Photos reflect different seasons and years, not necessarily the planned 2027 travel dates.
+
+- `data/photos.json` is the curated photo manifest. Each photo records a stable destination ID, trip day, thumbnail, alt text, caption, creator and source/license links.
+- `js/photo-gallery.js` is **independent of the map and route planner**. It fetches the static manifest with normal browser caching and initially loads only the visible thumbnail; after it loads, it may preload the next image (unless Data Saver is enabled).
+- Browse with arrows, dots, swipe or keyboard arrow keys while the carousel is focused. Auto-advance runs every 8.5 seconds and pauses when offscreen, hovered, focused or tab-hidden. Reduced-motion preferences start it paused, with a manual Play control.
+- **Explore Day N on map** changes to that itinerary day without modifying the trip data. Failed external images display a fallback message without breaking the map.
+- To add a photo, add a properly licensed Wikimedia Commons thumbnail and matching `destination_id` in the JSON. Test with `node --test tests/*.test.cjs`.
+
 ## Using the map and itinerary
 
 - **Choose a day:** Use the day selector above the map, its Previous/Next buttons, or click a day card below the map. The map zooms to the attractions and incoming travel connections for that day. For longer rail legs, it fits the mapped tracks as well as the stops (without zooming out for long flight paths). Choose **All Japan** to reset the view and filters.

@@ -27,6 +27,41 @@
       <div class="stat"><strong id="booked">0</strong><span>Booked</span></div>
     </section>
 
+
+    <section class="panel photo-gallery" id="photo-gallery" aria-label="Photographs from Japan trip destinations">
+      <div class="panel-heading gallery-heading">
+        <div>
+          <div class="eyebrow">A glimpse of Japan</div>
+          <h2>Places we're dreaming of</h2>
+          <p>Real photos from places on our route. Swipe, browse, or let the slideshow play.</p>
+        </div>
+        <span class="pill" id="gallery-count">10 photographs</span>
+      </div>
+      <div class="gallery-stage" id="gallery-stage" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Japan destination photographs" aria-live="off">
+        <img id="gallery-image" alt="" width="1280" height="853" loading="lazy" decoding="async">
+        <div class="gallery-shade"></div>
+        <div class="gallery-copy">
+          <span class="gallery-region" id="gallery-region">Japan · Autumn 2027</span>
+          <h3 id="gallery-title">Explore Japan through photographs</h3>
+          <p id="gallery-caption">Beautiful scenery, historic landmarks and neon-lit neighborhoods.</p>
+        </div>
+        <button id="gallery-prev" class="gallery-arrow gallery-prev" type="button" aria-label="Previous photograph">‹</button>
+        <button id="gallery-next" class="gallery-arrow gallery-next" type="button" aria-label="Next photograph">›</button>
+      </div>
+      <div class="gallery-toolbar">
+        <button type="button" id="gallery-play">Pause slideshow</button>
+        <div class="gallery-dots" id="gallery-dots" aria-label="Select photograph"></div>
+        <a class="gallery-map-link" id="gallery-map-link" href="#day=2">Explore on map</a>
+      </div>
+      <div class="gallery-credits">
+        Photo: <a id="gallery-photographer" href="https://commons.wikimedia.org/" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a>
+        · <a id="gallery-license" href="https://creativecommons.org/" target="_blank" rel="noopener noreferrer">License</a>
+        · <a id="gallery-source" href="https://commons.wikimedia.org/" target="_blank" rel="noopener noreferrer">Original / attribution</a>
+        <span> · Photos may be cropped; scenery varies by season.</span>
+      </div>
+      <p id="gallery-status" class="sr-only" role="status" aria-live="polite">Loading destination photos.</p>
+    </section>
+
     <div class="layout">
       <section class="panel" aria-labelledby="map-heading">
         <div class="panel-heading">
@@ -172,6 +207,7 @@
   <script src="./js/rail-geometry.js"></script>
   <script src="./js/stay-planner.js"></script>
   <script src="./js/logistics-ui.js"></script>
+  <script src="./js/photo-gallery.js"></script>
   <script src="./js/app.js"></script>
 </body>
 </html>

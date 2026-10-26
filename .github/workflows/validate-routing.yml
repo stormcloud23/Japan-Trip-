@@ -11,6 +11,8 @@ on:
       - 'index.html'
       - 'css/site.css'
       - 'js/app.js'
+      - 'js/photo-gallery.js'
+      - 'data/photos.json'
       - 'js/stay-planner.js'
       - 'js/logistics-ui.js'
       - '.github/workflows/validate-routing.yml'
@@ -24,6 +26,8 @@ on:
       - 'index.html'
       - 'css/site.css'
       - 'js/app.js'
+      - 'js/photo-gallery.js'
+      - 'data/photos.json'
       - 'js/stay-planner.js'
       - 'js/logistics-ui.js'
   workflow_dispatch:
