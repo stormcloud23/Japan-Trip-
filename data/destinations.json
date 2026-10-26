@@ -4,7 +4,7 @@
     "duration_days": 14,
     "start_date": null,
     "end_date": null,
-    "notes": "PROVISIONAL autumn 2027 (late September–early October, flights/dates TBD): Tokyo arrival days 1–2; flight Haneda–Asahikawa day 3; Hokkaido Asahidake/Biei/Jozankei/Noboribetsu days 3–6; fly New Chitose–Osaka and transfer Kyoto day 7; Kyoto Nijo Castle/Gion day 8, Kifune day 9, Kyoto-based Osaka day trip (Osaka Castle/Tempozan/Dotonbori) day 10, Kyoto-based Himeji Castle day trip day 11 (Hikone Castle alternative); shinkansen to Tokyo day 12, Shinjuku optional evening; Mitaka/Nakano/Shibuya day 13, depart Tokyo day 14. Dates, hotel nights and all reservations unconfirmed. Several days are ambitious; allow relaxed alternatives. Kaiyukan, Hikone, Minakami, Lake Toya and alternative Hokkaido ryokan/Niseko remain optional and unscheduled. Lines on map connect schematic route waypoints and airport legs rather than real transit shapes.",
+    "notes": "AUTOMATIC schematic route builder active: on every website visit, js/route-planner.js derives ordered legs from scheduled destinations plus trip.travel_anchors, preferring Shinkansen and rail where practical. Added nearby wishlist destinations (without a day) can be suggested into suitable not-overfull days; route_preference=alternative preserves optional venues unconnected. Provisional autumn 2027, late September / early October, exact dates and all flights/tickets unconfirmed. Hokkaido is days 3–6 between Tokyo and Kyoto, requiring flights Tokyo→Asahikawa and New Chitose→Osaka to preserve a relaxed 14-day schedule. Rail-first for Hokkaido intercity connections, Kyoto↔Osaka, Kyoto↔Himeji, Kyoto→Tokyo. Mount Asahidake access and Biei require ground transport. Hokkaido Shinkansen currently terminates at Shin-Hakodate-Hokuto, far short of Sapporo; all-train route is possible but uses substantially more time. Map legs are straight-line schematic symbols, never real service geometry or tickets.",
     "days": [
       {
         "day": 1,
@@ -24,7 +24,7 @@
       {
         "day": 4,
         "title": "Biei · Sapporo direction",
-        "description": "Blue Pond and Biei scenery; travel toward Sapporo. Keep the previous hotel if transport works better."
+        "description": "Blue Pond and Biei scenery; continue to Asahikawa Station, then ride a JR limited express to Sapporo when convenient (check actual schedules)."
       },
       {
         "day": 5,
@@ -34,12 +34,12 @@
       {
         "day": 6,
         "title": "Noboribetsu hot springs",
-        "description": "Jigokudani trails and a potential ryokan night; Dai-ichi Takimotokan is one unbooked option."
+        "description": "Jigokudani and forest trails. Travel from the Sapporo area toward Noboribetsu by JR limited express, then local transport to the onsen district."
       },
       {
         "day": 7,
         "title": "Fly to Osaka · Kyoto",
-        "description": "Transfer to New Chitose Airport; fly to Osaka Itami (or another suitable Osaka airport), then continue to Kyoto."
+        "description": "JR train toward New Chitose Airport; fly to Osaka Itami (or a suitable Osaka airport), then transfer to Kyoto. Hokkaido Shinkansen does not yet reach Sapporo."
       },
       {
         "day": 8,
@@ -54,17 +54,17 @@
       {
         "day": 10,
         "title": "Osaka day trip · Castle, bay & Dotonbori",
-        "description": "From Kyoto, visit Osaka Castle in the morning, enjoy the Tempozan harbor waterfront in the afternoon, and finish by the Dotonbori canal after dark. Aquarium is an optional swap or extra half-day; return to Kyoto overnight."
+        "description": "From Kyoto take a train to Osaka Castle, then transit to the Tempozan harbor waterfront and finish at Dotonbori after dark; return to Kyoto by rail. Aquarium is an optional swap, not a required stop."
       },
       {
         "day": 11,
         "title": "Himeji Castle day trip",
-        "description": "From Kyoto visit Himeji Castle and perhaps Kokoen Garden. Alternatively choose Hikone Castle near Lake Biwa or use this as a relaxed Kyoto day."
+        "description": "Take Shinkansen from Kyoto (direct where scheduled, otherwise transfer via Shin-Osaka) to Himeji Castle and Koko-en Garden, then return to Kyoto by rail. Optional alternative: Hikone Castle."
       },
       {
         "day": 12,
         "title": "Shinkansen to Tokyo · Akihabara",
-        "description": "Return to Tokyo from Kyoto; Jimbocho and Akihabara, with Shinjuku nightlife as an optional evening visit if energy permits."
+        "description": "Take Tokaido Shinkansen from Kyoto to Tokyo, then explore Jimbocho and Akihabara. Shinjuku nightlife is optional if time allows."
       },
       {
         "day": 13,
@@ -77,111 +77,172 @@
         "description": "Fly home; leave a generous airport transfer buffer."
       }
     ],
-    "route": [
+    "transport_policy": {
+      "preferred": "rail",
+      "notes": "Use Shinkansen for Kyoto↔Tokyo and Kyoto↔Himeji, regular trains Kyoto↔Osaka and on practical Hokkaido intercity connections. Flight exceptions: Tokyo Haneda→Asahikawa and New Chitose→Osaka Itami, avoiding very long rail transfer days. Shinkansen only reaches Shin-Hakodate-Hokuto in Hokkaido in 2027. All 2027 services/schedules must be verified."
+    },
+    "travel_anchors": [
       {
-        "name": "Tokyo",
-        "lat": 35.6812,
-        "lng": 139.7671,
+        "name": "Tokyo Station (starting hub)",
+        "city": "Tokyo",
         "day": 1,
-        "transport_to_next": "ground"
+        "order": 0,
+        "lat": 35.6812,
+        "lng": 139.7671
       },
       {
         "name": "Tokyo Haneda Airport (HND)",
-        "lat": 35.5494,
-        "lng": 139.7798,
+        "city": "Tokyo",
         "day": 3,
-        "transport_to_next": "flight"
+        "order": -20,
+        "lat": 35.5494,
+        "lng": 139.7798
       },
       {
         "name": "Asahikawa Airport (AKJ)",
+        "city": "Asahikawa",
+        "day": 3,
+        "order": -19,
         "lat": 43.6708,
         "lng": 142.4475,
-        "day": 3,
-        "transport_to_next": "ground"
+        "region": "Hokkaido",
+        "arrival_mode": "flight"
       },
       {
-        "name": "Mount Asahidake",
-        "lat": 43.663,
-        "lng": 142.854,
-        "day": 3,
-        "transport_to_next": "ground"
-      },
-      {
-        "name": "Shirogane Blue Pond",
-        "lat": 43.493,
-        "lng": 142.614,
+        "name": "Asahikawa Station",
+        "city": "Asahikawa",
         "day": 4,
-        "transport_to_next": "ground"
+        "order": 20,
+        "lat": 43.7631,
+        "lng": 142.3571,
+        "region": "Hokkaido"
       },
       {
-        "name": "Jozankei Onsen",
-        "lat": 42.966,
-        "lng": 141.165,
-        "day": 5,
-        "transport_to_next": "ground"
+        "name": "Sapporo Station",
+        "city": "Sapporo",
+        "day": 4,
+        "order": 21,
+        "lat": 43.0687,
+        "lng": 141.3508,
+        "region": "Hokkaido",
+        "arrival_mode": "rail"
       },
       {
-        "name": "Noboribetsu",
-        "lat": 42.497,
-        "lng": 141.143,
+        "name": "Sapporo Station",
+        "city": "Sapporo",
         "day": 6,
-        "transport_to_next": "ground"
+        "order": -20,
+        "lat": 43.0687,
+        "lng": 141.3508,
+        "region": "Hokkaido"
+      },
+      {
+        "name": "Noboribetsu Station",
+        "city": "Noboribetsu",
+        "day": 6,
+        "order": -19,
+        "lat": 42.4528,
+        "lng": 141.181,
+        "region": "Hokkaido",
+        "arrival_mode": "rail"
+      },
+      {
+        "name": "Noboribetsu Station",
+        "city": "Noboribetsu",
+        "day": 7,
+        "order": -20,
+        "lat": 42.4528,
+        "lng": 141.181,
+        "region": "Hokkaido"
+      },
+      {
+        "name": "Minami-Chitose Station",
+        "city": "Chitose",
+        "day": 7,
+        "order": -19,
+        "lat": 42.8061,
+        "lng": 141.6748,
+        "region": "Hokkaido",
+        "arrival_mode": "rail"
       },
       {
         "name": "New Chitose Airport (CTS)",
+        "city": "Chitose",
+        "day": 7,
+        "order": -18,
         "lat": 42.7752,
         "lng": 141.6923,
-        "day": 7,
-        "transport_to_next": "flight"
+        "region": "Hokkaido",
+        "arrival_mode": "rail"
       },
       {
         "name": "Osaka Itami Airport (ITM)",
+        "city": "Osaka",
+        "day": 7,
+        "order": -17,
         "lat": 34.7855,
         "lng": 135.4382,
+        "arrival_mode": "flight"
+      },
+      {
+        "name": "Kyoto Station",
+        "city": "Kyoto",
         "day": 7,
-        "transport_to_next": "ground"
+        "order": -16,
+        "lat": 34.9854,
+        "lng": 135.7586,
+        "arrival_mode": "ground"
       },
       {
-        "name": "Kyoto",
-        "lat": 35.0116,
-        "lng": 135.7681,
-        "day": 7,
-        "transport_to_next": "ground"
-      },
-      {
-        "name": "Osaka (castle / bay / Dotonbori)",
-        "lat": 34.669,
-        "lng": 135.5011,
+        "name": "Kyoto Station (Osaka day trip)",
+        "city": "Kyoto",
         "day": 10,
-        "transport_to_next": "ground"
+        "order": -20,
+        "lat": 34.9854,
+        "lng": 135.7586
       },
       {
-        "name": "Kyoto",
-        "lat": 35.0116,
-        "lng": 135.7681,
+        "name": "Kyoto Station (return from Osaka)",
+        "city": "Kyoto",
         "day": 10,
-        "transport_to_next": "ground"
+        "order": 20,
+        "lat": 34.9854,
+        "lng": 135.7586,
+        "arrival_mode": "rail"
       },
       {
-        "name": "Himeji Castle",
-        "lat": 34.8394,
-        "lng": 134.6939,
+        "name": "Kyoto Station (Himeji day trip)",
+        "city": "Kyoto",
         "day": 11,
-        "transport_to_next": "ground"
+        "order": -20,
+        "lat": 34.9854,
+        "lng": 135.7586
       },
       {
-        "name": "Kyoto",
-        "lat": 35.0116,
-        "lng": 135.7681,
+        "name": "Kyoto Station (return from Himeji)",
+        "city": "Kyoto",
         "day": 11,
-        "transport_to_next": "rail"
+        "order": 20,
+        "lat": 34.9854,
+        "lng": 135.7586,
+        "arrival_mode": "shinkansen"
       },
       {
-        "name": "Tokyo",
+        "name": "Kyoto Station (to Tokyo)",
+        "city": "Kyoto",
+        "day": 12,
+        "order": -20,
+        "lat": 34.9854,
+        "lng": 135.7586
+      },
+      {
+        "name": "Tokyo Station (Shinkansen arrival)",
+        "city": "Tokyo",
+        "day": 12,
+        "order": -19,
         "lat": 35.6812,
         "lng": 139.7671,
-        "day": 12,
-        "transport_to_next": null
+        "arrival_mode": "shinkansen"
       }
     ]
   },
@@ -253,7 +314,8 @@
       "order": null,
       "estimated_minutes": 1440,
       "url": "https://www.takaragawa.com/english.html",
-      "notes": "Suggested one-night traditional ryokan stay, not booked. Riverside open-air baths; mixed bathing areas use provided bathing garments. From Tokyo take Joetsu Shinkansen to Jomo-Kogen (~70 min), then prebook overnight-guest shuttle or use local buses. Potential Tokyo-area excursion; do not assume it is directly en route to Kyoto. Confirm shuttle schedule, availability, bath policies and rates for travel dates."
+      "notes": "Suggested one-night traditional ryokan stay, not booked. Riverside open-air baths; mixed bathing areas use provided bathing garments. From Tokyo take Joetsu Shinkansen to Jomo-Kogen (~70 min), then prebook overnight-guest shuttle or use local buses. Potential Tokyo-area excursion; do not assume it is directly en route to Kyoto. Confirm shuttle schedule, availability, bath policies and rates for travel dates.",
+      "route_preference": "alternative"
     },
     {
       "id": "ghibli-museum-mitaka",
@@ -430,7 +492,8 @@
       "notes": "Caldera lake and lakeside onsen scenery. Could pair with Noboribetsu on a southwestern Hokkaido loop. Pin indicates lakeside town area.",
       "status": "wishlist",
       "day": null,
-      "order": null
+      "order": null,
+      "route_preference": "alternative"
     },
     {
       "id": "zaborin-niseko",
@@ -446,7 +509,8 @@
       "notes": "Luxury honeymoon splurge candidate, 1–2 nights; private onsen baths in suites. Not booked. Verify rates, availability, exact location and transport.",
       "status": "wishlist",
       "day": null,
-      "order": null
+      "order": null,
+      "route_preference": "alternative"
     },
     {
       "id": "daiichi-takimotokan",
@@ -462,7 +526,8 @@
       "notes": "Large traditional mineral bath complex near Hell Valley. One-night option; not booked.",
       "status": "wishlist",
       "day": null,
-      "order": null
+      "order": null,
+      "route_preference": "alternative"
     },
     {
       "id": "jozankei-suizantei",
@@ -478,7 +543,8 @@
       "notes": "Upscale ryokan option in Jozankei autumn valley, 1–2 nights; not booked.",
       "status": "wishlist",
       "day": null,
-      "order": null
+      "order": null,
+      "route_preference": "alternative"
     },
     {
       "id": "shibuya-scramble-district",
@@ -561,7 +627,8 @@
       "estimated_minutes": 180,
       "url": "https://www.kaiyukan.com/language/eng/",
       "notes": "Optional attraction inside Tempozan area; whale sharks and multi-story Pacific Ocean exhibits. Would require extra hours on Osaka day and possibly dropping another stop; left unscheduled.",
-      "status": "wishlist"
+      "status": "wishlist",
+      "route_preference": "alternative"
     },
     {
       "id": "osaka-castle",
@@ -629,7 +696,8 @@
       "estimated_minutes": 150,
       "url": "https://www.japan.travel/en/spot/1076/",
       "notes": "Alternative to Himeji day trip, nearer Kyoto on Lake Biwa. One of five original castle keeps classified as a National Treasure. Pair with Genkyuen Garden. Not scheduled to avoid overpacking day 11.",
-      "status": "wishlist"
+      "status": "wishlist",
+      "route_preference": "alternative"
     }
   ]
 }
