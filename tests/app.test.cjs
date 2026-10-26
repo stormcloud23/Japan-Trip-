@@ -204,8 +204,9 @@ test('hashchange navigation handles valid and invalid day links',async()=>{
 test('day zoom does not include distant flights, and filters focus the selected place',async()=>{
   const app=mount();await flush();app.map.fire('style.load');
   const select=app.el('day-select');select.value='3';select.listeners.change({target:select});
-  const day3Bounds=app.map.camera.filter(x=>x.type==='fitBounds').at(-1).bounds.coordinates;
-  assert.ok(Math.min(...day3Bounds.map(p=>p[1]))>40,'flight day should stay focused on Hokkaido');
+  const day3Camera=app.map.camera.at(-1);
+  assert.equal(day3Camera.type,'easeTo','single Hokkaido sightseeing stop should focus locally');
+  assert.ok(day3Camera.options.center[1]>40,'flight day should stay focused on Hokkaido');
   select.value='12';select.listeners.change({target:select});
   const search=app.el('search');search.value='Akihabara';search.listeners.input({target:search});
   assert.equal(app.map.sources['trip-places'].data.features.length,1);
