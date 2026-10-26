@@ -89,13 +89,13 @@ function mount(options={}){
 }
 const flush=async()=>{await new Promise(resolve=>setImmediate(resolve))};
 
-test('all controls exist and initial map clusters 27 saved destinations',async()=>{
+test('all controls exist and initial map clusters 33 saved destinations',async()=>{
   const app=mount();await flush();app.map.fire('style.load');
   assert.equal(app.map.sources['trip-places'].settings.cluster,true);
-  assert.equal(app.map.sources['trip-places'].data.features.length,27);
+  assert.equal(app.map.sources['trip-places'].data.features.length,33);
   assert.equal(app.map.sources['trip-route'].data.features.length,39);
   assert.equal(app.map.sources['trip-route'].data.features.filter(f=>f.properties.geometrySource==='railway-gis').length,9);
-  assert.equal(app.el('count').textContent,27);
+  assert.equal(app.el('count').textContent,33);
   assert.equal(app.el('overloaded-count').textContent,4);
   assert.ok(app.el('days').innerHTML.includes('Day 12'));
   assert.ok(app.el('days').innerHTML.includes('Packed'));
@@ -124,14 +124,16 @@ test('filters isolate optional places and searches are independent of route line
   const app=mount();await flush();app.map.fire('style.load');
   const planFilter=app.el('plan-filter');
   planFilter.value='optional';planFilter.listeners.change({target:planFilter});
-  assert.equal(app.map.sources['trip-places'].data.features.length,7);
-  assert.ok(app.map.sources['trip-places'].data.features.every(f=>f.properties.markerKind==='optional'));
+  assert.equal(app.map.sources['trip-places'].data.features.length,13);
+  assert.ok(app.map.sources['trip-places'].data.features.every(f=>f.properties.isOptional===true));
+  assert.equal(app.map.sources['trip-places'].data.features.filter(f=>f.properties.markerKind==='sushi').length,6);
+  assert.equal(app.map.sources['trip-places'].data.features.filter(f=>f.properties.markerKind==='optional').length,7);
   assert.equal(app.map.sources['trip-route'].data.features.length,39);
   const search=app.el('search');
   search.value='Castle';search.listeners.input({target:search});
   assert.equal(app.map.sources['trip-places'].data.features.length,1);
   app.el('reset-map').listeners.click();
-  assert.equal(app.map.sources['trip-places'].data.features.length,27);
+  assert.equal(app.map.sources['trip-places'].data.features.length,33);
   assert.equal(app.el('day-select').value,'all');
 });
 
@@ -141,7 +143,7 @@ test('clicking a day card focuses it without discarding destination data',async(
   app.el('days').listeners.click({target:{closest:()=>dayButton}});
   assert.ok(app.el('map-context').textContent.includes('Day 13'));
   assert.equal(app.map.sources['trip-places'].data.features.length,4);
-  assert.equal(app.el('count').textContent,27);
+  assert.equal(app.el('count').textContent,33);
   assert.equal(app.el('map').scrolled,true);
 });
 
@@ -189,7 +191,7 @@ test('selecting a day updates the shareable URL; copying and printing work',asyn
 
 test('hashchange navigation handles valid and invalid day links',async()=>{
   const app=mount({hash:'#day=99'});await flush();app.map.fire('style.load');
-  assert.equal(app.map.sources['trip-places'].data.features.length,27);
+  assert.equal(app.map.sources['trip-places'].data.features.length,33);
   app.browser.location.hash='#day=11';
   app.browser.listeners.hashchange();
   assert.equal(app.el('day-select').value,'11');
@@ -197,7 +199,7 @@ test('hashchange navigation handles valid and invalid day links',async()=>{
   app.browser.location.hash='#unknown';
   app.browser.listeners.hashchange();
   assert.equal(app.el('day-select').value,'all');
-  assert.equal(app.map.sources['trip-places'].data.features.length,27);
+  assert.equal(app.map.sources['trip-places'].data.features.length,33);
 });
 
 test('day zoom does not include distant flights, and filters focus the selected place',async()=>{
@@ -211,4 +213,37 @@ test('day zoom does not include distant flights, and filters focus the selected 
   assert.equal(app.map.sources['trip-places'].data.features.length,1);
   const lastCamera=app.map.camera.at(-1);
   assert.equal(lastCamera.type,'easeTo','filtered local point should zoom in rather than fit long rail');
+});
+
+test('sushi restaurants keep distinctive pink S markers despite being unscheduled',async()=>{
+  const app=mount();await flush();app.map.fire('style.load');
+  const kind=app.el('kind-filter');
+  kind.value='sushi';kind.listeners.change({target:kind});
+  const pins=app.map.sources['trip-places'].data.features;
+  assert.equal(pins.length,6);
+  assert.ok(pins.every(pin=>pin.properties.markerKind==='sushi'));
+  assert.ok(pins.every(pin=>pin.properties.markerLabel==='S'));
+  assert.ok(pins.every(pin=>pin.properties.isOptional===true));
+  const mapColor=app.map.layers['trip-markers'].paint['circle-color'];
+  assert.ok(JSON.stringify(mapColor).includes('#ff6b99'),'dedicated sushi pin color');
+  const list=app.el('places').innerHTML;
+  assert.match(list,/Dinner idea: Day 4/);
+  assert.match(list,/Dinner idea: Day 13/);
+  assert.match(list,/¥41,800/);
+});
+
+test('omakase and casual sushi filters each show three candidates without changing the route',async()=>{
+  const app=mount();await flush();app.map.fire('style.load');
+  const kind=app.el('kind-filter');
+  kind.value='sushi-omakase';kind.listeners.change({target:kind});
+  assert.equal(app.map.sources['trip-places'].data.features.length,3);
+  assert.match(app.el('places').innerHTML,/Sushi Gion Matsudaya/);
+  assert.match(app.el('places').innerHTML,/Sushi Ginza Onodera/);
+  assert.match(app.el('places').innerHTML,/Sushizen Honten/);
+  kind.value='sushi-casual';kind.listeners.change({target:kind});
+  assert.equal(app.map.sources['trip-places'].data.features.length,3);
+  assert.match(app.el('places').innerHTML,/Harukoma Sushi Honten/);
+  assert.match(app.el('places').innerHTML,/Nemuro Hanamaru/);
+  assert.match(app.el('places').innerHTML,/Sushi no Midori/);
+  assert.equal(app.map.sources['trip-route'].data.features.length,39);
 });
