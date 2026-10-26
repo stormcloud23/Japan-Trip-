@@ -58,6 +58,23 @@
       "estimated_minutes": 90,
       "url": "https://kifunejinja.jp/",
       "notes": "Scenic water-deity shrine north of central Kyoto, famous for red lantern-lined stone steps and forest setting. Allow substantial additional travel time from central Kyoto; consider combining with Kurama/Kibune area. Coordinates approximate; verify before final routing."
+    },
+    {
+      "id": "takaragawa-onsen-osenkaku",
+      "name": "Takaragawa Onsen Osenkaku",
+      "city": "Minakami",
+      "region": "Gunma Prefecture",
+      "address": "1899 Fujiwara, Minakami, Tone District, Gunma 379-1721, Japan",
+      "lat": 36.84796,
+      "lng": 139.04682,
+      "category": "onsen ryokan",
+      "status": "wishlist",
+      "priority": "high",
+      "day": null,
+      "order": null,
+      "estimated_minutes": 1440,
+      "url": "https://www.takaragawa.com/english.html",
+      "notes": "Suggested one-night traditional ryokan stay, not booked. Riverside open-air baths; mixed bathing areas use provided bathing garments. From Tokyo take Joetsu Shinkansen to Jomo-Kogen (~70 min), then prebook overnight-guest shuttle or use local buses. Potential Tokyo-area excursion; do not assume it is directly en route to Kyoto. Confirm shuttle schedule, availability, bath policies and rates for travel dates."
     }
   ]
 }
