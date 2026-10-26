@@ -9,6 +9,8 @@ on:
       - 'index.html'
       - 'css/site.css'
       - 'js/app.js'
+      - 'js/stay-planner.js'
+      - 'js/logistics-ui.js'
       - '.github/workflows/validate-routing.yml'
   pull_request:
     paths:
@@ -18,6 +20,8 @@ on:
       - 'index.html'
       - 'css/site.css'
       - 'js/app.js'
+      - 'js/stay-planner.js'
+      - 'js/logistics-ui.js'
   workflow_dispatch:
 
 # Superseded commits don't waste minutes running outdated route checks.
