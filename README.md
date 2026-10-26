@@ -33,11 +33,31 @@ Valid statuses: `wishlist`, `planned`, `booked`, `visited`. `day` is `null` for 
 
 ## Provisional route (autumn 2027)
 
-**Tokyo → fly Haneda–Asahikawa → Asahidake → Biei → Jozankei → Noboribetsu → fly New Chitose–Osaka Itami → Kyoto base (Nijo Castle, Gion, Kifune; Osaka Castle + Tempozan + Dotonbori on Day 10; Himeji Castle on Day 11) → Shinkansen to Tokyo (Akihabara, Shinjuku, Mitaka, Nakano, Shibuya).** Two domestic flights are only suggestions: confirm 2027 schedules and availability later.
+**Tokyo → flight to Asahikawa → Asahidake → Biei → limited-express train toward Sapporo → Jozankei → train to Noboribetsu → train to New Chitose Airport → flight to Osaka → Kyoto home base with Osaka/Himeji train day trips → Tokaido Shinkansen to Tokyo.**
 
-`trip.days` describes each of the 14 provisional day cards, including travel-only days. `trip.route` supplies an ordered sequence of geographic hubs and airports; the map draws schematic segments in distinct colors for `transport_to_next`: `ground`, `flight`, or `rail`. These segments do **not** reflect real road geometry, station connections, ticket availability, or real-time travel times. Route lines remain visible when filtering the destination wishlist.
+The two domestic flights are provisional exceptions to the rail-first preference. In 2027 the Hokkaido Shinkansen ends at Shin-Hakodate-Hokuto (not Sapporo or Asahikawa); routing entirely by train would add long connecting-rail days that currently do not fit the 14-day trip. Confirm 2027 timetables and tickets nearer the trip.
 
-**Optional rather than scheduled:** Minakami's Takaragawa Onsen, Lake Toya, Niseko's Zaborin, alternate Jozankei/Noboribetsu ryokan properties, Kaiyukan Aquarium at Tempozan, and Hikone Castle as an alternative to Himeji. All remain selectable pins; they are not removed. Modifying the route means updating both `trip.route` and the affected destination `day`/`order` and `trip.days` entries.
+### Automatic travel routing
+
+The **source of truth** is `data/destinations.json`. Every website load runs the pure, testable `js/route-planner.js` engine:
+
+1. Reads proposed `day` and `order` for attractions, plus `trip.travel_anchors` (airport/station waypoints and their arrival transport mode).
+2. Merges those in chronological order and **automatically redraws** all connected legs. Adding or moving a day-assigned attraction requires **no manual edits to route coordinates**.
+3. For a newly added item with `day: null`, attempts a **tentative suggested day** near already scheduled places, subject to proximity, a time budget and protected travel days. Suggested placements appear as *Suggested* in the page but are **not stored as confirmed assignments**. Itineraries for distant or oversized additions need a human decision.
+4. `route_preference: "alternative"` (or `"unplanned"`) prevents auto-scheduling optional resorts, replacement attractions and wishlist-only locations. Existing alternatives have this flag.
+5. For intercity routes, rail is preferred on supported corridors: `shinkansen` for Kyoto–Tokyo and Kyoto–Himeji; `rail` for Kyoto–Osaka and suitable Hokkaido train connections. An anchor's optional `arrival_mode` overrides this inference (e.g. `flight` at Asahikawa/Osaka airports). Unknown very-long-distance transfers are tagged `review`, rather than invented as an air or rail service.
+
+The webpage displays five route styles: **magenta with dark outline for flights**, green for Shinkansen, teal for other trains, amber for local transfers and gray for transfers needing review. Lines are straight schematic links **not** real road geometry, train alignments, flight tracks or bookable services.
+
+`trip.days` holds 14 day descriptions; update it when significantly reshuffling the itinerary. `trip.travel_anchors` is for durable major station/airport transitions and itinerary start/return hubs. These anchors **do not** need edits for a newly scheduled attraction in an existing area. A new destination that fundamentally changes regions, trip days or transportation must be reconsidered manually.
+
+**Unscheduled alternatives** presently include Minakami's Takaragawa Onsen, Lake Toya, Niseko's Zaborin, other Hokkaido ryokan choices, Osaka Aquarium Kaiyukan and Hikone Castle.
+
+### Route regression tests
+
+Run `node --test tests/route-planner.test.cjs` with Node.js 22 or later. Tests cover the current 14-day data, flights and train segments, optional destinations, added unscheduled Kyoto sights and new planned Osaka stops.
+
+GitHub Actions runs these on route-code, website or destination updates via `.github/workflows/validate-routing.yml`. Superseded workflow runs are canceled automatically to avoid redundant test jobs.
 
 ## Notes
 - The map uses MapLibre GL JS with OpenFreeMap vector tiles (Liberty style with colored vegetation and water), preferring English and Romanized place names where available. No account, API key or paid tier is required for OpenFreeMap’s public instance. If the vector map fails, the page attempts a raster OpenStreetMap fallback. Internet access and a modern WebGL-capable browser are required.
