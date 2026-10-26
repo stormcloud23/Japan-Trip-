@@ -9,7 +9,7 @@ const $$=selector=>Array.from(document.querySelectorAll(selector));
 const escapeHtml=text=>String(text??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeUrl=value=>{try{const url=new URL(value);return ['http:','https:'].includes(url.protocol)?url.href:null}catch{return null}};
 const color={ground:'#e9a25b',rail:'#008e86',shinkansen:'#1a9d47',flight:'#ff2477',review:'#a5acb4'};
-const kindColors={sightseeing:'#dc806a',nature:'#5da977',history:'#b58ad7',food:'#e7ac62',shopping:'#62badd',lodging:'#b99aee',optional:'#919da7'};
+const kindColors={sightseeing:'#dc806a',nature:'#5da977',history:'#b58ad7',food:'#e7ac62',shopping:'#62badd',lodging:'#b99aee',sushi:'#ff6b99',optional:'#919da7'};
 const state={day:null,area:'all',plan:'all',kind:'all',status:'all',search:''};
 const browserWindow=typeof window==='undefined'?null:window;
 // Shareable, reload-safe day URLs; never save private trip information in the URL.
@@ -56,6 +56,7 @@ function areaOf(p){
 }
 function kindOf(p){
   const c=String(p.category||'').toLowerCase();
+  if(/sushi/.test(c))return 'sushi';
   if(/nature|lake|waterfront|park/.test(c))return 'nature';
   if(/hotel|ryokan|onsen/.test(c))return 'lodging';
   if(/temple|shrine|castle|historic|history/.test(c))return 'history';
@@ -70,7 +71,9 @@ function matches(p){
   if(state.area!=='all'&&areaOf(p)!==state.area)return false;
   if(state.plan==='scheduled'&&!a)return false;
   if(state.plan==='optional'&&a)return false;
-  if(state.kind!=='all'&&kindOf(p)!==state.kind)return false;
+  if(state.kind==='sushi-omakase'&&!(kindOf(p)==='sushi'&&p.dining_style==='omakase'))return false;
+  else if(state.kind==='sushi-casual'&&!(kindOf(p)==='sushi'&&p.dining_style==='casual'))return false;
+  else if(!['all','sushi-omakase','sushi-casual'].includes(state.kind)&&kindOf(p)!==state.kind)return false;
   if(state.status!=='all'&&p.status!==state.status)return false;
   const q=state.search.trim().toLowerCase();
   return !q||[p.name,p.city,p.region,p.category,p.notes].some(x=>String(x||'').toLowerCase().includes(q));
@@ -92,11 +95,15 @@ function statusLabel(risk){
 function popupFor(p){
   const a=assigned(p),link=safeUrl(p.url),notes=String(p.notes||'');
   const shortNotes=notes.length>230?notes.slice(0,227)+'...':notes;
+  const reservation=safeUrl(p.reservation_url);
   return '<strong>'+escapeHtml(p.name)+'</strong>'+
     '<p>'+escapeHtml([p.city,p.region].filter(Boolean).join(', '))+'</p>'+
     '<p>'+(a?(a.suggested?'Suggested Day ':'Day ')+escapeHtml(a.day):'Optional / unscheduled')+' · '+escapeHtml(p.category||'Place')+'</p>'+
+    (!a&&p.proposed_day?'<p>Suggested dinner on Day '+escapeHtml(p.proposed_day)+' (not scheduled)</p>':'')+
+    (p.price_guide_jpy?'<p>'+escapeHtml(p.price_guide_jpy)+'</p>':'')+
     (shortNotes?'<p>'+escapeHtml(shortNotes)+'</p>':'')+
-    (link?'<a href="'+escapeHtml(link)+'" target="_blank" rel="noopener noreferrer">Location details ↗</a>':'');
+    (link?'<a href="'+escapeHtml(link)+'" target="_blank" rel="noopener noreferrer">Location details ↗</a>':'')+
+    (reservation&&reservation!==link?' <a href="'+escapeHtml(reservation)+'" target="_blank" rel="noopener noreferrer">Booking info ↗</a>':'');
 }
 function popupAt(p){
   new maplibregl.Popup({offset:18,maxWidth:'300px'}).setLngLat([p.lng,p.lat]).setHTML(popupFor(p)).addTo(map);
@@ -127,11 +134,11 @@ function addMapLayers(){
     paint:{
       'circle-color':['match',['get','markerKind'],
         'nature',kindColors.nature,'history',kindColors.history,'food',kindColors.food,
-        'shopping',kindColors.shopping,'lodging',kindColors.lodging,'optional',kindColors.optional,kindColors.sightseeing],
-      'circle-radius':['case',['==',['get','markerKind'],'optional'],9,13],
-      'circle-opacity':['case',['==',['get','markerKind'],'optional'],0.8,1],
+        'shopping',kindColors.shopping,'lodging',kindColors.lodging,'sushi',kindColors.sushi,'optional',kindColors.optional,kindColors.sightseeing],
+      'circle-radius':['case',['get','isOptional'],10,13],
+      'circle-opacity':['case',['get','isOptional'],0.85,1],
       'circle-stroke-width':2.5,
-      'circle-stroke-color':'#172530'
+      'circle-stroke-color':['case',['get','isOptional'],'#455361','#172530']
     }});
   map.addLayer({id:'trip-marker-numbers',type:'symbol',source:'trip-places',filter:['!', ['has','point_count']],
     layout:{'text-field':['get','markerLabel'],'text-size':10,'text-font':['Noto Sans Bold'],'text-allow-overlap':true,'text-ignore-placement':true},
@@ -179,9 +186,12 @@ function dayStops(day){
 function markerFeature(p){
   const a=assigned(p);
   const order=a?(state.day!==null?dayStops(a.day).findIndex(x=>x.id===p.id)+1:a.day):null;
+  const sushi=kindOf(p)==='sushi';
   return {
     type:'Feature',
-    properties:{id:p.id,name:p.name,markerKind:a?kindOf(p):'optional',markerLabel:order===null?'':String(order)},
+    // Sushi stays pink and labelled S even when it is an unscheduled wishlist candidate.
+    properties:{id:p.id,name:p.name,markerKind:sushi?'sushi':a?kindOf(p):'optional',
+      isOptional:!a,markerLabel:order===null?(sushi?'S':''):String(order)},
     geometry:{type:'Point',coordinates:[p.lng,p.lat]}
   };
 }
@@ -241,16 +251,20 @@ function updateMap(shown,fit=false){
 function renderPlaces(shown){
   $('#visible-count').textContent=shown.length+' shown';
   $('#places').innerHTML=shown.length?shown.map(p=>{
-    const a=assigned(p),link=safeUrl(p.url),placeKind=a?kindOf(p):'optional';
+    const a=assigned(p),link=safeUrl(p.url),reservation=safeUrl(p.reservation_url);
+    const placeKind=kindOf(p)==='sushi'?'sushi':a?kindOf(p):'optional';
     return '<article class="place">'+
       '<div class="place-head"><div><h3>'+escapeHtml(p.name)+'</h3><div class="meta">'+escapeHtml([p.city,p.region].filter(Boolean).join(', '))+'</div></div>'+
       '<span class="legend-dot" style="background:'+kindColors[placeKind]+'" aria-label="'+escapeHtml(placeKind)+'"></span></div>'+
       '<span class="pill">'+escapeHtml(p.status||'wishlist')+'</span>'+
       '<span class="pill">'+(a?(a.suggested?'Suggested Day ':'Day ')+escapeHtml(a.day):'Optional')+'</span>'+
       '<span class="pill">'+escapeHtml(p.category||'Place')+'</span>'+
+      (!a&&p.proposed_day?'<span class="pill">Dinner idea: Day '+escapeHtml(p.proposed_day)+'</span>':'')+
+      (p.price_guide_jpy?'<p class="meta">'+escapeHtml(p.price_guide_jpy)+'</p>':'')+
       (p.notes?'<p>'+escapeHtml(p.notes)+'</p>':'')+
       '<div class="actions"><button type="button" data-focus-id="'+escapeHtml(p.id)+'">Show on map</button>'+
-      (link?'<a href="'+escapeHtml(link)+'" target="_blank" rel="noopener noreferrer">Details ↗</a>':'')+'</div></article>';
+      (link?'<a href="'+escapeHtml(link)+'" target="_blank" rel="noopener noreferrer">Details ↗</a>':'')+
+      (reservation&&reservation!==link?'<a href="'+escapeHtml(reservation)+'" target="_blank" rel="noopener noreferrer">Booking ↗</a>':'')+'</div></article>';
   }).join(''):'<div class="empty">No places match these filters. Try All Japan or clear the filters.</div>';
 }
 function dayCard(day){
