@@ -117,7 +117,7 @@ function addMapLayers(){
       'circle-stroke-color':'#172530'
     }});
   map.addLayer({id:'trip-marker-numbers',type:'symbol',source:'trip-places',filter:['!', ['has','point_count']],
-    layout:{'text-field':['get','markerLabel'],'text-size':10,'text-font':['Noto Sans Bold','Arial Unicode MS Bold'],'text-allow-overlap':true,'text-ignore-placement':true},
+    layout:{'text-field':['get','markerLabel'],'text-size':10,'text-font':['Noto Sans Bold'],'text-allow-overlap':true,'text-ignore-placement':true},
     paint:{'text-color':'#101820','text-halo-color':'#edf4f7','text-halo-width':0.3}});
   map.on('click','trip-clusters',event=>{
     const feature=map.queryRenderedFeatures(event.point,{layers:['trip-clusters']})[0];
