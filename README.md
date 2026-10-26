@@ -37,7 +37,7 @@ Valid statuses: `wishlist`, `planned`, `booked`, `visited`. `day` is `null` for 
 - **Share a specific day:** Click **Copy Day N link** to share a URL ending in `#day=N` (for example, `#day=12`). Opening the URL restores that selected day automatically. The URL includes no private travel data; browsers without clipboard access display the link for manual copying.
 - **Print / Save PDF:** Click the button above the 14-day itinerary to open your browser's print dialog. Print styles omit the interactive map and include all itinerary cards, proposed overnight bases and the booking checklist. Most browsers can use **Save as PDF** as the print destination.
 - **Clustered destinations:** On the whole-trip map, nearby places merge into numbered clusters as you zoom out. Click a cluster to zoom in. A single pin has a day number; in day view, its number is that day's stop order.
-- **Color-coded pins:** Sightseeing (coral), nature (green), history (purple), food (gold), shopping (blue), onsen/hotels (lavender). Unscheduled or alternative destinations are **gray**.
+- **Color-coded pins:** Sightseeing (coral), nature (green), history (purple), food (gold), shopping (blue), onsen/hotels (lavender), and **sushi (pink with an S)**. Most unscheduled/alternative venues are gray, but sushi deliberately keeps its distinctive pink color even while unscheduled. The category dropdown offers Sushi (all), Omakase sushi and Casual sushi filters.
 - **Filters:** Region, category, scheduled vs. optional, booking status, and text search all narrow the wishlist and visible map markers. Use **Show on map** on a destination card to zoom straight to it.
 - **Daily workload estimates:** Each day card has a provisional activity+travel workload indicator and expandable breakdown. The calculation sums attraction duration estimates, a coarse allowance for significant train/flight/road legs stored in `trip.days[].travel_minutes_estimate`, rough between-stop transfer times derived from geographic distance, and 45 minutes for a break. It compares that total with a configurable daily comfort target (generally 600 minutes). **Busy** exceeds 85% of the target and **Packed** exceeds it. These are not confirmed train timetables or ticketed schedules.
 - The app does **not** remove wishlist entries when a day looks crowded. The current schedule flags Days **3, 10, 12, and 13** as packed based on these planning estimates. They can be relaxed later by shifting dates or activities.
@@ -66,6 +66,21 @@ The webpage displays five route styles: **magenta dashed lines for flights**, gr
 
 **Unscheduled alternatives** presently include Minakami's Takaragawa Onsen, Lake Toya, Niseko's Zaborin, other Hokkaido ryokan choices, Osaka Aquarium Kaiyukan and Hikone Castle.
 
+## Sushi dinners: six recommended options
+
+**Sushi is a favorite food for this honeymoon.** The wishlist currently includes six *optional* sushi restaurants, evenly split between premium omakase and informal sushi bars. All six have `category` containing `sushi`, `dining_style` equal to `omakase` or `casual`, and `route_preference: "alternative"` so automatic routing will not schedule additional dinners or overload existing sightseeing days. Each has a `proposed_day` giving a potential dinner slot, a `price_guide_jpy` planning estimate and a current official/informational URL (and `reservation_url` for omakase when available).
+
+| Style | Restaurant | Region | Possible dinner | Booking / trade-off |
+|---|---|---|---|---|
+| Premium omakase | Sushi Ginza Onodera Souhonten | Tokyo (Ginza) | One Tokyo evening, tentatively Day 12 | Dinner from roughly ¥27,500 + 10% service (2026). Don't add to already packed Day 12 without rearranging |
+| Premium omakase | Sushi Gion Matsudaya | Kyoto (Gion) | Day 8 or another Kyoto night | 6-seat Edomae sushi counter, omakase from around ¥41,800 (2026). An alternative to the existing Hikiniku to Kome dinner |
+| Premium omakase | Sushizen Honten | Sapporo (Maruyama) | Day 4 | Traditional Hokkaido seafood omakase (from ¥36,000, plus 10% service in 2026), closed Tuesdays/Wednesdays currently |
+| Casual / conveyor | Nemuro Hanamaru, JR Tower Stellar Place | Sapporo Station | Day 4 | Excellent Hokkaido seafood, no reservations; queue at the station branch |
+| Casual sushi | Sushi no Midori, Shibuya Mark City | Tokyo (Shibuya) | Day 13 | Good-quality nigiri and generous portions; queue system; choose instead of other full-day additions |
+| Casual / local counter | Harukoma Sushi Honten | Osaka (Tenma) | Day 10 | Lively narrow counter; can involve a queue and a detour from Osaka Bay / Dotonbori, so treat as a swap |
+
+A new `trip.booking_tasks` entry reminds us to choose which special-occasion omakase dinners to reserve after exact 2027 trip dates are established. **None are booked** and 2026 menu prices, booking rules, closures and maps must be reconfirmed before travel. Sushi pin positions are approximate and should not replace the listed street addresses for navigation.
+
 ## Overnight bases and booking-readiness checklist
 
 The **Overnight stays & reservations** panel groups the 13 provisional nights into seven hotel blocks and shows six potential hotel changes. This is a planning forecast, not a list of booked hotels:
@@ -80,7 +95,7 @@ The **Overnight stays & reservations** panel groups the 13 provisional nights in
 | 7–11 | Kyoto | Not selected; one Kyoto hotel for day trips |
 | 12–13 | Tokyo | Not selected |
 
-The reservation checklist includes flight planning, potential ryokan nights, Ghibli Museum, Cafe Capyba, Hikiniku to Kome, and Kyoto–Tokyo Shinkansen tickets. It has **All / High priority / Hotels / Transport / Experiences** filters. Every task is currently in `research` status, not booked. Ticket release rules and 2027 transport schedules must be rechecked nearer travel.
+The reservation checklist includes flight planning, potential ryokan nights, Ghibli Museum, Cafe Capyba, Hikiniku to Kome, selecting special-occasion sushi omakase dinners, and Kyoto–Tokyo Shinkansen tickets. It has **All / High priority / Hotels / Transport / Experiences** filters. Every task is currently in `research` status, not booked. Ticket release rules and 2027 transport schedules must be rechecked nearer travel.
 
 Data is stored in `trip.stays` and `trip.booking_tasks` inside `data/destinations.json`. `js/stay-planner.js` validates night coverage, prevents overlapping hotel blocks, links candidate destination IDs, and summarizes remaining tasks; `js/logistics-ui.js` renders the section without editing or storing changes in the browser. Updates to accommodation choices and booking statuses should be made through GitHub/ChatGPT. No reservation confirmation codes, passenger details, or passport data should be stored in this public repository.
 
