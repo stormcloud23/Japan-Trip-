@@ -33,11 +33,11 @@ Valid statuses: `wishlist`, `planned`, `booked`, `visited`. `day` is `null` for 
 
 ## Provisional route (autumn 2027)
 
-**Tokyo → fly Haneda–Asahikawa → Asahidake → Biei → Jozankei → Noboribetsu → fly New Chitose–Osaka Itami → Kyoto → Shinkansen to Tokyo.** Two domestic flights are only suggestions: confirm 2027 schedules and availability later.
+**Tokyo → fly Haneda–Asahikawa → Asahidake → Biei → Jozankei → Noboribetsu → fly New Chitose–Osaka Itami → Kyoto base (Nijo Castle, Gion, Kifune; Osaka Castle + Tempozan + Dotonbori on Day 10; Himeji Castle on Day 11) → Shinkansen to Tokyo (Akihabara, Shinjuku, Mitaka, Nakano, Shibuya).** Two domestic flights are only suggestions: confirm 2027 schedules and availability later.
 
 `trip.days` describes each of the 14 provisional day cards, including travel-only days. `trip.route` supplies an ordered sequence of geographic hubs and airports; the map draws schematic segments in distinct colors for `transport_to_next`: `ground`, `flight`, or `rail`. These segments do **not** reflect real road geometry, station connections, ticket availability, or real-time travel times. Route lines remain visible when filtering the destination wishlist.
 
-**Optional rather than scheduled:** Minakami's Takaragawa Onsen, Lake Toya, Niseko's Zaborin, and alternate Jozankei/Noboribetsu ryokan properties. All remain selectable pins; they are not removed. Modifying the route means updating both `trip.route` and the affected destination `day`/`order` and `trip.days` entries.
+**Optional rather than scheduled:** Minakami's Takaragawa Onsen, Lake Toya, Niseko's Zaborin, alternate Jozankei/Noboribetsu ryokan properties, Kaiyukan Aquarium at Tempozan, and Hikone Castle as an alternative to Himeji. All remain selectable pins; they are not removed. Modifying the route means updating both `trip.route` and the affected destination `day`/`order` and `trip.days` entries.
 
 ## Notes
 - The map uses MapLibre GL JS with OpenFreeMap vector tiles (Liberty style with colored vegetation and water), preferring English and Romanized place names where available. No account, API key or paid tier is required for OpenFreeMap’s public instance. If the vector map fails, the page attempts a raster OpenStreetMap fallback. Internet access and a modern WebGL-capable browser are required.
