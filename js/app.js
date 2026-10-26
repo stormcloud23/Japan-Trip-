@@ -341,7 +341,7 @@ fetch('./data/destinations.json',{cache:'no-store'})
     routePlan=JapanRoutePlanner.buildPlan(trip,destinations);
     displayRoute=JapanRailGeometry.applyCorridors(routePlan.geojson,railCatalog);
     if(typeof JapanLogisticsUI!=='undefined'&&typeof JapanStayPlanner!=='undefined'){
-      try{JapanLogisticsUI.render(data)}catch(logisticsError){
+      try{JapanLogisticsUI.render(data,document)}catch(logisticsError){
         console.warn('The accommodation planner could not render:',logisticsError);
       }
     }
