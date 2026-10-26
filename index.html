@@ -41,7 +41,9 @@
           <label class="sr-only" for="day-select">Choose itinerary day</label>
           <select id="day-select" aria-label="Choose itinerary day"><option value="all">All Japan · 14 days</option></select>
           <button id="next-day" type="button" class="tiny-btn" aria-label="Next day" disabled>Next →</button>
+          <button id="copy-day-link" type="button" class="tiny-btn" aria-label="Copy link to selected itinerary day">Copy trip link</button>
         </div>
+        <p id="share-feedback" class="share-feedback" role="status" aria-live="polite"></p>
         <div id="map" role="region" aria-label="Interactive Japan map with clustered destination markers and schematic travel routes"></div>
 
         <div class="legend" aria-label="Map marker legend">
@@ -121,6 +123,7 @@
           <h2 id="days-heading">14-day itinerary</h2>
           <p>Click any day to focus the map. Estimated workloads include attractions, broad transit allowances, between-stop transfers and a break buffer. These are planning approximations—not actual timetables, opening hours or reservations.</p>
         </div>
+        <button id="print-itinerary" type="button" class="tiny-btn" aria-label="Print or save the itinerary as a PDF">Print / Save PDF</button>
       </div>
       <div id="days" class="days"><div class="empty">Loading the itinerary…</div></div>
     </section>
