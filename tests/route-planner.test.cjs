@@ -51,6 +51,9 @@ test('a newly added nearby attraction is automatically proposed and connected',(
   assert.ok(suggestion,'new place should be automatically suggested');
   assert.equal(suggestion.day,8,'nearby Kyoto museum should be grouped into Day 8');
   assert.ok(output.geojson.features.some(f=>f.properties.to===extra.name||f.properties.from===extra.name));
+  const insertedAt=output.points.findIndex(p=>p.id===extra.id);
+  const restaurantAt=output.points.findIndex(p=>p.id==='hikiniku-to-kome-kyoto');
+  assert.ok(insertedAt<restaurantAt,'new stop near Nijo should be visited before the distant Gion restaurant');
 });
 
 test('a newly added pre-scheduled destination changes the route order',()=>{
