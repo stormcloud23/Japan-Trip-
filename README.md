@@ -58,7 +58,7 @@ The **source of truth** is `data/destinations.json`. Every website load runs the
 4. `route_preference: "alternative"` (or `"unplanned"`) prevents auto-scheduling optional resorts, replacement attractions and wishlist-only locations. Existing alternatives have this flag.
 5. For intercity routes, rail is preferred on supported corridors: `shinkansen` for Kyoto–Tokyo and Kyoto–Himeji; `rail` for Kyoto–Osaka and suitable Hokkaido train connections. An anchor's optional `arrival_mode` overrides this inference (e.g. `flight` at Asahikawa/Osaka airports). Unknown very-long-distance transfers are tagged `review`, rather than invented as an air or rail service.
 
-The webpage displays five route styles: **magenta dashed lines for flights**, green for Shinkansen, teal for other trains, amber for local transfers and gray for transfers needing review. Lines are straight schematic links **not** real road geometry, train alignments, flight tracks or bookable services.
+The webpage displays five route styles: **magenta dashed lines for flights**, green for Shinkansen, teal for other trains, amber for local transfers and gray for transfers needing review. Train legs with cached GIS coverage follow mapped railway alignments; flights and other unmatched connections remain straight schematic links. No route line establishes a bookable service.
 
 `trip.days` holds 14 day descriptions; update it when significantly reshuffling the itinerary. `trip.travel_anchors` is for durable major station/airport transitions and itinerary start/return hubs. These anchors **do not** need edits for a newly scheduled attraction in an existing area. A new destination that fundamentally changes regions, trip days or transportation must be reconsidered manually.
 
@@ -84,6 +84,6 @@ GitHub Actions runs these on route-code, website or destination updates via `.gi
 
 ## Notes
 - The map uses MapLibre GL JS with OpenFreeMap vector tiles (Liberty style with colored vegetation and water), preferring English and Romanized place names where available. No account, API key or paid tier is required for OpenFreeMap’s public instance. If the vector map fails, the page attempts a raster OpenStreetMap fallback. Internet access and a modern WebGL-capable browser are required.
-- Colored route lines are schematic connections, **not** real flight paths, train alignments, walking or driving directions.
+- Mapped rail overlays approximate real railway track centerlines from 2024 GIS data. Flights, local transfers, and unmatched train legs remain schematic; no lines represent confirmed service, walking or driving directions.
 - The route was organized geographically using typical travel corridors; the website does not calculate live transit times or mathematically optimize travel. Those are future enhancements.
 - Public GitHub repositories are public: do not store passport numbers, booking confirmation codes, personal contact details, or private travel documents here.
