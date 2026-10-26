@@ -6,5 +6,24 @@
     "end_date": null,
     "notes": "Dates and cities to be decided. Do not treat wishlist items as confirmed."
   },
-  "destinations": []
+  "destinations": [
+    {
+      "id": "hikiniku-to-kome-kyoto",
+      "name": "Hikiniku to Kome (Kyoto)",
+      "city": "Kyoto",
+      "region": "Gion, Higashiyama",
+      "lat": 35.0050975,
+      "lng": 135.7745747,
+      "category": "restaurant",
+      "status": "wishlist",
+      "priority": "high",
+      "day": null,
+      "order": null,
+      "estimated_minutes": 75,
+      "url": "https://hikinikutocome.com/en/locations/kyoto/",
+      "source_url": "https://share.google/LXuuYhK1OVUNUcVXj",
+      "address": "363 Kiyomotocho, Higashiyama Ward, Kyoto 605-0084",
+      "notes": "Charcoal-grilled Japanese beef hamburg steaks with rice. Closed Wednesdays. Advance paid online registration or same-day in-person registration around 9 AM; book when Kyoto dates are decided."
+    }
+  ]
 }
