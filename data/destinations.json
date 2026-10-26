@@ -41,6 +41,23 @@
       "estimated_minutes": 90,
       "url": "https://cspace.co.jp/en/our-shop_english/",
       "notes": "Capybara interaction café near Hikifune Station. Advance reservation required; bookings open 2 weeks ahead. Usually closed Wednesday and Thursday. Group with Tokyo sightseeing, potentially Sumida/Asakusa."
+    },
+    {
+      "id": "kifune-shrine-kyoto",
+      "name": "Kifune Shrine (Kibune Shrine)",
+      "city": "Kyoto",
+      "region": "Kibune, Sakyo Ward",
+      "address": "180 Kuramakibunecho, Sakyo Ward, Kyoto 601-1112, Japan",
+      "lat": 35.1212,
+      "lng": 135.7628,
+      "category": "shrine",
+      "status": "wishlist",
+      "priority": "high",
+      "day": null,
+      "order": null,
+      "estimated_minutes": 90,
+      "url": "https://kifunejinja.jp/",
+      "notes": "Scenic water-deity shrine north of central Kyoto, famous for red lantern-lined stone steps and forest setting. Allow substantial additional travel time from central Kyoto; consider combining with Kurama/Kibune area. Coordinates approximate; verify before final routing."
     }
   ]
 }
