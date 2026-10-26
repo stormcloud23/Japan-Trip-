@@ -146,7 +146,7 @@
         "lat": 35.0116,
         "lng": 135.7681,
         "day": 7,
-        "transport_to_next": "rail"
+        "transport_to_next": "ground"
       },
       {
         "name": "Osaka (castle / bay / Dotonbori)",
