@@ -66,13 +66,14 @@ The webpage displays five route styles: **magenta dashed lines for flights**, gr
 
 **Unscheduled alternatives** presently include Minakami's Takaragawa Onsen, Lake Toya, Niseko's Zaborin, other Hokkaido ryokan choices, Osaka Aquarium Kaiyukan and Hikone Castle.
 
-## Sushi dinners: six recommended options
+## Sushi dinners: seven recommended options
 
-**Sushi is a favorite food for this honeymoon.** The wishlist currently includes six *optional* sushi restaurants, evenly split between premium omakase and informal sushi bars. All six have `category` containing `sushi`, `dining_style` equal to `omakase` or `casual`, and `route_preference: "alternative"` so automatic routing will not schedule additional dinners or overload existing sightseeing days. Each has a `proposed_day` giving a potential dinner slot, a `price_guide_jpy` planning estimate and a current official/informational URL (and `reservation_url` for omakase when available).
+**Sushi is a favorite food for this honeymoon.** The wishlist currently includes seven *optional* sushi restaurants: four premium omakase counters and three informal sushi restaurants. All seven have `category` containing `sushi`, `dining_style` equal to `omakase` or `casual`, and `route_preference: "alternative"` so automatic routing will not schedule additional dinners or overload existing sightseeing days. Each has a `proposed_day` giving a potential dinner slot, a `price_guide_jpy` planning estimate and a current official/informational URL (and `reservation_url` for omakase when available).
 
 | Style | Restaurant | Region | Possible dinner | Booking / trade-off |
 |---|---|---|---|---|
 | Premium omakase | Sushi Ginza Onodera Souhonten | Tokyo (Ginza) | Tentatively Day 2 | Dinner from roughly ¥27,500 + 10% service (2026). Day 2 is preferable to already packed Day 12 |
+| Premium omakase | Sukiyabashi Jiro (Ginza Main Shop) | Tokyo (Ginza) | Tentatively Day 2 | Official menu from ¥88,000 pp including tax (2026); foreign guests must book through their own hotel concierge. Very limited availability, photo-ID rules and a strict cancellation policy. An alternative to Sushi Ginza Onodera, not a second required dinner |
 | Premium omakase | Sushi Gion Matsudaya | Kyoto (Gion) | Day 8 or another Kyoto night | 6-seat Edomae sushi counter, omakase from around ¥41,800 (2026). An alternative to the existing Hikiniku to Kome dinner |
 | Premium omakase | Sushizen Honten | Sapporo (Maruyama) | Day 4 | Traditional Hokkaido seafood omakase (from ¥36,000, plus 10% service in 2026), closed Tuesdays/Wednesdays currently |
 | Casual / conveyor | Nemuro Hanamaru, JR Tower Stellar Place | Sapporo Station | Day 4 | Excellent Hokkaido seafood, no reservations; queue at the station branch |
@@ -80,6 +81,21 @@ The webpage displays five route styles: **magenta dashed lines for flights**, gr
 | Casual / local counter | Harukoma Sushi Honten | Osaka (Tenma) | Day 10 | Lively narrow counter; can involve a queue and a detour from Osaka Bay / Dotonbori, so treat as a swap |
 
 A new `trip.booking_tasks` entry reminds us to choose which special-occasion omakase dinners to reserve after exact 2027 trip dates are established. **None are booked** and 2026 menu prices, booking rules, closures and maps must be reconfirmed before travel. Sushi pin positions are approximate and should not replace the listed street addresses for navigation.
+
+## Additional Tokyo onigiri and Kyoto mountain cuisine
+
+These are **four newly saved optional wishlist pins** (the seventh sushi restaurant above plus three other Japanese-food experiences). No currently scheduled destination or hotel night has been displaced.
+
+| Experience | Location | Tentative fit | Important note |
+|---|---|---|---|
+| Miyamasou | Hanase mountains, Kyoto | Day 9 only as a major northern-Kyoto day replacement or an overnight alternative | Historical riverside cooking inn and `tsumikusa` mountain kaiseki; **not sushi**. Access is a significant excursion; Kyoto Bus 32 takes about 1h40 and runs only two round trips per day under current guidance. Restaurant and lodging reservations by phone |
+| Sukiyabashi Jiro main shop | Ginza, Tokyo | Day 2, replacing another fancy omakase | Flagship Jiro location, not Roppongi. ¥88,000+ pp official 2026 menu; book **only via the concierge of your own Tokyo hotel** if visiting from overseas, with ID and cancellation requirements |
+| Onigiri Bongo | Otsuka, Tokyo | Flexible meal instead of a full Day 13 stop | Generous, fluffy made-to-order rice balls with dozens of fillings, typically a long queue, 2-minute walk from JR Otsuka Station |
+| Onigiri Asakusa Yadoroku | Asakusa, Tokyo | Day 2 lunchtime, close to Senso-ji | Traditional counter with freshly made rice balls, lunch sets and rice-based sellout. Cash only, closed Sundays, no evening service Tuesdays/Wednesdays |
+
+Miyamasou's **Japanese-language official website** currently lists three dining prices including tax and service (`¥22,770 / ¥27,830 / ¥33,880` per person), plus overnight rates starting from `¥75,900` pp with dinner and breakfast. Its English website lists only a higher dining option and an overnight package from `¥88,550` pp. These reflect different course and package displays, not a reliable quote for 2027; confirm available options directly. Onigiri Bongo/Yadoroku pins show the **food color**, Sukiyabashi Jiro shows the existing **pink sushi pin**, and Miyamasou shows a food pin in the mountains outside Kyoto.
+
+The booking checklist includes separate research tasks for Jiro's concierge-only system and Miyamasou's meal-versus-overnight decision. All four have `route_preference: "alternative"`, so the auto-route does not add meals or hotel changes automatically.
 
 ## Overnight bases and booking-readiness checklist
 
@@ -95,7 +111,7 @@ The **Overnight stays & reservations** panel groups the 13 provisional nights in
 | 7–11 | Kyoto | Not selected; one Kyoto hotel for day trips |
 | 12–13 | Tokyo | Not selected |
 
-The reservation checklist includes flight planning, potential ryokan nights, Ghibli Museum, Cafe Capyba, Hikiniku to Kome, selecting special-occasion sushi omakase dinners, and Kyoto–Tokyo Shinkansen tickets. It has **All / High priority / Hotels / Transport / Experiences** filters. Every task is currently in `research` status, not booked. Ticket release rules and 2027 transport schedules must be rechecked nearer travel.
+The reservation checklist includes flight planning, potential ryokan nights, Ghibli Museum, Cafe Capyba, Hikiniku to Kome, selecting special-occasion sushi omakase dinners, requesting Sukiyabashi Jiro through a Tokyo hotel concierge, investigating Miyamasou as a mountain dining/overnight experience, and Kyoto–Tokyo Shinkansen tickets. It has **All / High priority / Hotels / Transport / Experiences** filters. Every task is currently in `research` status, not booked. Ticket release rules and 2027 transport schedules must be rechecked nearer travel.
 
 Data is stored in `trip.stays` and `trip.booking_tasks` inside `data/destinations.json`. `js/stay-planner.js` validates night coverage, prevents overlapping hotel blocks, links candidate destination IDs, and summarizes remaining tasks; `js/logistics-ui.js` renders the section without editing or storing changes in the browser. Updates to accommodation choices and booking statuses should be made through GitHub/ChatGPT. No reservation confirmation codes, passenger details, or passport data should be stored in this public repository.
 
