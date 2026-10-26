@@ -24,6 +24,23 @@
       "source_url": "https://share.google/LXuuYhK1OVUNUcVXj",
       "address": "363 Kiyomotocho, Higashiyama Ward, Kyoto 605-0084",
       "notes": "Charcoal-grilled Japanese beef hamburg steaks with rice. Closed Wednesdays. Advance paid online registration or same-day in-person registration around 9 AM; book when Kyoto dates are decided."
+    },
+    {
+      "id": "cafe-capyba-hikifune",
+      "name": "Cafe Capyba (Hikifune)",
+      "city": "Tokyo",
+      "region": "Sumida",
+      "address": "1-31-3 Higashimukojima, Sumida City, Tokyo 131-0032",
+      "lat": 35.719992,
+      "lng": 139.814377,
+      "category": "animal cafe",
+      "status": "wishlist",
+      "priority": "medium",
+      "day": null,
+      "order": null,
+      "estimated_minutes": 90,
+      "url": "https://cspace.co.jp/en/our-shop_english/",
+      "notes": "Capybara interaction café near Hikifune Station. Advance reservation required; bookings open 2 weeks ahead. Usually closed Wednesday and Thursday. Group with Tokyo sightseeing, potentially Sumida/Asakusa."
     }
   ]
 }
