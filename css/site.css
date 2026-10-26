@@ -106,3 +106,48 @@ input::placeholder{color:#a5bac7}
 .booking-task a{font-size:12px}
 @media(max-width:850px){.logistics-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:530px){.stay-grid,.booking-grid{grid-template-columns:1fr}.logistics-stats>div{padding:10px}.logistics-stats strong{font-size:20px}}
+
+
+/* Day sharing is designed for copy-to-clipboard or a selectable fallback URL. */
+.share-feedback{margin:0 0 10px;font-size:12px;color:#b6d9c8;overflow-wrap:anywhere}
+.share-feedback:empty{display:none}
+@media(max-width:530px){
+  #copy-day-link{width:100%;flex:1 1 100%;min-height:36px}
+}
+/* Printing uses only the human-readable itinerary, stays, and booking checklist.
+ * The map itself is not printable navigation and does not belong in this export. */
+@page{size:auto;margin:13mm}
+@media print{
+  :root,body{color:#171717!important;background:#fff!important;font:10pt/1.35 Arial,sans-serif}
+  *,*::before,*::after{box-shadow:none!important;text-shadow:none!important}
+  header{padding:0 0 9mm!important;border-bottom:1px solid #aaa!important;display:block}
+  header h1{font-size:24pt;margin:1mm 0}
+  header p{color:#444!important;font-size:10pt}
+  header>a,.stats,.layout,#error,#print-itinerary,#reset-map,.footer{display:none!important}
+  main{max-width:none;padding:0!important}
+  .panel{border:0!important;border-radius:0!important;background:#fff!important;padding:6mm 0 0!important;margin:0!important}
+  .panel-heading{display:block!important}
+  .panel-heading p,.route-note,.meta,.panel p{color:#333!important}
+  h2{font-size:15pt;margin:0 0 4mm}
+  #days{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:3mm}
+  .day-card{min-height:0!important;border:1px solid #aaa!important;border-radius:4px;background:#fff!important;break-inside:avoid;page-break-inside:avoid}
+  .day-card-button{color:#222!important;cursor:default!important;background:#fff!important;padding:3mm!important}
+  .day-card h3{color:#111!important;font-size:10pt!important}
+  .day-card p,.day-card .item,.load-caption{color:#333!important;font-size:8.5pt!important}
+  .day-card details{display:none!important}
+  .load-status{background:#eee!important;color:#222!important;border:1px solid #ccc}
+  .progress{height:3px;border:1px solid #999;background:#eee}
+  .progress span{background:#777!important}
+  #logistics{break-before:page;page-break-before:always}
+  .logistics-stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .logistics-stats>div{border:1px solid #bbb!important;background:#fff!important}
+  .logistics-stats strong,.logistics-stats span{color:#222!important}
+  .stay-grid,.booking-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:3mm}
+  .stay-card,.booking-task{border:1px solid #aaa!important;background:#fff!important;color:#222!important;break-inside:avoid;page-break-inside:avoid}
+  .stay-card h4,.booking-title h4,.stay-card p,.booking-task p,.stay-duration,.stay-candidate{color:#222!important}
+  .stay-candidate,.booking-meta span{background:#eee!important;color:#333!important}
+  .priority-tag,.stay-card .pill{background:#eee!important;color:#222!important}
+  .booking-heading{margin:5mm 0 2mm}
+  #booking-filter{display:none!important}
+  a{color:#111!important;text-decoration:underline}
+}
