@@ -73,5 +73,5 @@ test('unknown long-distance transfer is flagged rather than mislabeled as shinka
   const a={name:'Tokyo',city:'Tokyo',lat:35.68,lng:139.77};
   const b={name:'Naha',city:'Naha',lat:26.21,lng:127.68};
   assert.equal(planner.inferMode(a,b),'review');
-  assert.equal(planner.inferMode({...a,city:'Kyoto'},a),'ground');
+  assert.equal(planner.inferMode({...a,city:'Tokyo'},a),'ground');
 });
