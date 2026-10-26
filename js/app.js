@@ -39,9 +39,9 @@ function areaOf(p){
 }
 function kindOf(p){
   const c=String(p.category||'').toLowerCase();
+  if(/nature|lake|waterfront|park/.test(c))return 'nature';
   if(/hotel|ryokan|onsen/.test(c))return 'lodging';
   if(/temple|shrine|castle|historic|history/.test(c))return 'history';
-  if(/nature|lake|waterfront|park/.test(c))return 'nature';
   if(/restaurant|cafe|dining|food/.test(c))return 'food';
   if(/gaming|shopping/.test(c))return 'shopping';
   return 'sightseeing';
