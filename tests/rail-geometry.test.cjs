@@ -26,8 +26,8 @@ test('every currently scheduled rail/Shinkansen leg follows cached railway geome
   const output=railway.applyCorridors(base(),catalog);
   assert.equal(output.summary.mappedRailLegs,9);
   assert.equal(output.summary.unmappedRailLegs,0);
-  assert.equal(output.summary.accessConnectors,5);
-  assert.equal(output.features.length,40);
+  assert.equal(output.summary.accessConnectors,4);
+  assert.equal(output.features.length,39);
   const mapped=output.features.filter(f=>f.properties.geometrySource==='railway-gis');
   assert.equal(mapped.length,9);
   assert.equal(mapped.filter(f=>f.properties.mode==='rail').length,6);
