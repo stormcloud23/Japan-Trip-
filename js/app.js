@@ -11,6 +11,23 @@ const safeUrl=value=>{try{const url=new URL(value);return ['http:','https:'].inc
 const color={ground:'#e9a25b',rail:'#008e86',shinkansen:'#1a9d47',flight:'#ff2477',review:'#a5acb4'};
 const kindColors={sightseeing:'#dc806a',nature:'#5da977',history:'#b58ad7',food:'#e7ac62',shopping:'#62badd',lodging:'#b99aee',optional:'#919da7'};
 const state={day:null,area:'all',plan:'all',kind:'all',status:'all',search:''};
+const browserWindow=typeof window==='undefined'?null:window;
+// Shareable, reload-safe day URLs; never save private trip information in the URL.
+function parseDayHash(hash){
+  const matched=/^#day=(\d{1,2})$/.exec(String(hash||''));
+  if(!matched)return null;
+  const day=Number(matched[1]);
+  return Number.isInteger(day)&&day>=1&&day<=14?day:null;
+}
+function shareUrl(){
+  const base=browserWindow?.location?.href?.split('#')[0]||'https://stormcloud23.github.io/Japan-Trip-/';
+  return base+(state.day===null?'':'#day='+state.day);
+}
+function writeDayHash(){
+  if(!browserWindow?.history?.replaceState||!browserWindow.location)return;
+  const path=(browserWindow.location.pathname||'/')+(browserWindow.location.search||'');
+  browserWindow.history.replaceState(null,'',path+(state.day===null?'':'#day='+state.day));
+}
 let destinations=[],trip={},routePlan=null,railCatalog=null,displayRoute=null,styleReady=false,usingFallback=false,providerErrors=0,initialFocus=true;
 const map=new maplibregl.Map({
   container:'map',
@@ -184,6 +201,27 @@ function focusMap(shown,force=false){
   if(state.day!==null&&points.length===0){
     points=(trip.travel_anchors||[]).filter(p=>p.day===state.day);
   }
+  // Show the countryside along longer train journeys instead of framing only
+  // the destination pins. Exclude flights, which would zoom across Japan.
+  // Respect explicit search/category filters by framing their visible results.
+  const wholeDay=state.day!==null&&state.search===''&&state.kind==='all'&&
+    state.area==='all'&&state.plan==='all'&&state.status==='all';
+  if(wholeDay){
+    const railSegments=routesToDisplay().features.filter(feature=>
+      ['rail','shinkansen'].includes(feature.properties?.mode)&&
+      (Number(feature.properties?.routeTrackKm)||Number(feature.properties?.approxDistanceKm)||0)>=40
+    );
+    for(const feature of railSegments){
+      const coordinates=feature.geometry?.coordinates||[];
+      const stride=Math.max(1,Math.floor(coordinates.length/30));
+      for(let i=0;i<coordinates.length;i+=stride){
+        const [lng,lat]=coordinates[i];
+        if(Number.isFinite(lng)&&Number.isFinite(lat))points.push({lng,lat});
+      }
+      const end=coordinates[coordinates.length-1];
+      if(end&&Number.isFinite(end[0])&&Number.isFinite(end[1]))points.push({lng:end[0],lat:end[1]});
+    }
+  }
   if(points.length===0)return;
   if(points.length===1){
     map.easeTo({center:[points[0].lng,points[0].lat],zoom:11,duration:450});
@@ -257,6 +295,7 @@ function renderDayControls(){
     'Day '+state.day+(dayMeta?.title?' · '+dayMeta.title:'')+
     (load?' · ~'+minutes(load.totalMinutes)+' planned · '+statusLabel(load.risk):'');
   $('#reset-map').disabled=state.day===null&&state.area==='all'&&state.plan==='all'&&state.kind==='all'&&state.status==='all'&&!state.search;
+  $('#copy-day-link').textContent=state.day===null?'Copy trip link':'Copy Day '+state.day+' link';
 }
 function renderStats(){
   $('#count').textContent=destinations.length;
@@ -268,7 +307,7 @@ function render(fit=false){
   const shown=visiblePlaces();
   renderStats();renderDayControls();renderPlaces(shown);renderDays();updateMap(shown,fit);
 }
-function changeDay(value,scroll){
+function changeDay(value,scroll,updateUrl=true){
   state.day=value===null?null:Math.max(1,Math.min(14,Number(value)));
   state.plan='all';$('#plan-filter').value='all';
   if(state.day!==null){
@@ -276,6 +315,8 @@ function changeDay(value,scroll){
     $('#area-filter').value='all';$('#kind-filter').value='all';
     $('#status').value='all';$('#search').value='';
   }
+  $('#share-feedback').textContent='';
+  if(updateUrl)writeDayHash();
   render(true);
   if(scroll)$('#map').scrollIntoView({behavior:'smooth',block:'center'});
 }
@@ -283,6 +324,8 @@ function clearFilters(){
   state.day=null;state.area='all';state.plan='all';state.kind='all';state.status='all';state.search='';
   $('#day-select').value='all';$('#area-filter').value='all';$('#plan-filter').value='all';
   $('#kind-filter').value='all';$('#status').value='all';$('#search').value='';
+  $('#share-feedback').textContent='';
+  writeDayHash();
   render(true);
 }
 function setupEvents(){
@@ -291,6 +334,22 @@ function setupEvents(){
   $('#next-day').addEventListener('click',()=>state.day!==null&&changeDay(state.day+1,false));
   $('#reset-map').addEventListener('click',clearFilters);
   $('#clear-filters').addEventListener('click',clearFilters);
+  $('#copy-day-link').addEventListener('click',async()=>{
+    const link=shareUrl();
+    try{
+      if(!browserWindow?.navigator?.clipboard?.writeText)throw Error('Clipboard unavailable');
+      await browserWindow.navigator.clipboard.writeText(link);
+      $('#share-feedback').textContent='Link copied! Paste it into a message to share this view.';
+    }catch{
+      // The link remains available for selection when clipboard permission is denied.
+      $('#share-feedback').textContent='Copy this link: '+link;
+    }
+  });
+  $('#print-itinerary').addEventListener('click',()=>browserWindow?.print?.());
+  browserWindow?.addEventListener?.('hashchange',()=>{
+    const day=parseDayHash(browserWindow.location.hash);
+    if(day!==state.day)changeDay(day,false,false);
+  });
   $('#days').addEventListener('click',event=>{
     const button=event.target.closest('button[data-day]');
     if(button)changeDay(Number(button.dataset.day),true);
@@ -338,6 +397,7 @@ fetch('./data/destinations.json',{cache:'no-store'})
   .then(data=>{
     if(!Array.isArray(data.destinations)||!data.trip)throw Error('Invalid trip data');
     destinations=data.destinations;trip=data.trip;
+    state.day=parseDayHash(browserWindow?.location?.hash);
     routePlan=JapanRoutePlanner.buildPlan(trip,destinations);
     displayRoute=JapanRailGeometry.applyCorridors(routePlan.geojson,railCatalog);
     if(typeof JapanLogisticsUI!=='undefined'&&typeof JapanStayPlanner!=='undefined'){
