@@ -64,6 +64,24 @@ The webpage displays five route styles: **magenta dashed lines for flights**, gr
 
 **Unscheduled alternatives** presently include Minakami's Takaragawa Onsen, Lake Toya, Niseko's Zaborin, other Hokkaido ryokan choices, Osaka Aquarium Kaiyukan and Hikone Castle.
 
+## Overnight bases and booking-readiness checklist
+
+The **Overnight stays & reservations** panel groups the 13 provisional nights into seven hotel blocks and shows six potential hotel changes. This is a planning forecast, not a list of booked hotels:
+
+| Nights | Proposed base | Possible property |
+|---|---|---|
+| 1–2 | Tokyo | Not selected |
+| 3 | Asahikawa / Biei | Not selected |
+| 4 | Sapporo | Not selected |
+| 5 | Jozankei Onsen | Jozankei Daiichi Hotel Suizantei (candidate) |
+| 6 | Noboribetsu Onsen | Dai-ichi Takimotokan (candidate) |
+| 7–11 | Kyoto | Not selected; one Kyoto hotel for day trips |
+| 12–13 | Tokyo | Not selected |
+
+The reservation checklist includes flight planning, potential ryokan nights, Ghibli Museum, Cafe Capyba, Hikiniku to Kome, and Kyoto–Tokyo Shinkansen tickets. It has **All / High priority / Hotels / Transport / Experiences** filters. Every task is currently in `research` status, not booked. Ticket release rules and 2027 transport schedules must be rechecked nearer travel.
+
+Data is stored in `trip.stays` and `trip.booking_tasks` inside `data/destinations.json`. `js/stay-planner.js` validates night coverage, prevents overlapping hotel blocks, links candidate destination IDs, and summarizes remaining tasks; `js/logistics-ui.js` renders the section without editing or storing changes in the browser. Updates to accommodation choices and booking statuses should be made through GitHub/ChatGPT. No reservation confirmation codes, passenger details, or passport data should be stored in this public repository.
+
 ## Actual railway track overlays
 
 The rail-first route planner now has a second, **offline cached GIS layer**. The map attempts to overlay each scheduled `rail` or `shinkansen` leg with geographic railway centerlines rather than a straight line.
@@ -78,7 +96,7 @@ These geographical alignments **do not prove a direct service** between the chos
 
 ### Route regression tests
 
-Run `node --test tests/*.test.cjs` with Node.js 22 or later. Tests cover the 14-day route, flights/train segments, optional stops, packed-day warnings and automatic additions. A mocked MapLibre/browser test also exercises day navigation, pins, cluster setup, cached curved rail shapes and full-map reset without a live map provider.
+Run `node --test tests/*.test.cjs` with Node.js 22 or later. Tests cover the 14-day route, flights/train segments, optional stops, packed-day warnings, automatic additions, 13 hotel nights, booking filters and safe markup. A mocked MapLibre/browser test also exercises day navigation, pins, cluster setup, cached curved rail shapes and full-map reset without a live map provider.
 
 GitHub Actions runs these on route-code, website or destination updates via `.github/workflows/validate-routing.yml`. Superseded workflow runs are canceled automatically to avoid redundant test jobs.
 
