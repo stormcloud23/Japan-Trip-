@@ -78,3 +78,32 @@ test('unknown long-distance transfer is flagged rather than mislabeled as shinka
   assert.equal(planner.inferMode(a,b),'review');
   assert.equal(planner.inferMode({...a,city:'Tokyo'},a),'ground');
 });
+
+
+test('daily workload estimates include travel, local connections and a break buffer',()=>{
+  const daily=plan().dailyLoads;
+  assert.equal(daily.length,14);
+  assert.deepEqual(daily.filter(d=>d.risk==='overloaded').map(d=>d.day),[3,10,12,13]);
+  const tokyoReturn=daily[11];
+  assert.equal(tokyoReturn.day,12);
+  assert.equal(tokyoReturn.activityMinutes,600);
+  assert.equal(tokyoReturn.baselineTravelMinutes,185);
+  assert.ok(tokyoReturn.localMinutes>0);
+  assert.ok(tokyoReturn.totalMinutes>tokyoReturn.limitMinutes);
+  assert.ok(tokyoReturn.overByMinutes>0);
+  assert.equal(tokyoReturn.approximate,true);
+});
+
+test('the travel-aware planner refuses oversized automatic suggestions',()=>{
+  const huge={id:'test-oversized',name:'Huge Kyoto Excursion',city:'Kyoto',
+    lat:35.014,lng:135.748,day:null,order:null,estimated_minutes:580};
+  const output=planner.buildPlan(data.trip,[...data.destinations,huge]);
+  assert.ok(!output.suggested.some(p=>p.id===huge.id));
+  assert.ok(output.unplanned.some(p=>p.id===huge.id));
+});
+
+test('additional local travel is calculated from geographical distance',()=>{
+  const a={lat:35.014,lng:135.748},near={lat:35.015,lng:135.75},far={lat:35.013,lng:135.81};
+  assert.ok(planner.localTransferMinutes(a,near)>0);
+  assert.ok(planner.localTransferMinutes(a,far)>planner.localTransferMinutes(a,near));
+});
