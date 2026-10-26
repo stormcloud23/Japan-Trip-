@@ -4,7 +4,7 @@
     "duration_days": 14,
     "start_date": null,
     "end_date": null,
-    "notes": "Tentative 14-day round trip arriving and departing Tokyo. Days 1 and 14 prioritize flights; cluster Tokyo sightseeing into east (Asakusa/Sumida), central (Akihabara/Jimbocho), west (Mitaka/Nakano), and Shinjuku evenings. Minakami onsen overnight and Kyoto cluster remain unscheduled. Exact dates and transit connections TBD."
+    "notes": "PROVISIONAL route: Tokyo arrival day 1; eastern Tokyo day 2, central Tokyo day 3, western Tokyo/Shinjuku day 4; Minakami onsen overnight day 5; travel via Tokyo to Kyoto day 6; Kyoto days 6–11 (Gion restaurant day 8, Kifune day 9); return Tokyo day 12, Tokyo buffer day 13, departure day 14. Day assignments are placeholders, not bookings; update for flight times, opening days, reservations, and new destinations. Minakami is a detour north of Tokyo, not on the Kyoto route. On-map dashed lines show sequence, not actual transit."
   },
   "destinations": [
     {
@@ -17,8 +17,8 @@
       "category": "restaurant",
       "status": "wishlist",
       "priority": "high",
-      "day": null,
-      "order": null,
+      "day": 8,
+      "order": 1,
       "estimated_minutes": 75,
       "url": "https://hikinikutocome.com/en/locations/kyoto/",
       "source_url": "https://share.google/LXuuYhK1OVUNUcVXj",
@@ -36,8 +36,8 @@
       "category": "animal cafe",
       "status": "wishlist",
       "priority": "medium",
-      "day": null,
-      "order": null,
+      "day": 2,
+      "order": 2,
       "estimated_minutes": 90,
       "url": "https://cspace.co.jp/en/our-shop_english/",
       "notes": "Capybara interaction café near Hikifune Station. Advance reservation required; bookings open 2 weeks ahead. Usually closed Wednesday and Thursday. Group with Tokyo sightseeing, potentially Sumida/Asakusa."
@@ -53,8 +53,8 @@
       "category": "shrine",
       "status": "wishlist",
       "priority": "high",
-      "day": null,
-      "order": null,
+      "day": 9,
+      "order": 1,
       "estimated_minutes": 90,
       "url": "https://kifunejinja.jp/",
       "notes": "Scenic water-deity shrine north of central Kyoto, famous for red lantern-lined stone steps and forest setting. Allow substantial additional travel time from central Kyoto; consider combining with Kurama/Kibune area. Coordinates approximate; verify before final routing."
@@ -70,8 +70,8 @@
       "category": "onsen ryokan",
       "status": "wishlist",
       "priority": "high",
-      "day": null,
-      "order": null,
+      "day": 5,
+      "order": 1,
       "estimated_minutes": 1440,
       "url": "https://www.takaragawa.com/english.html",
       "notes": "Suggested one-night traditional ryokan stay, not booked. Riverside open-air baths; mixed bathing areas use provided bathing garments. From Tokyo take Joetsu Shinkansen to Jomo-Kogen (~70 min), then prebook overnight-guest shuttle or use local buses. Potential Tokyo-area excursion; do not assume it is directly en route to Kyoto. Confirm shuttle schedule, availability, bath policies and rates for travel dates."
@@ -87,8 +87,8 @@
       "category": "museum",
       "status": "wishlist",
       "priority": "high",
-      "day": null,
-      "order": null,
+      "day": 4,
+      "order": 1,
       "estimated_minutes": 180,
       "url": "https://www.ghibli-museum.jp/en/",
       "notes": "Advance timed-entry ticket required; no tickets sold at museum. International ticket releases are typically on the 10th of the preceding month at 10:00 JST; verify current rules when dates are set. Pair with Inokashira Park/Kichijoji; west of central Tokyo, not near Sumida."
@@ -103,8 +103,8 @@
       "category": "neighborhood",
       "status": "wishlist",
       "priority": "high",
-      "day": null,
-      "order": null,
+      "day": 3,
+      "order": 2,
       "estimated_minutes": 240,
       "url": "https://www.google.com/maps/search/?api=1&query=Akihabara%20Electric%20Town%20Tokyo",
       "notes": "Retro Nintendo games, electronics, anime merchandise, miniature and figure shops. Half-day minimum."
@@ -119,8 +119,8 @@
       "category": "neighborhood",
       "status": "wishlist",
       "priority": "high",
-      "day": null,
-      "order": null,
+      "day": 4,
+      "order": 3,
       "estimated_minutes": 240,
       "url": "https://www.google.com/maps/search/?api=1&query=Shinjuku%20sightseeing%20and%20nightlife%20Tokyo",
       "notes": "Explore Omoide Yokocho, Kabukicho and Golden Gai in the evening. Pin represents Shinjuku Station area; individual stops can be added later."
@@ -135,8 +135,8 @@
       "category": "shopping",
       "status": "wishlist",
       "priority": "medium",
-      "day": null,
-      "order": null,
+      "day": 4,
+      "order": 2,
       "estimated_minutes": 150,
       "url": "https://www.google.com/maps/search/?api=1&query=Nakano%20Broadway%20Tokyo",
       "notes": "Vintage anime, manga, collectibles and specialty hobby shops. Pair with Ghibli Museum/Mitaka if timing permits."
@@ -151,8 +151,8 @@
       "category": "neighborhood",
       "status": "wishlist",
       "priority": "medium",
-      "day": null,
-      "order": null,
+      "day": 3,
+      "order": 1,
       "estimated_minutes": 120,
       "url": "https://www.google.com/maps/search/?api=1&query=Jimbocho%20Book%20Town%20Tokyo",
       "notes": "Used bookstores, specialty manga, art and illustration books. Convenient with Akihabara."
@@ -167,8 +167,8 @@
       "category": "temple",
       "status": "wishlist",
       "priority": "medium",
-      "day": null,
-      "order": null,
+      "day": 2,
+      "order": 1,
       "estimated_minutes": 120,
       "url": "https://www.google.com/maps/search/?api=1&query=Senso-ji%20Temple%20(Asakusa)%20Tokyo",
       "notes": "Historic Tokyo temple and Nakamise shopping street. Group with Cafe Capyba in Sumida."
