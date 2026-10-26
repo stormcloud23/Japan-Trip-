@@ -31,7 +31,7 @@ test('13 trip nights have full coverage without gaps, overlaps or bookings',()=>
   assert.equal(output.stays.length,7);
   assert.equal(output.hotelChanges,6);
   assert.equal(output.confirmedTasks,0);
-  assert.equal(output.pendingTasks,9);
+  assert.equal(output.pendingTasks,11);
   const kyoto=output.stays.find(s=>s.id==='kyoto');
   assert.deepEqual([kyoto.firstNight,kyoto.lastNight,kyoto.nightCount],[7,11,5]);
 });
@@ -64,7 +64,7 @@ test('booking task filters and cards render safely and never pretend reservation
   assert.equal(document.getElementById('night-count').textContent,13);
   assert.equal(document.getElementById('hotel-count').textContent,7);
   assert.equal(document.getElementById('hotel-moves').textContent,6);
-  assert.equal(document.getElementById('pending-bookings').textContent,9);
+  assert.equal(document.getElementById('pending-bookings').textContent,11);
   assert.match(document.getElementById('stay-cards').innerHTML,/Nights 7–11/);
   assert.match(document.getElementById('stay-cards').innerHTML,/Jozankei Daiichi Hotel Suizantei/);
   assert.match(document.getElementById('booking-tasks').innerHTML,/Ghibli Museum/);
@@ -74,7 +74,7 @@ test('booking task filters and cards render safely and never pretend reservation
   filter.value='hotel';filter.listeners.change();
   assert.equal((document.getElementById('booking-tasks').innerHTML.match(/class="booking-task"/g)||[]).length,2);
   filter.value='high';filter.listeners.change();
-  assert.equal((document.getElementById('booking-tasks').innerHTML.match(/class="booking-task"/g)||[]).length,6);
+  assert.equal((document.getElementById('booking-tasks').innerHTML.match(/class="booking-task"/g)||[]).length,8);
 });
 
 test('untrusted lodging and task text are escaped',()=>{
@@ -88,4 +88,18 @@ test('untrusted lodging and task text are escaped',()=>{
   assert.ok(stayMarkup.includes('&lt;img'));
   assert.ok(!taskMarkup.includes('<script>'));
   assert.ok(taskMarkup.includes('&lt;script&gt;'));
+});
+
+test('Jiro and Miyamasou reservation tasks are distinct, unbooked and high priority',()=>{
+  const plan=planner.buildLogistics(trip.trip,trip.destinations);
+  const jiro=plan.tasks.find(t=>t.id==='sukiyabashi-jiro-concierge');
+  const miyamasou=plan.tasks.find(t=>t.id==='miyamasou-hanase-arrangements');
+  assert.ok(jiro&&miyamasou);
+  assert.equal(jiro.priority,'high');
+  assert.equal(miyamasou.priority,'high');
+  assert.equal(jiro.status,'research');
+  assert.equal(miyamasou.status,'research');
+  assert.match(jiro.note,/concierge/);
+  assert.match(miyamasou.note,/mountain/);
+  assert.equal(plan.confirmedTasks,0);
 });
