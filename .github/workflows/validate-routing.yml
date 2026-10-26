@@ -1,0 +1,37 @@
+name: Validate Japan trip routing
+
+on:
+  push:
+    paths:
+      - 'data/destinations.json'
+      - 'js/route-planner.js'
+      - 'tests/route-planner.test.cjs'
+      - 'index.html'
+      - '.github/workflows/validate-routing.yml'
+  pull_request:
+    paths:
+      - 'data/destinations.json'
+      - 'js/route-planner.js'
+      - 'tests/route-planner.test.cjs'
+      - 'index.html'
+  workflow_dispatch:
+
+# Superseded commits don't waste minutes running outdated route checks.
+concurrency:
+  group: japan-routing-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test-routing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test data-driven itinerary generation
+        run: node --test tests/route-planner.test.cjs
