@@ -4,7 +4,158 @@
     "duration_days": 14,
     "start_date": null,
     "end_date": null,
-    "notes": "PROVISIONAL route: Tokyo arrival day 1; eastern Tokyo day 2, central Tokyo day 3, western Tokyo/Shinjuku day 4; Minakami onsen overnight day 5; travel via Tokyo to Kyoto day 6; Kyoto days 6–11 (Gion restaurant day 8, Kifune day 9); return Tokyo day 12, Tokyo buffer day 13, departure day 14. Day assignments are placeholders, not bookings; update for flight times, opening days, reservations, and new destinations. Minakami is a detour north of Tokyo, not on the Kyoto route. On-map dashed lines show sequence, not actual transit. Travel window preference: late September or early October 2027 (exact dates TBD). Hokkaido added as OPTIONAL autumn 2027 region, not yet scheduled. Foliage timing differs sharply: Asahidake alpine colors typically September, Sapporo/Jozankei October, Kyoto often November. Eight Hokkaido wishlist entries include three ALTERNATIVE onsen lodging options, not three required stays. Fitting Hokkaido in 14 days likely requires flight(s) and reducing Kyoto/Tokyo time or replacing Minakami; do not schedule until trip dates and priorities are confirmed. Coordinates are approximate for some places. Prioritize Hokkaido earlier in the trip to target northern foliage; high-elevation Asahidake can peak in September while some southern Hokkaido forests peak in October. Preserve return to Tokyo for departure. Current Tokyo-Minakami-Kyoto day assignments need revision if Hokkaido is included; no Hokkaido days assigned yet."
+    "notes": "Late September or early October 2027, exact dates and flights TBD. REVISED PROVISIONAL 14-day route: Tokyo (days 1–2) -> fly Haneda to Asahikawa (day 3) -> Mt. Asahidake (3) -> Biei Blue Pond (4) -> Jozankei valley/onsen (5) -> Noboribetsu Hell Valley/onsen (6) -> New Chitose flight to Osaka Itami and ground transfer to Kyoto (7) -> Kyoto sightseeing (8–11) -> shinkansen to Tokyo (12) -> Tokyo sightseeing (12–13) -> depart Tokyo (14). Move schedule for reservation availability, weather and practical travel times. Hotel picks at Jozankei, Noboribetsu and Niseko are optional alternatives not all booked or required. Lake Toya/Niseko are optional Hokkaido detours; Takaragawa Onsen Minakami remains wishlist-only due to backtracking. Flight connections are conceptual and not booked, 2027 schedules unconfirmed. Map lines are straight schematic connections, NOT navigable roads/rail/flight tracks.",
+    "days": [
+      {
+        "day": 1,
+        "title": "Arrive in Tokyo",
+        "description": "Arrive, check in and recover from the international flight."
+      },
+      {
+        "day": 2,
+        "title": "East Tokyo",
+        "description": "Asakusa/Senso-ji and Cafe Capyba in Sumida (reservation dependent)."
+      },
+      {
+        "day": 3,
+        "title": "Fly to Hokkaido · Asahidake",
+        "description": "Fly Tokyo Haneda → Asahikawa Airport; continue to Asahidake if arrival time and ropeway/weather permit. Stay in the Asahikawa/Biei area."
+      },
+      {
+        "day": 4,
+        "title": "Biei · Sapporo direction",
+        "description": "Blue Pond and Biei scenery; travel toward Sapporo. Keep the previous hotel if transport works better."
+      },
+      {
+        "day": 5,
+        "title": "Jozankei hot springs",
+        "description": "Forest valley and a potential ryokan night in Jozankei. Suizantei is an unbooked lodging option."
+      },
+      {
+        "day": 6,
+        "title": "Noboribetsu hot springs",
+        "description": "Jigokudani trails and a potential ryokan night; Dai-ichi Takimotokan is one unbooked option."
+      },
+      {
+        "day": 7,
+        "title": "Fly to Osaka · Kyoto",
+        "description": "Transfer to New Chitose Airport; fly to Osaka Itami (or another suitable Osaka airport), then continue to Kyoto."
+      },
+      {
+        "day": 8,
+        "title": "Kyoto · Gion",
+        "description": "Explore central Kyoto and try Hikiniku to Kome, subject to reservation availability."
+      },
+      {
+        "day": 9,
+        "title": "Kibune · Northern Kyoto",
+        "description": "Kifune Shrine and the Kurama/Kibune valley, allowing time for transit."
+      },
+      {
+        "day": 10,
+        "title": "Kyoto · Open sightseeing",
+        "description": "Hold for future Kyoto destinations and relaxed honeymoon time."
+      },
+      {
+        "day": 11,
+        "title": "Kyoto · Open sightseeing",
+        "description": "Another flexible sightseeing day, or a nearby day trip."
+      },
+      {
+        "day": 12,
+        "title": "Shinkansen to Tokyo",
+        "description": "Kyoto → Tokyo by train; Jimbocho and Akihabara if arrival is early enough."
+      },
+      {
+        "day": 13,
+        "title": "West Tokyo · Shinjuku",
+        "description": "Ghibli Museum (ticket dependent), Nakano Broadway, and Shinjuku after dark."
+      },
+      {
+        "day": 14,
+        "title": "Depart Tokyo",
+        "description": "Fly home; leave a generous airport transfer buffer."
+      }
+    ],
+    "route": [
+      {
+        "name": "Tokyo",
+        "lat": 35.6812,
+        "lng": 139.7671,
+        "day": 1,
+        "transport_to_next": "ground"
+      },
+      {
+        "name": "Tokyo Haneda Airport (HND)",
+        "lat": 35.5494,
+        "lng": 139.7798,
+        "day": 3,
+        "transport_to_next": "flight"
+      },
+      {
+        "name": "Asahikawa Airport (AKJ)",
+        "lat": 43.6708,
+        "lng": 142.4475,
+        "day": 3,
+        "transport_to_next": "ground"
+      },
+      {
+        "name": "Mount Asahidake",
+        "lat": 43.663,
+        "lng": 142.854,
+        "day": 3,
+        "transport_to_next": "ground"
+      },
+      {
+        "name": "Shirogane Blue Pond",
+        "lat": 43.493,
+        "lng": 142.614,
+        "day": 4,
+        "transport_to_next": "ground"
+      },
+      {
+        "name": "Jozankei Onsen",
+        "lat": 42.966,
+        "lng": 141.165,
+        "day": 5,
+        "transport_to_next": "ground"
+      },
+      {
+        "name": "Noboribetsu",
+        "lat": 42.497,
+        "lng": 141.143,
+        "day": 6,
+        "transport_to_next": "ground"
+      },
+      {
+        "name": "New Chitose Airport (CTS)",
+        "lat": 42.7752,
+        "lng": 141.6923,
+        "day": 7,
+        "transport_to_next": "flight"
+      },
+      {
+        "name": "Osaka Itami Airport (ITM)",
+        "lat": 34.7855,
+        "lng": 135.4382,
+        "day": 7,
+        "transport_to_next": "ground"
+      },
+      {
+        "name": "Kyoto",
+        "lat": 35.0116,
+        "lng": 135.7681,
+        "day": 7,
+        "transport_to_next": "rail"
+      },
+      {
+        "name": "Tokyo",
+        "lat": 35.6812,
+        "lng": 139.7671,
+        "day": 12,
+        "transport_to_next": null
+      }
+    ]
   },
   "destinations": [
     {
@@ -70,8 +221,8 @@
       "category": "onsen ryokan",
       "status": "wishlist",
       "priority": "high",
-      "day": 5,
-      "order": 1,
+      "day": null,
+      "order": null,
       "estimated_minutes": 1440,
       "url": "https://www.takaragawa.com/english.html",
       "notes": "Suggested one-night traditional ryokan stay, not booked. Riverside open-air baths; mixed bathing areas use provided bathing garments. From Tokyo take Joetsu Shinkansen to Jomo-Kogen (~70 min), then prebook overnight-guest shuttle or use local buses. Potential Tokyo-area excursion; do not assume it is directly en route to Kyoto. Confirm shuttle schedule, availability, bath policies and rates for travel dates."
@@ -87,7 +238,7 @@
       "category": "museum",
       "status": "wishlist",
       "priority": "high",
-      "day": 4,
+      "day": 13,
       "order": 1,
       "estimated_minutes": 180,
       "url": "https://www.ghibli-museum.jp/en/",
@@ -103,7 +254,7 @@
       "category": "neighborhood",
       "status": "wishlist",
       "priority": "high",
-      "day": 3,
+      "day": 12,
       "order": 2,
       "estimated_minutes": 240,
       "url": "https://www.google.com/maps/search/?api=1&query=Akihabara%20Electric%20Town%20Tokyo",
@@ -119,7 +270,7 @@
       "category": "neighborhood",
       "status": "wishlist",
       "priority": "high",
-      "day": 4,
+      "day": 13,
       "order": 3,
       "estimated_minutes": 240,
       "url": "https://www.google.com/maps/search/?api=1&query=Shinjuku%20sightseeing%20and%20nightlife%20Tokyo",
@@ -135,7 +286,7 @@
       "category": "shopping",
       "status": "wishlist",
       "priority": "medium",
-      "day": 4,
+      "day": 13,
       "order": 2,
       "estimated_minutes": 150,
       "url": "https://www.google.com/maps/search/?api=1&query=Nakano%20Broadway%20Tokyo",
@@ -151,7 +302,7 @@
       "category": "neighborhood",
       "status": "wishlist",
       "priority": "medium",
-      "day": 3,
+      "day": 12,
       "order": 1,
       "estimated_minutes": 120,
       "url": "https://www.google.com/maps/search/?api=1&query=Jimbocho%20Book%20Town%20Tokyo",
@@ -186,8 +337,8 @@
       "url": "https://www.google.com/maps/search/?api=1&query=Asahidake+Ropeway",
       "notes": "Alpine autumn colors often peak in September; weather, ropeway and trails can be affected by early snow. Requires substantial travel from Sapporo; consider Asahikawa/Biei base. Approximate mountain-area pin.",
       "status": "wishlist",
-      "day": null,
-      "order": null
+      "day": 3,
+      "order": 1
     },
     {
       "id": "shirogane-blue-pond",
@@ -202,8 +353,8 @@
       "url": "https://www.google.com/maps/search/?api=1&query=Shirogane+Blue+Pond+Biei",
       "notes": "Turquoise-blue pond and larches, often colorful in October. Combine with Biei countryside and nearby Shirogane Onsen.",
       "status": "wishlist",
-      "day": null,
-      "order": null
+      "day": 4,
+      "order": 1
     },
     {
       "id": "jozankei-onsen",
@@ -218,8 +369,8 @@
       "url": "https://www.google.com/maps/search/?api=1&query=Jozankei+Onsen",
       "notes": "Forested hot spring valley southwest of Sapporo, particularly attractive in early to mid October. Could be a one-night ryokan stop.",
       "status": "wishlist",
-      "day": null,
-      "order": null
+      "day": 5,
+      "order": 1
     },
     {
       "id": "noboribetsu-jigokudani",
@@ -234,8 +385,8 @@
       "url": "https://www.google.com/maps/search/?api=1&query=Noboribetsu+Jigokudani",
       "notes": "Steaming volcanic valley and forest trails; pair with a Noboribetsu onsen overnight. Typical foliage mid to late October.",
       "status": "wishlist",
-      "day": null,
-      "order": null
+      "day": 6,
+      "order": 1
     },
     {
       "id": "lake-toya",
