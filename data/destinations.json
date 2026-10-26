@@ -4,77 +4,119 @@
     "duration_days": 14,
     "start_date": null,
     "end_date": null,
-    "notes": "AUTOMATIC schematic route builder active: on every website visit, js/route-planner.js derives ordered legs from scheduled destinations plus trip.travel_anchors, preferring Shinkansen and rail where practical. Added nearby wishlist destinations (without a day) can be suggested into suitable not-overfull days; route_preference=alternative preserves optional venues unconnected. Provisional autumn 2027, late September / early October, exact dates and all flights/tickets unconfirmed. Hokkaido is days 3–6 between Tokyo and Kyoto, requiring flights Tokyo→Asahikawa and New Chitose→Osaka to preserve a relaxed 14-day schedule. Rail-first for Hokkaido intercity connections, Kyoto↔Osaka, Kyoto↔Himeji, Kyoto→Tokyo. Mount Asahidake access and Biei require ground transport. Hokkaido Shinkansen currently terminates at Shin-Hakodate-Hokuto, far short of Sapporo; all-train route is possible but uses substantially more time. Map legs are straight-line schematic symbols, never real service geometry or tickets.",
+    "notes": "AUTOMATIC schematic route builder active: on every website visit, js/route-planner.js derives ordered legs from scheduled destinations plus trip.travel_anchors, preferring Shinkansen and rail where practical. Added nearby wishlist destinations (without a day) can be suggested into suitable not-overfull days; route_preference=alternative preserves optional venues unconnected. Provisional autumn 2027, late September / early October, exact dates and all flights/tickets unconfirmed. Hokkaido is days 3–6 between Tokyo and Kyoto, requiring flights Tokyo→Asahikawa and New Chitose→Osaka to preserve a relaxed 14-day schedule. Rail-first for Hokkaido intercity connections, Kyoto↔Osaka, Kyoto↔Himeji, Kyoto→Tokyo. Mount Asahidake access and Biei require ground transport. Hokkaido Shinkansen currently terminates at Shin-Hakodate-Hokuto, far short of Sapporo; all-train route is possible but uses substantially more time. Map legs are straight-line schematic symbols, never real service geometry or tickets. Day-by-day travel minutes are rough planning allowances, not actual timetables; on-site planner adds attraction durations, same-day local transfer estimates and a 45-minute break allowance and highlights overloaded days. Activity times and transport allowances may need revision when exact 2027 dates and bookings are known.",
     "days": [
       {
         "day": 1,
         "title": "Arrive in Tokyo",
-        "description": "Arrive, check in and recover from the international flight."
+        "description": "Arrive, check in and recover from the international flight.",
+        "travel_minutes_estimate": 120,
+        "travel_note": "Airport arrival formalities and transfer to a Tokyo hotel; arrival time unknown.",
+        "available_minutes": 480
       },
       {
         "day": 2,
         "title": "East Tokyo",
-        "description": "Asakusa/Senso-ji and Cafe Capyba in Sumida (reservation dependent)."
+        "description": "Asakusa/Senso-ji and Cafe Capyba in Sumida (reservation dependent).",
+        "travel_minutes_estimate": 50,
+        "travel_note": "Local Tokyo trains and walking between Asakusa and Sumida.",
+        "available_minutes": 600
       },
       {
         "day": 3,
         "title": "Fly to Hokkaido · Asahidake",
-        "description": "Fly Tokyo Haneda → Asahikawa Airport; continue to Asahidake if arrival time and ropeway/weather permit. Stay in the Asahikawa/Biei area."
+        "description": "Fly Tokyo Haneda → Asahikawa Airport; continue to Asahidake if arrival time and ropeway/weather permit. Stay in the Asahikawa/Biei area.",
+        "travel_minutes_estimate": 270,
+        "travel_note": "Haneda airport procedures, flight to Asahikawa, and mountainous ground transfer; ropeway hours and weather may limit sightseeing.",
+        "available_minutes": 600
       },
       {
         "day": 4,
         "title": "Biei · Sapporo direction",
-        "description": "Blue Pond and Biei scenery; continue to Asahikawa Station, then ride a JR limited express to Sapporo when convenient (check actual schedules)."
+        "description": "Blue Pond and Biei scenery; continue to Asahikawa Station, then ride a JR limited express to Sapporo when convenient (check actual schedules).",
+        "travel_minutes_estimate": 190,
+        "travel_note": "Biei/Blue Pond ground transport plus approximate Asahikawa–Sapporo limited-express journey.",
+        "available_minutes": 600
       },
       {
         "day": 5,
         "title": "Jozankei hot springs",
-        "description": "Forest valley and a potential ryokan night in Jozankei. Suizantei is an unbooked lodging option."
+        "description": "Forest valley and a potential ryokan night in Jozankei. Suizantei is an unbooked lodging option.",
+        "travel_minutes_estimate": 100,
+        "travel_note": "Sapporo–Jozankei transfer and local onsen-area movement.",
+        "available_minutes": 600
       },
       {
         "day": 6,
         "title": "Noboribetsu hot springs",
-        "description": "Jigokudani and forest trails. Travel from the Sapporo area toward Noboribetsu by JR limited express, then local transport to the onsen district."
+        "description": "Jigokudani and forest trails. Travel from the Sapporo area toward Noboribetsu by JR limited express, then local transport to the onsen district.",
+        "travel_minutes_estimate": 170,
+        "travel_note": "Jozankei/Sapporo connection, limited express to Noboribetsu and local transit.",
+        "available_minutes": 600
       },
       {
         "day": 7,
         "title": "Fly to Osaka · Kyoto",
-        "description": "JR train toward New Chitose Airport; fly to Osaka Itami (or a suitable Osaka airport), then transfer to Kyoto. Hokkaido Shinkansen does not yet reach Sapporo."
+        "description": "JR train toward New Chitose Airport; fly to Osaka Itami (or a suitable Osaka airport), then transfer to Kyoto. Hokkaido Shinkansen does not yet reach Sapporo.",
+        "travel_minutes_estimate": 300,
+        "travel_note": "New Chitose airport transfer and flight, Osaka airport arrival, onward Kyoto transfer.",
+        "available_minutes": 600
       },
       {
         "day": 8,
         "title": "Kyoto castles & Gion",
-        "description": "Visit Nijo Castle / Ninomaru Palace, then explore Gion and try Hikiniku to Kome (reservation dependent)."
+        "description": "Visit Nijo Castle / Ninomaru Palace, then explore Gion and try Hikiniku to Kome (reservation dependent).",
+        "travel_minutes_estimate": 40,
+        "travel_note": "Local Kyoto transit for Nijo Castle and Gion.",
+        "available_minutes": 600
       },
       {
         "day": 9,
         "title": "Kibune · Northern Kyoto",
-        "description": "Kifune Shrine and the Kurama/Kibune valley, allowing time for transit."
+        "description": "Kifune Shrine and the Kurama/Kibune valley, allowing time for transit.",
+        "travel_minutes_estimate": 120,
+        "travel_note": "Round-trip transport to the northern Kyoto Kibune/Kurama area.",
+        "available_minutes": 600
       },
       {
         "day": 10,
         "title": "Osaka day trip · Castle, bay & Dotonbori",
-        "description": "From Kyoto take a train to Osaka Castle, then transit to the Tempozan harbor waterfront and finish at Dotonbori after dark; return to Kyoto by rail. Aquarium is an optional swap, not a required stop."
+        "description": "From Kyoto take a train to Osaka Castle, then transit to the Tempozan harbor waterfront and finish at Dotonbori after dark; return to Kyoto by rail. Aquarium is an optional swap, not a required stop.",
+        "travel_minutes_estimate": 105,
+        "travel_note": "Kyoto–Osaka return rail travel plus station access (between-stop transfers estimated separately).",
+        "available_minutes": 600
       },
       {
         "day": 11,
         "title": "Himeji Castle day trip",
-        "description": "Take Shinkansen from Kyoto (direct where scheduled, otherwise transfer via Shin-Osaka) to Himeji Castle and Koko-en Garden, then return to Kyoto by rail. Optional alternative: Hikone Castle."
+        "description": "Take Shinkansen from Kyoto (direct where scheduled, otherwise transfer via Shin-Osaka) to Himeji Castle and Koko-en Garden, then return to Kyoto by rail. Optional alternative: Hikone Castle.",
+        "travel_minutes_estimate": 145,
+        "travel_note": "Round-trip Kyoto–Himeji Shinkansen / connecting rail plus station access.",
+        "available_minutes": 600
       },
       {
         "day": 12,
         "title": "Shinkansen to Tokyo · Akihabara",
-        "description": "Take Tokaido Shinkansen from Kyoto to Tokyo, then explore Jimbocho and Akihabara. Shinjuku nightlife is optional if time allows."
+        "description": "Take Tokaido Shinkansen from Kyoto to Tokyo, then explore Jimbocho and Akihabara. Shinjuku nightlife is optional if time allows.",
+        "travel_minutes_estimate": 185,
+        "travel_note": "Kyoto–Tokyo Tokaido Shinkansen and transfer to central Tokyo (between-stop transfers estimated separately).",
+        "available_minutes": 600
       },
       {
         "day": 13,
         "title": "West Tokyo · Ghibli, Nakano & Shibuya",
-        "description": "Ghibli Museum timed entry, Nakano Broadway and Shibuya Crossing/Nintendo TOKYO later in the day. This is a full day; adjust around museum tickets."
+        "description": "Ghibli Museum timed entry, Nakano Broadway and Shibuya Crossing/Nintendo TOKYO later in the day. This is a full day; adjust around museum tickets.",
+        "travel_minutes_estimate": 55,
+        "travel_note": "Local Tokyo trains and station access; between-stop transfers also estimated separately.",
+        "available_minutes": 600
       },
       {
         "day": 14,
         "title": "Depart Tokyo",
-        "description": "Fly home; leave a generous airport transfer buffer."
+        "description": "Fly home; leave a generous airport transfer buffer.",
+        "travel_minutes_estimate": 150,
+        "travel_note": "Tokyo hotel-to-airport journey and departure airport buffer, excluding international check-in guidance.",
+        "available_minutes": 400
       }
     ],
     "transport_policy": {
