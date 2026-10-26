@@ -4,7 +4,7 @@
     "duration_days": 14,
     "start_date": null,
     "end_date": null,
-    "notes": "Late September or early October 2027, exact dates and flights TBD. REVISED PROVISIONAL 14-day route: Tokyo (days 1–2) -> fly Haneda to Asahikawa (day 3) -> Mt. Asahidake (3) -> Biei Blue Pond (4) -> Jozankei valley/onsen (5) -> Noboribetsu Hell Valley/onsen (6) -> New Chitose flight to Osaka Itami and ground transfer to Kyoto (7) -> Kyoto sightseeing (8–11) -> shinkansen to Tokyo (12) -> Tokyo sightseeing (12–13) -> depart Tokyo (14). Move schedule for reservation availability, weather and practical travel times. Hotel picks at Jozankei, Noboribetsu and Niseko are optional alternatives not all booked or required. Lake Toya/Niseko are optional Hokkaido detours; Takaragawa Onsen Minakami remains wishlist-only due to backtracking. Flight connections are conceptual and not booked, 2027 schedules unconfirmed. Map lines are straight schematic connections, NOT navigable roads/rail/flight tracks.",
+    "notes": "PROVISIONAL autumn 2027 (late September–early October, flights/dates TBD): Tokyo arrival days 1–2; flight Haneda–Asahikawa day 3; Hokkaido Asahidake/Biei/Jozankei/Noboribetsu days 3–6; fly New Chitose–Osaka and transfer Kyoto day 7; Kyoto Nijo Castle/Gion day 8, Kifune day 9, Kyoto-based Osaka day trip (Osaka Castle/Tempozan/Dotonbori) day 10, Kyoto-based Himeji Castle day trip day 11 (Hikone Castle alternative); shinkansen to Tokyo day 12, Shinjuku optional evening; Mitaka/Nakano/Shibuya day 13, depart Tokyo day 14. Dates, hotel nights and all reservations unconfirmed. Several days are ambitious; allow relaxed alternatives. Kaiyukan, Hikone, Minakami, Lake Toya and alternative Hokkaido ryokan/Niseko remain optional and unscheduled. Lines on map connect schematic route waypoints and airport legs rather than real transit shapes.",
     "days": [
       {
         "day": 1,
@@ -43,8 +43,8 @@
       },
       {
         "day": 8,
-        "title": "Kyoto · Gion",
-        "description": "Explore central Kyoto and try Hikiniku to Kome, subject to reservation availability."
+        "title": "Kyoto castles & Gion",
+        "description": "Visit Nijo Castle / Ninomaru Palace, then explore Gion and try Hikiniku to Kome (reservation dependent)."
       },
       {
         "day": 9,
@@ -53,23 +53,23 @@
       },
       {
         "day": 10,
-        "title": "Kyoto · Open sightseeing",
-        "description": "Hold for future Kyoto destinations and relaxed honeymoon time."
+        "title": "Osaka day trip · Castle, bay & Dotonbori",
+        "description": "From Kyoto, visit Osaka Castle in the morning, enjoy the Tempozan harbor waterfront in the afternoon, and finish by the Dotonbori canal after dark. Aquarium is an optional swap or extra half-day; return to Kyoto overnight."
       },
       {
         "day": 11,
-        "title": "Kyoto · Open sightseeing",
-        "description": "Another flexible sightseeing day, or a nearby day trip."
+        "title": "Himeji Castle day trip",
+        "description": "From Kyoto visit Himeji Castle and perhaps Kokoen Garden. Alternatively choose Hikone Castle near Lake Biwa or use this as a relaxed Kyoto day."
       },
       {
         "day": 12,
-        "title": "Shinkansen to Tokyo",
-        "description": "Kyoto → Tokyo by train; Jimbocho and Akihabara if arrival is early enough."
+        "title": "Shinkansen to Tokyo · Akihabara",
+        "description": "Return to Tokyo from Kyoto; Jimbocho and Akihabara, with Shinjuku nightlife as an optional evening visit if energy permits."
       },
       {
         "day": 13,
-        "title": "West Tokyo · Shinjuku",
-        "description": "Ghibli Museum (ticket dependent), Nakano Broadway, and Shinjuku after dark."
+        "title": "West Tokyo · Ghibli, Nakano & Shibuya",
+        "description": "Ghibli Museum timed entry, Nakano Broadway and Shibuya Crossing/Nintendo TOKYO later in the day. This is a full day; adjust around museum tickets."
       },
       {
         "day": 14,
@@ -149,6 +149,34 @@
         "transport_to_next": "rail"
       },
       {
+        "name": "Osaka (castle / bay / Dotonbori)",
+        "lat": 34.669,
+        "lng": 135.5011,
+        "day": 10,
+        "transport_to_next": "ground"
+      },
+      {
+        "name": "Kyoto",
+        "lat": 35.0116,
+        "lng": 135.7681,
+        "day": 10,
+        "transport_to_next": "ground"
+      },
+      {
+        "name": "Himeji Castle",
+        "lat": 34.8394,
+        "lng": 134.6939,
+        "day": 11,
+        "transport_to_next": "ground"
+      },
+      {
+        "name": "Kyoto",
+        "lat": 35.0116,
+        "lng": 135.7681,
+        "day": 11,
+        "transport_to_next": "rail"
+      },
+      {
         "name": "Tokyo",
         "lat": 35.6812,
         "lng": 139.7671,
@@ -169,7 +197,7 @@
       "status": "wishlist",
       "priority": "high",
       "day": 8,
-      "order": 1,
+      "order": 2,
       "estimated_minutes": 75,
       "url": "https://hikinikutocome.com/en/locations/kyoto/",
       "source_url": "https://share.google/LXuuYhK1OVUNUcVXj",
@@ -270,7 +298,7 @@
       "category": "neighborhood",
       "status": "wishlist",
       "priority": "high",
-      "day": 13,
+      "day": 12,
       "order": 3,
       "estimated_minutes": 240,
       "url": "https://www.google.com/maps/search/?api=1&query=Shinjuku%20sightseeing%20and%20nightlife%20Tokyo",
@@ -451,6 +479,157 @@
       "status": "wishlist",
       "day": null,
       "order": null
+    },
+    {
+      "id": "shibuya-scramble-district",
+      "name": "Shibuya & Scramble Crossing",
+      "city": "Tokyo",
+      "region": "Shibuya",
+      "lat": 35.6595,
+      "lng": 139.7005,
+      "category": "neighborhood",
+      "priority": "high",
+      "day": 13,
+      "order": 3,
+      "estimated_minutes": 90,
+      "url": "https://www.gotokyo.org/en/spot/78/index.html",
+      "notes": "Explore the famous Scramble Crossing, Hachiko and Shibuya shopping streets. Pair with nearby Nintendo TOKYO at Shibuya PARCO. Late afternoon / evening best for atmosphere.",
+      "status": "wishlist"
+    },
+    {
+      "id": "nintendo-tokyo-shibuya",
+      "name": "Nintendo TOKYO (Shibuya PARCO)",
+      "city": "Tokyo",
+      "region": "Shibuya",
+      "address": "Shibuya PARCO 6F, 15-1 Udagawacho, Shibuya City, Tokyo",
+      "lat": 35.662,
+      "lng": 139.6983,
+      "category": "gaming / shopping",
+      "priority": "high",
+      "day": 13,
+      "order": 4,
+      "estimated_minutes": 60,
+      "url": "https://www.nintendo.co.jp/officialstore/",
+      "notes": "Official Nintendo store on 6F of Shibuya PARCO, next to Pokemon Center Shibuya and other game/anime retailers. Easily combined with Shibuya Crossing. Visit timing and crowd controls TBD.",
+      "status": "wishlist"
+    },
+    {
+      "id": "dotonbori-tombori-riverwalk",
+      "name": "Dotonbori / Tombori Riverwalk",
+      "city": "Osaka",
+      "region": "Namba / Minami",
+      "lat": 34.669,
+      "lng": 135.5011,
+      "category": "waterfront / neighborhood",
+      "priority": "high",
+      "day": 10,
+      "order": 3,
+      "estimated_minutes": 150,
+      "url": "https://www.japan.travel/en/destinations/kansai/osaka/dotonbori-and-shinsaibashi/",
+      "notes": "Famous neon-lit canal promenade, Glico sign and Osaka street food. Ideal evening finish to a Kyoto-based Osaka day trip. Optional 20-minute Tombori river cruise.",
+      "status": "wishlist"
+    },
+    {
+      "id": "tempozan-harbor-village",
+      "name": "Tempozan Harbor Village (Osaka Bay)",
+      "city": "Osaka",
+      "region": "Osaka Bay / Minato",
+      "address": "1-1-10 Kaigandori, Minato Ward, Osaka 552-0022",
+      "lat": 34.6548,
+      "lng": 135.4312,
+      "category": "waterfront",
+      "priority": "high",
+      "day": 10,
+      "order": 2,
+      "estimated_minutes": 150,
+      "url": "https://osaka-info.jp/en/spot/tempozan-harbor-village/",
+      "notes": "Waterfront promenade, views over Osaka Bay, giant Ferris wheel, harbor cruises and nearby Kaiyukan aquarium. Osakako Station on Chuo Line. Allow additional 2–3h if entering aquarium.",
+      "status": "wishlist"
+    },
+    {
+      "id": "osaka-aquarium-kaiyukan",
+      "name": "Osaka Aquarium Kaiyukan",
+      "city": "Osaka",
+      "region": "Osaka Bay / Minato",
+      "address": "1-1-10 Kaigandori, Minato Ward, Osaka 552-0022",
+      "lat": 34.6545,
+      "lng": 135.4289,
+      "category": "aquarium",
+      "priority": "medium",
+      "day": null,
+      "order": null,
+      "estimated_minutes": 180,
+      "url": "https://www.kaiyukan.com/language/eng/",
+      "notes": "Optional attraction inside Tempozan area; whale sharks and multi-story Pacific Ocean exhibits. Would require extra hours on Osaka day and possibly dropping another stop; left unscheduled.",
+      "status": "wishlist"
+    },
+    {
+      "id": "osaka-castle",
+      "name": "Osaka Castle",
+      "city": "Osaka",
+      "region": "Chuo Ward",
+      "address": "1-1 Osakajo, Chuo Ward, Osaka 540-0002",
+      "lat": 34.6873,
+      "lng": 135.5262,
+      "category": "castle / history",
+      "priority": "high",
+      "day": 10,
+      "order": 1,
+      "estimated_minutes": 120,
+      "url": "https://www.osakacastle.net/",
+      "notes": "Famous historical castle site, reconstructed 1931 concrete keep containing Toyotomi Hideyoshi-era history museum, substantial original-looking stonework and moats, large park. Day 10 morning; allow time for transit to Tempozan.",
+      "status": "wishlist"
+    },
+    {
+      "id": "nijo-castle",
+      "name": "Nijo Castle",
+      "city": "Kyoto",
+      "region": "Nakagyo Ward",
+      "address": "541 Nijojocho, Nakagyo Ward, Kyoto 604-8301",
+      "lat": 35.0142,
+      "lng": 135.7482,
+      "category": "castle / history",
+      "priority": "high",
+      "day": 8,
+      "order": 1,
+      "estimated_minutes": 120,
+      "url": "https://kyoto.travel/en/destinations/nijojo-castle/",
+      "notes": "Historic Tokugawa shoguns' Kyoto residence; original palace buildings with nightingale floors, painted screens, moat and gardens. Day 8 before Gion/Hikiniku to Kome.",
+      "status": "wishlist"
+    },
+    {
+      "id": "himeji-castle",
+      "name": "Himeji Castle",
+      "city": "Himeji",
+      "region": "Hyogo Prefecture",
+      "address": "68 Honmachi, Himeji, Hyogo 670-0012",
+      "lat": 34.8394,
+      "lng": 134.6939,
+      "category": "castle / history",
+      "priority": "high",
+      "day": 11,
+      "order": 1,
+      "estimated_minutes": 210,
+      "url": "https://www.himejicastle.jp/en/",
+      "notes": "UNESCO World Heritage original wooden castle, major Sengoku / early Edo fortifications. Recommended day trip from Kyoto; can combine with nearby Koko-en Garden. Day 11 is provisional and may be swapped for Hikone or a slower Kyoto day.",
+      "status": "wishlist"
+    },
+    {
+      "id": "hikone-castle",
+      "name": "Hikone Castle (Lake Biwa)",
+      "city": "Hikone",
+      "region": "Shiga Prefecture",
+      "address": "1-1 Konkicho, Hikone, Shiga 522-0061",
+      "lat": 35.2765,
+      "lng": 136.2519,
+      "category": "castle / history",
+      "priority": "medium",
+      "day": null,
+      "order": null,
+      "estimated_minutes": 150,
+      "url": "https://www.japan.travel/en/spot/1076/",
+      "notes": "Alternative to Himeji day trip, nearer Kyoto on Lake Biwa. One of five original castle keeps classified as a National Treasure. Pair with Genkyuen Garden. Not scheduled to avoid overpacking day 11.",
+      "status": "wishlist"
     }
   ]
 }
