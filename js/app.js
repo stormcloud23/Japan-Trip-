@@ -11,7 +11,7 @@ const safeUrl=value=>{try{const url=new URL(value);return ['http:','https:'].inc
 const color={ground:'#e9a25b',rail:'#008e86',shinkansen:'#1a9d47',flight:'#ff2477',review:'#a5acb4'};
 const kindColors={sightseeing:'#dc806a',nature:'#5da977',history:'#b58ad7',food:'#e7ac62',shopping:'#62badd',lodging:'#b99aee',optional:'#919da7'};
 const state={day:null,area:'all',plan:'all',kind:'all',status:'all',search:''};
-let destinations=[],trip={},routePlan=null,styleReady=false,usingFallback=false,providerErrors=0,initialFocus=true;
+let destinations=[],trip={},routePlan=null,railCatalog=null,displayRoute=null,styleReady=false,usingFallback=false,providerErrors=0,initialFocus=true;
 const map=new maplibregl.Map({
   container:'map',
   style:'https://tiles.openfreemap.org/styles/liberty',
@@ -139,11 +139,18 @@ function addMapLayers(){
   for(const mode of ['ground','rail','shinkansen','review','flight']){
     map.on('click','trip-route-'+mode,event=>{
       const p=event.features?.[0]?.properties;if(!p)return;
+      const explanation=p.geometrySource==='railway-gis'?
+        'Railway alignment traced from 2024 Japanese government GIS. Actual trains, transfers and timings still need verification.':
+        p.geometrySource==='approximate-access'?
+        'Approximate connection to the station; not turn-by-turn walking directions.':
+        'Straight schematic connection only; exact transport route is not mapped.';
+      const distance=p.geometrySource==='railway-gis'&&Number.isFinite(Number(p.routeTrackKm))?
+        '<p>Mapped railway length: ~'+escapeHtml(p.routeTrackKm)+' km</p>':'';
       new maplibregl.Popup({offset:12,maxWidth:'290px'})
         .setLngLat(event.lngLat)
         .setHTML('<strong>'+escapeHtml(modeNames[mode])+'</strong>'+
-          '<p>'+escapeHtml(p.from)+' → '+escapeHtml(p.to)+'</p>'+
-          '<p>Schematic connection only. Check transport routes and schedules before booking.</p>')
+          '<p>'+escapeHtml(p.from)+' → '+escapeHtml(p.to)+'</p>'+distance+
+          '<p>'+explanation+'</p>')
         .addTo(map);
     });
   }
@@ -163,9 +170,12 @@ function markerFeature(p){
 }
 function routesToDisplay(){
   if(!routePlan)return emptyCollection();
-  if(state.day===null)return routePlan.geojson;
-  return {type:'FeatureCollection',features:routePlan.geojson.features.filter(f=>
-    f.properties.toDay===state.day&&f.properties.fromDay===state.day)};
+  // Cached railway shapes are recalculated with the route whenever the wishlist changes.
+  const routes=displayRoute||routePlan.geojson;
+  if(state.day===null)return routes;
+  // The arrival day owns an overnight intercity transfer (e.g. Kyoto → Tokyo).
+  return {type:'FeatureCollection',features:routes.features.filter(f=>
+    f.properties.toDay===state.day)};
 }
 function focusMap(shown,force=false){
   if(!styleReady||!routePlan||(!force&&!initialFocus))return;
@@ -329,10 +339,23 @@ fetch('./data/destinations.json',{cache:'no-store'})
     if(!Array.isArray(data.destinations)||!data.trip)throw Error('Invalid trip data');
     destinations=data.destinations;trip=data.trip;
     routePlan=JapanRoutePlanner.buildPlan(trip,destinations);
+    displayRoute=JapanRailGeometry.applyCorridors(routePlan.geojson,railCatalog);
     setupDayOptions();render(true);
   })
   .catch(error=>{
     console.error(error);
     $('#error').textContent='Unable to load destination data: '+error.message;
   });
+// The cached railway dataset is optional: straight-line routes remain if it cannot load.
+fetch('./data/rail-corridors.json',{cache:'no-store'})
+  .then(response=>{if(!response.ok)throw Error('Railway cache unavailable ('+response.status+')');return response.json()})
+  .then(catalog=>{
+    if(!Array.isArray(catalog.corridors))throw Error('Invalid railway corridor data');
+    railCatalog=catalog;
+    if(routePlan){
+      displayRoute=JapanRailGeometry.applyCorridors(routePlan.geojson,railCatalog);
+      render(false);
+    }
+  })
+  .catch(error=>console.warn('Using schematic connections for railway routes:',error));
 })();
