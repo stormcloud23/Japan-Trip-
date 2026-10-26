@@ -8,7 +8,9 @@ const root=path.join(__dirname,'..');
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const source=fs.readFileSync(path.join(root,'js/app.js'),'utf8');
 const planner=require('../js/route-planner.js');
+const railway=require('../js/rail-geometry.js');
 const data=JSON.parse(fs.readFileSync(path.join(root,'data/destinations.json'),'utf8'));
+const railCatalog=JSON.parse(fs.readFileSync(path.join(root,'data/rail-corridors.json'),'utf8'));
 
 function mount(){
   const elements={};
@@ -65,8 +67,8 @@ function mount(){
   const context={
     document,URL,console,
     maplibregl:{Map:FakeMap,LngLatBounds:FakeBounds,NavigationControl:class{},Popup:FakePopup},
-    JapanRoutePlanner:planner,
-    fetch:async()=>({ok:true,json:async()=>data})
+    JapanRoutePlanner:planner,JapanRailGeometry:railway,
+    fetch:async(url)=>({ok:true,json:async()=>url.includes('rail-corridors.json')?railCatalog:data})
   };
   vm.runInNewContext(source,context,{filename:'app.js'});
   return {map:maps[0],el,queried};
@@ -77,7 +79,8 @@ test('all controls exist and initial map clusters 27 saved destinations',async()
   const app=mount();await flush();app.map.fire('style.load');
   assert.equal(app.map.sources['trip-places'].settings.cluster,true);
   assert.equal(app.map.sources['trip-places'].data.features.length,27);
-  assert.equal(app.map.sources['trip-route'].data.features.length,35);
+  assert.equal(app.map.sources['trip-route'].data.features.length,40);
+  assert.equal(app.map.sources['trip-route'].data.features.filter(f=>f.properties.geometrySource==='railway-gis').length,9);
   assert.equal(app.el('count').textContent,27);
   assert.equal(app.el('overloaded-count').textContent,4);
   assert.ok(app.el('days').innerHTML.includes('Day 12'));
@@ -110,7 +113,7 @@ test('filters isolate optional places and searches are independent of route line
   planFilter.value='optional';planFilter.listeners.change({target:planFilter});
   assert.equal(app.map.sources['trip-places'].data.features.length,7);
   assert.ok(app.map.sources['trip-places'].data.features.every(f=>f.properties.markerKind==='optional'));
-  assert.equal(app.map.sources['trip-route'].data.features.length,35);
+  assert.equal(app.map.sources['trip-route'].data.features.length,40);
   const search=app.el('search');
   search.value='Castle';search.listeners.input({target:search});
   assert.equal(app.map.sources['trip-places'].data.features.length,1);
@@ -127,4 +130,17 @@ test('clicking a day card focuses it without discarding destination data',async(
   assert.equal(app.map.sources['trip-places'].data.features.length,4);
   assert.equal(app.el('count').textContent,27);
   assert.equal(app.el('map').scrolled,true);
+});
+
+test('Day 12 displays the real curved Kyoto-to-Tokyo railway as an arrival-day leg',async()=>{
+  const app=mount();await flush();app.map.fire('style.load');
+  const select=app.el('day-select');select.value='12';
+  select.listeners.change({target:select});
+  const legs=app.map.sources['trip-route'].data.features;
+  const shinkansen=legs.find(f=>f.properties.corridorId==='kyoto-tokyo');
+  assert.ok(shinkansen,'Tokaido railway should be visible on arrival day');
+  assert.equal(shinkansen.properties.mode,'shinkansen');
+  assert.equal(shinkansen.properties.source,'MLIT-N02-2024');
+  assert.ok(shinkansen.geometry.coordinates.length>100);
+  assert.ok(legs.every(f=>f.properties.toDay===12));
 });
