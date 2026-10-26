@@ -30,6 +30,54 @@
   }
   const shinkansenPairs=new Set(['kyoto|tokyo','tokyo|kyoto','osaka|tokyo','tokyo|osaka','kyoto|himeji','himeji|kyoto','osaka|himeji','himeji|osaka']);
   const railPairs=new Set(['kyoto|osaka','osaka|kyoto']);
+  const DEFAULT_DAY_BUDGET=600;
+  const BREAK_BUFFER=45;
+  const round5=n=>Math.ceil(n/5)*5;
+  // Coarse door-to-door local transfer allowance, NOT a live transit timetable.
+  // Urban train/road transfers typically require station access and waiting time.
+  function localTransferMinutes(a,b){
+    const km=distanceKm(a,b);
+    if(!Number.isFinite(km)||km<0.15)return 0;
+    if(km<0.8)return 10;
+    return Math.min(150,round5(12+km*2.5));
+  }
+  function planInsertion(existing,p){
+    const stops=[...existing].sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0));
+    let position=stops.length,extraKm=Infinity;
+    for(let i=0;i<=stops.length;i++){
+      const before=stops[i-1],after=stops[i];
+      const cost=(before?distanceKm(before,p):0)+(after?distanceKm(p,after):0)
+        -(before&&after?distanceKm(before,after):0);
+      if(cost<extraKm){extraKm=cost;position=i;}
+    }
+    const before=stops[position-1],after=stops[position];
+    const left=before?Number(before.order)||0:null;
+    const right=after?Number(after.order)||0:null;
+    const order=left==null?(right==null?1:right-0.5):
+      right==null?left+0.5:(left+right)/2;
+    return {...p,order};
+  }
+  function assessDayLoad(trip,day,places){
+    const dayMeta=(Array.isArray(trip?.days)?trip.days:[]).find(x=>x.day===day)||{};
+    const items=places.filter(p=>p.day===day&&valid(p)).sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0));
+    const activityMinutes=items.reduce((total,p)=>{
+      const minutes=Number(p.estimated_minutes);
+      // An overnight stay is a hotel choice, not 24 hours of sightseeing.
+      return total+(Number.isFinite(minutes)&&minutes>=0&&minutes<900?minutes:90);
+    },0);
+    let localMinutes=0;
+    for(let i=1;i<items.length;i++)localMinutes+=localTransferMinutes(items[i-1],items[i]);
+    const baselineTravelMinutes=Math.max(0,Number(dayMeta.travel_minutes_estimate)||0);
+    const bufferMinutes=items.length>0?BREAK_BUFFER:0;
+    const totalMinutes=activityMinutes+localMinutes+baselineTravelMinutes+bufferMinutes;
+    const limitMinutes=Math.max(180,Number(dayMeta.available_minutes)||DEFAULT_DAY_BUDGET);
+    let risk='comfortable';
+    if(totalMinutes>limitMinutes)risk='overloaded';
+    else if(totalMinutes>limitMinutes*0.85)risk='busy';
+    return {day,activityMinutes,localMinutes,baselineTravelMinutes,bufferMinutes,totalMinutes,limitMinutes,risk,
+      overByMinutes:Math.max(0,totalMinutes-limitMinutes),count:items.length,
+      travelNote:dayMeta.travel_note||null,approximate:true};
+  }
   function inferMode(a,b){
     if(b.arrival_mode&&VALID_MODES.has(b.arrival_mode))return b.arrival_mode;
     const from=area(a),to=area(b),pair=from+'|'+to;
@@ -39,7 +87,7 @@
     if(distanceKm(a,b)>280&&from!==to)return 'review';
     return 'ground';
   }
-  function autoSuggest(destinations){
+  function autoSuggest(destinations,trip={}){
     const byDay=new Map();
     for(const p of destinations){
       if(!valid(p)||!Number.isInteger(p.day)||p.day<1||p.day>14)continue;
@@ -57,37 +105,25 @@
         const nearest=Math.min(...items.map(x=>distanceKm(p,x)));
         const maxKm=area(p)==='hokkaido'?45:area(p)==='himeji'?25:20;
         if(nearest>maxKm)continue;
-        const used=items.reduce((n,x)=>n+(Number(x.estimated_minutes)||90),0);
-        if(used+(Number(p.estimated_minutes)||90)>480)continue;
-        const score=3*nearest+used/30;
-        if(!best||score<best.score)best={day,score};
+        const trial=planInsertion(items,p);
+        const candidate={...trial,day,suggested:true};
+        const load=assessDayLoad(trip,day,[...items,candidate]);
+        // Keep automatically suggested days within the stated planning budget.
+        if(load.risk==='overloaded')continue;
+        const score=3*nearest+load.totalMinutes/30;
+        if(!best||score<best.score)best={day,score,candidate};
       }
       if(!best)continue;
-      // Insert at the position that creates the least extra geographic detour.
-      // Existing user-specified stop order is preserved.
-      const members=byDay.get(best.day);
-      const stops=[...members].sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0));
-      let position=stops.length,extraKm=Infinity;
-      for(let i=0;i<=stops.length;i++){
-        const before=stops[i-1],after=stops[i];
-        const cost=(before?distanceKm(before,p):0)+(after?distanceKm(p,after):0)
-          -(before&&after?distanceKm(before,after):0);
-        if(cost<extraKm){extraKm=cost;position=i;}
-      }
-      const before=stops[position-1],after=stops[position];
-      const left=before?Number(before.order)||0:null;
-      const right=after?Number(after.order)||0:null;
-      const order=left==null?(right==null?1:right-0.5):
-        right==null?left+0.5:(left+right)/2;
-      const copy={...p,day:best.day,order,suggested:true};
-      suggested.push(copy);members.push(copy);
+      const copy=best.candidate;
+      suggested.push(copy);
+      byDay.get(best.day).push(copy);
     }
     return suggested;
   }
   function buildPlan(trip,destinations){
     if(!trip||!Array.isArray(destinations))throw Error('Invalid route planning input');
     const scheduled=destinations.filter(p=>valid(p)&&Number.isInteger(p.day)&&p.day>=1&&p.day<=14).map(p=>({...p,suggested:false}));
-    const suggested=autoSuggest(destinations);
+    const suggested=autoSuggest(destinations,trip);
     const anchors=(Array.isArray(trip.travel_anchors)?trip.travel_anchors:[])
       .filter(p=>valid(p)&&Number.isInteger(p.day)&&p.day>=1&&p.day<=14)
       .map(p=>({...p,anchor:true,order:Number(p.order)||0}));
@@ -108,13 +144,14 @@
         geometry:{type:'LineString',coordinates:[[a.lng,a.lat],[b.lng,b.lat]]}
       });
     }
+    const dailyLoads=Array.from({length:14},(_,i)=>assessDayLoad(trip,i+1,[...scheduled,...suggested]));
     return {
-      points:ordered,scheduled,suggested,
+      points:ordered,scheduled,suggested,dailyLoads,
       unplanned:destinations.filter(p=>!scheduled.some(x=>x.id===p.id)&&!suggested.some(x=>x.id===p.id)),
       geojson:{type:'FeatureCollection',features},
       dayById:new Map([...scheduled,...suggested].map(p=>[p.id,{day:p.day,order:p.order,suggested:!!p.suggested}])),
       modes:features.reduce((obj,f)=>(obj[f.properties.mode]=(obj[f.properties.mode]||0)+1,obj),{})
     };
   }
-  return {buildPlan,inferMode,autoSuggest,distanceKm};
+  return {buildPlan,inferMode,autoSuggest,distanceKm,localTransferMinutes,assessDayLoad,planInsertion};
 });
