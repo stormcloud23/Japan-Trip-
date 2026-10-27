@@ -350,7 +350,7 @@ test('Hakone region filter isolates the new sightseeing and ryokan cluster',asyn
 test('optional Kyoto and Tokyo sights have visit labels, not dinner labels',async()=>{
   const app=mount();await flush();app.map.fire('style.load');
   const search=app.el('search');
-  search.value='Bamboo Grove';
+  search.value='Sagano Bamboo Forest';
   search.listeners.input({target:search});
   assert.equal(app.map.sources['trip-places'].data.features.length,1);
   assert.match(app.el('places').innerHTML,/Possible visit: Day 9/);

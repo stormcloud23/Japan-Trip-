@@ -72,7 +72,7 @@ test('booking task filters and cards render safely and never pretend reservation
   assert.equal(result.warnings.length,0);
   const filter=document.getElementById('booking-filter');
   filter.value='hotel';filter.listeners.change();
-  assert.equal((document.getElementById('booking-tasks').innerHTML.match(/class="booking-task"/g)||[]).length,2);
+  assert.equal((document.getElementById('booking-tasks').innerHTML.match(/class="booking-task"/g)||[]).length,trip.trip.booking_tasks.filter(t=>t.type==='hotel').length);
   filter.value='high';filter.listeners.change();
   assert.equal((document.getElementById('booking-tasks').innerHTML.match(/class="booking-task"/g)||[]).length,trip.trip.booking_tasks.filter(t=>t.priority==='high').length);
 });
