@@ -41,6 +41,27 @@ The homepage showcases **10 credited photographs** of real, scheduled destinatio
 - **Explore Day N on map** changes to that itinerary day without modifying the trip data. Failed external images display a fallback message without breaking the map.
 - To add a photo, add a properly licensed Wikimedia Commons thumbnail and matching `destination_id` in the JSON. Test with `node --test tests/*.test.cjs`.
 
+## Ten additional honeymoon wishlist locations (October 2026)
+
+All ten are preserved as **optional / alternative** destinations in `data/destinations.json`; no existing scheduled stop, hotel night or railway leg was changed. The optional `proposed_day` is a possible future placement, not a confirmed schedule. The website now shows **Possible visit**, **Possible stay**, or **Meal idea** depending on the category, rather than labeling all proposals as dinner.
+
+| Region | New location | Provisional fit / trade-off |
+|---|---|---|
+| Kyoto | HOSHINOYA Kyoto | Luxury riverside Arashiyama ryokan, 15-minute-ish private boat from riverside reception. Would substitute a central Kyoto hotel night, not add another night |
+| Kyoto | Arashiyama Bamboo Grove | Iconic forest path, a possible **alternative Kyoto day**; pairs with HOSHINOYA but is not adjacent to Kifune |
+| Kyoto | Fushimi Inari Taisha | Vermilion torii gates and optional mountain hike; could substitute a Kyoto morning |
+| Tokyo | teamLab Borderless (Azabudai Hills) | Contemporary immersive art; timed-entry tickets; NOT the old Odaiba location |
+| Tokyo | SHIBUYA SKY | Observation deck and sunset time slots; adjacent to Shibuya Scramble and Nintendo TOKYO, but Day 13 is packed |
+| Tokyo | Meiji Jingu Shrine | Wooded shrine around Harajuku (Shibuya Ward); daylight-only; closes around sunset |
+| Tokyo | Omoide Yokocho | Narrow yakitori and izakaya alley beside Shinjuku Station, pairs with existing Shinjuku nightlife on Day 12 |
+| Hakone | Gora Kadan | Luxury onsen ryokan: potential overnight between Kyoto and Tokyo, **not currently in the hotel-night plan** |
+| Hakone | Hakone Open-Air Museum | Outdoor sculpture park near Gora; possible dedicated Hakone sightseeing day |
+| Hakone | Hakone Ropeway | Sounzan–Owakudani–Ubako–Togendai scenic gondola ride; one pin marks **Owakudani Station**, not the entire line |
+
+Three Hakone pins have a new dedicated **Hakone / Kanagawa** region filter. A full Hakone overnight would require restructuring the already crowded Kyoto→Tokyo Day 12 and replacing an existing hotel night. **Do not automatically route to Hakone** merely because the new pins have proposed days.
+
+New booking-research checklist items cover HOSHINOYA Kyoto, Gora Kadan, teamLab Borderless and SHIBUYA SKY. Prices, reservation windows, operating times and ropeway weather closures are subject to change before autumn 2027. No bookings have been made.
+
 ## Using the map and itinerary
 
 - **Choose a day:** Use the day selector above the map, its Previous/Next buttons, or click a day card below the map. The map zooms to the attractions and incoming travel connections for that day. For longer rail legs, it fits the mapped tracks as well as the stops (without zooming out for long flight paths). Choose **All Japan** to reset the view and filters.

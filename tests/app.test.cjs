@@ -236,8 +236,8 @@ test('sushi restaurants keep distinctive pink S markers despite being unschedule
   const mapColor=app.map.layers['trip-markers'].paint['circle-color'];
   assert.ok(JSON.stringify(mapColor).includes('#ff6b99'),'dedicated sushi pin color');
   const list=app.el('places').innerHTML;
-  assert.match(list,/Dinner idea: Day 4/);
-  assert.match(list,/Dinner idea: Day 13/);
+  assert.match(list,/Meal idea: Day 4/);
+  assert.match(list,/Meal idea: Day 13/);
   assert.match(list,/¥41,800/);
 });
 
@@ -268,7 +268,7 @@ test('requested onigiri shops and mountain kaiseki appear as optional food pins 
   assert.ok(names.includes('Miyamasou (Hanase, Kyoto)'));
   const cards=app.el('places').innerHTML;
   assert.match(cards,/Onigiri Asakusa Yadoroku/);
-  assert.match(cards,/Dinner idea: Day 2/);
+  assert.match(cards,/Meal idea: Day 2/);
   assert.match(cards,/¥22,770/);
   assert.match(cards,/Miyamasou/);
 });
@@ -310,4 +310,53 @@ test('railway GeoJSON can use browser caching, unlike the changing destination l
   assert.ok(rail&&places);
   assert.equal(rail.cache,'default');
   assert.equal(places.cache,'no-store');
+});
+
+test('all ten late wishlist additions remain optional and each has a map pin',async()=>{
+  const ids=[
+    'hoshinoya-kyoto-arashiyama','gora-kadan-hakone','hakone-open-air-museum',
+    'arashiyama-bamboo-grove','teamlab-borderless-azabudai',
+    'shibuya-sky-observation-deck','meiji-jingu-shrine-tokyo',
+    'omoide-yokocho-memory-lane','fushimi-inari-taisha-kyoto',
+    'hakone-ropeway-owakudani'
+  ];
+  assert.equal(new Set(ids).size,10);
+  for(const id of ids){
+    const place=data.destinations.find(p=>p.id===id);
+    assert.ok(place,'missing '+id);
+    assert.equal(place.day,null);
+    assert.equal(place.route_preference,'alternative');
+    assert.ok(Number.isFinite(place.lat)&&Number.isFinite(place.lng));
+    assert.ok(!currentPlan.dayById.has(id));
+  }
+  const app=mount();await flush();app.map.fire('style.load');
+  const source=app.map.sources['trip-places'].data.features;
+  assert.equal(source.length,data.destinations.length);
+  for(const id of ids)assert.ok(source.some(f=>f.properties.id===id),'missing pin: '+id);
+});
+
+test('Hakone region filter isolates the new sightseeing and ryokan cluster',async()=>{
+  const app=mount();await flush();app.map.fire('style.load');
+  const area=app.el('area-filter');
+  area.value='hakone';
+  area.listeners.change({target:area});
+  const items=app.map.sources['trip-places'].data.features;
+  assert.deepEqual(items.map(f=>f.properties.id).sort(),[
+    'gora-kadan-hakone','hakone-open-air-museum','hakone-ropeway-owakudani'
+  ].sort());
+  assert.equal(app.map.sources['trip-route'].data.features.length,currentRail.features.length);
+});
+
+test('optional Kyoto and Tokyo sights have visit labels, not dinner labels',async()=>{
+  const app=mount();await flush();app.map.fire('style.load');
+  const search=app.el('search');
+  search.value='Bamboo Grove';
+  search.listeners.input({target:search});
+  assert.equal(app.map.sources['trip-places'].data.features.length,1);
+  assert.match(app.el('places').innerHTML,/Possible visit: Day 9/);
+  assert.ok(!app.el('places').innerHTML.includes('Dinner idea'));
+  search.value='Gora Kadan';search.listeners.input({target:search});
+  assert.match(app.el('places').innerHTML,/Possible stay around Day 12/);
+  search.value='Memory Lane';search.listeners.input({target:search});
+  assert.match(app.el('places').innerHTML,/Meal idea: Day 12/);
 });

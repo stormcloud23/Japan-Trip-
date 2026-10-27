@@ -52,6 +52,7 @@ function preferEnglishLabels(){
 function areaOf(p){
   const city=String(p.city||'').toLowerCase(),region=String(p.region||'').toLowerCase();
   if(region.includes('hokkaido')||['biei','higashikawa','sapporo','asahikawa','noboribetsu','kutchan','toyako'].includes(city))return 'hokkaido';
+  if(city==='hakone'||region.includes('hakone')||region.includes('kanagawa'))return 'hakone';
   if(['tokyo','mitaka'].includes(city)||region.includes('tokyo metropolis'))return 'tokyo';
   if(['kyoto','osaka','himeji','hikone'].includes(city)||region.includes('hyogo')||region.includes('shiga'))return 'kansai';
   return 'other';
@@ -94,6 +95,14 @@ function minutes(n){
 function statusLabel(risk){
   return risk==='overloaded'?'Packed':risk==='busy'?'Busy':'Comfortable';
 }
+// "proposed_day" is an optional idea, never a scheduled stop or a booking.
+function optionalDayLabel(p){
+  if(!Number.isInteger(p.proposed_day))return '';
+  const category=String(p.category||'').toLowerCase();
+  if(/hotel|ryokan|onsen/.test(category))return 'Possible stay around Day '+p.proposed_day;
+  if(/food|sushi|restaurant|cafe|dining/.test(category))return 'Meal idea: Day '+p.proposed_day;
+  return 'Possible visit: Day '+p.proposed_day;
+}
 function popupFor(p){
   const a=assigned(p),link=safeUrl(p.url),notes=String(p.notes||'');
   const shortNotes=notes.length>230?notes.slice(0,227)+'...':notes;
@@ -101,7 +110,7 @@ function popupFor(p){
   return '<strong>'+escapeHtml(p.name)+'</strong>'+
     '<p>'+escapeHtml([p.city,p.region].filter(Boolean).join(', '))+'</p>'+
     '<p>'+(a?(a.suggested?'Suggested Day ':'Day ')+escapeHtml(a.day):'Optional / unscheduled')+' · '+escapeHtml(p.category||'Place')+'</p>'+
-    (!a&&p.proposed_day?'<p>Suggested dinner on Day '+escapeHtml(p.proposed_day)+' (not scheduled)</p>':'')+
+    (!a&&optionalDayLabel(p)?'<p>'+escapeHtml(optionalDayLabel(p))+' (not scheduled)</p>':'')+
     (p.price_guide_jpy?'<p>'+escapeHtml(p.price_guide_jpy)+'</p>':'')+
     (shortNotes?'<p>'+escapeHtml(shortNotes)+'</p>':'')+
     (link?'<a href="'+escapeHtml(link)+'" target="_blank" rel="noopener noreferrer">Location details ↗</a>':'')+
@@ -271,7 +280,7 @@ function renderPlaces(shown){
       '<span class="pill">'+escapeHtml(p.status||'wishlist')+'</span>'+
       '<span class="pill">'+(a?(a.suggested?'Suggested Day ':'Day ')+escapeHtml(a.day):'Optional')+'</span>'+
       '<span class="pill">'+escapeHtml(p.category||'Place')+'</span>'+
-      (!a&&p.proposed_day?'<span class="pill">Dinner idea: Day '+escapeHtml(p.proposed_day)+'</span>':'')+
+      (!a&&optionalDayLabel(p)?'<span class="pill">'+escapeHtml(optionalDayLabel(p))+'</span>':'')+
       (p.price_guide_jpy?'<p class="meta">'+escapeHtml(p.price_guide_jpy)+'</p>':'')+
       (p.notes?'<p>'+escapeHtml(p.notes)+'</p>':'')+
       '<div class="actions"><button type="button" data-focus-id="'+escapeHtml(p.id)+'">Show on map</button>'+
