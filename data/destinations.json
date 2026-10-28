@@ -430,7 +430,7 @@
         "priority": "high",
         "day": null,
         "status": "research",
-        "notes": "Compare Sushi Ginza Onodera, Kyoto Sushi Gion Matsudaya, Sapporo Sushizen Honten, and Tokyo Sukiyabashi Jiro (main Ginza shop). Pick 1–2 or more depending on budget and dates; all are ALTERNATIVES, not extra mandatory dinners. Jiro is exceptionally difficult and overseas visitors must book through their own Tokyo hotel concierge; separate checklist item tracks that process. Verify 2027 opening days, booking windows, counter seats, menu prices, and cancellation rules. Casual sushi and onigiri are walk-in alternatives."
+        "notes": "Compare Sushi Ginza Onodera, Kyoto Sushi Gion Matsudaya, Sapporo Sushizen Honten, Tokyo Sukiyabashi Jiro, and Sushi Yuu (鮨 由う) Ginza. Pick 1–2 or more depending on budget and exact itinerary; all are ALTERNATIVES rather than mandatory extra meals. Jiro is exceptionally difficult and overseas visitors must use their own Tokyo hotel concierge. Sushi Yuu Ginza is a distinct restaurant from Sushi Yu (Roppongi) and Ginza Sushi Yuu 鮨佑. Verify 2027 booking windows, counter seating, menu prices, allergies, cancellation terms and any language expectations. Casual sushi, pizza and market visits are separate walk-in/short-window options."
       },
       {
         "id": "sukiyabashi-jiro-concierge",
@@ -491,6 +491,26 @@
         "destination_id": "shibuya-sky-observation-deck",
         "status": "research",
         "notes": "A top sunset option near Shibuya Scramble but Day 13 is already busy. Once dates and daily route are sorted, book suitable timed-entry slots early; rooftop can close due to weather."
+      },
+      {
+        "id": "400c-pizza-kagurazaka-reservation",
+        "title": "Consider booking 400℃ PIZZA TOKYO (Kagurazaka) close to visit",
+        "type": "experience",
+        "priority": "medium",
+        "day": null,
+        "destination_id": "400c-pizza-tokyo-kagurazaka",
+        "status": "research",
+        "notes": "The Kagurazaka shop currently opens TableCheck reservations at 12:00 Japan time two days before the visit. Fixed 70-minute seatings 11:00–17:00; not a late-night dinner. Reservation card required, one pizza and drink per guest, group max four. Check Japanese holiday/closed dates and cancellation fees; only book after deciding whether to substitute a meal around Jimbocho or elsewhere in Tokyo."
+      },
+      {
+        "id": "sushi-yuu-ginza-omakase",
+        "title": "Compare Sushi Yuu (鮨 由う, Ginza) with other Tokyo omakase",
+        "type": "experience",
+        "priority": "medium",
+        "day": null,
+        "destination_id": "sushi-yuu-ginza-itchome",
+        "status": "research",
+        "notes": "The Ginza 1-chome omakase (VORT Ginza briller 8F) is not the similarly named Roppongi Sushi Yu or Ginza Sushi Yuu 鮨佑. Around ¥27,500 Hanare / ¥33,000 main counter per person in 2026, dinner seatings 17:30 and 20:00. Select one Tokyo omakase splurge rather than scheduling multiple. Check exact 2027 menus, availability, dietary and language requirements, and cancellations."
       }
     ]
   },
@@ -1360,6 +1380,70 @@
       "route_preference": "alternative",
       "url": "https://www.hakonenavi.jp/international/en/transportation/hakone-ropeway",
       "notes": "Scenic aerial gondolas link Sounzan, Owakudani, Ubako and Togendai on Lake Ashi; dramatic steaming volcanic terrain and potentially views of Mt Fuji on clear days. This ONE MAP PIN is at Owakudani Station, the signature central stop, not the entire multi-station route geometry. February–November service typically 09:00–17:00, subject to weather, volcanic gas, and maintenance suspensions. Gondola rides plus Owakudani sightseeing fit a Hakone overnight/day with Gora Kadan and the Open-Air Museum. Would require restructuring the Kyoto→Tokyo travel day; not scheduled."
+    },
+    {
+      "id": "400c-pizza-tokyo-kagurazaka",
+      "name": "400℃ PIZZA TOKYO (Kagurazaka)",
+      "city": "Tokyo",
+      "region": "Kagurazaka / Shinjuku Ward, Tokyo",
+      "address": "kif annex 1F, 13-1 Wakamiyacho, Shinjuku-ku, Tokyo 162-0827",
+      "lat": 35.701,
+      "lng": 139.7384,
+      "category": "food — artisan pizza",
+      "dining_style": "casual",
+      "status": "wishlist",
+      "priority": "high",
+      "day": null,
+      "order": null,
+      "proposed_day": 12,
+      "route_preference": "alternative",
+      "estimated_minutes": 75,
+      "price_guide_jpy": "About ¥4,000–5,000 per person (2026 Tabelog estimate; drinks extra)",
+      "url": "https://tabelog.com/en/tokyo/A1309/A130905/13294495/",
+      "reservation_url": "https://www.tablecheck.com/en/shops/400-yonhyakudo-tokyo/reserve",
+      "notes": "KAGURAZAKA PIZZA OPTION: tiny counter pizzeria (about 15 seats) known for a very airy, light high-hydration crust and signature FNT blue-cheese-and-honey pizza. This is the Kagurazaka location (13-1 Wakamiyacho), NOT the separate Shinagawa or Kyoto shops. TableCheck currently releases reservations daily at 12:00 Japan time for visits up to two days ahead; requires a credit card and one pizza plus one drink per guest. Fixed ~70-minute seatings are 11:00, 12:30, 14:00, 15:30 or 17:00; hours currently end around 18:10, so do not assume a late dinner. Could replace a lunch/early meal near Jimbocho on overcrowded Tokyo Day 12, not add another obligation. Verify 2027 reservation rules, closures and timing. Coordinates approximate, navigate with listed street address. NOT BOOKED."
+    },
+    {
+      "id": "sushi-yuu-ginza-itchome",
+      "name": "Sushi Yuu (鮨 由う, Ginza)",
+      "city": "Tokyo",
+      "region": "Ginza 1-chome / Chuo Ward, Tokyo",
+      "address": "VORT Ginza briller 8F, 1-14-6 Ginza, Chuo-ku, Tokyo 104-0061",
+      "lat": 35.6735,
+      "lng": 139.7701,
+      "category": "sushi — omakase",
+      "dining_style": "omakase",
+      "status": "wishlist",
+      "priority": "high",
+      "day": null,
+      "order": null,
+      "proposed_day": 2,
+      "route_preference": "alternative",
+      "estimated_minutes": 135,
+      "price_guide_jpy": "Omakase around ¥27,500 (Hanare) or ¥33,000 (main counter) per person, tax included; drinks extra (2026)",
+      "url": "https://tabelog.com/en/tokyo/A1301/A130101/13291436/",
+      "reservation_url": "https://tabelog.com/en/tokyo/A1301/A130101/13291436/",
+      "notes": "GINZA OMAKASE CANDIDATE: 鮨 由う (Sushi Yuu), high-end, reservation-only Edomae sushi counter on the 8th floor of VORT Ginza briller. The restaurant moved from Roppongi to Ginza in December 2023; do not confuse it with Roppongi Sushi Yu (鮨悠, sushi-yu.jp), Ginza Sushi Yuu (鮨佑, suyu.jp), or the unrelated Nishiazabu Sushi Yuu (寿司勇). Dinner currently has simultaneous 17:30 and 20:00 seatings, about two hours; normally closed Tuesdays/Wednesdays. Main and separate Hanare counters are booked differently. A contender for a special Tokyo dinner INSTEAD OF other fancy omakase choices, tentatively Day 2, not a second required dinner. Check Japanese-language needs, special dietary restrictions, strict cancellation policies and 2027 pricing before booking. Map coordinates approximate to Ginza 1-chome. NOT BOOKED."
+    },
+    {
+      "id": "tsukiji-outer-market-chuo",
+      "name": "Tsukiji Outer Market (Chuo Fish & Food Market)",
+      "city": "Tokyo",
+      "region": "Tsukiji / Chuo Ward, Tokyo",
+      "address": "4-16-2 Tsukiji, Chuo-ku, Tokyo 104-0045 (market district; multiple entrances)",
+      "lat": 35.665019,
+      "lng": 139.769791,
+      "category": "food — seafood market / shopping",
+      "dining_style": "casual",
+      "status": "wishlist",
+      "priority": "high",
+      "day": null,
+      "order": null,
+      "proposed_day": 2,
+      "route_preference": "alternative",
+      "estimated_minutes": 120,
+      "url": "https://www.tsukiji.or.jp/english/",
+      "notes": "TOKYO SEAFOOD MORNING: visit TSUKIJI OUTER MARKET (築地場外市場) in Chuo Ward for sushi, sashimi, tamagoyaki, seafood stalls, Japanese kitchen knives, spices and food shops. The wholesale inner market and tuna auctions moved to Toyosu in 2018; this pin is for the still-active OUTER MARKET, not a Toyosu auction. Best general visitor window about 09:00–13:00 (official tourist guide); professional buyers take priority 06:00–09:00, many stalls close by mid-afternoon, and many close on Sundays, holidays and some Wednesdays. Go in the morning, use cash where needed, avoid eating while walking through crowded lanes. Optional morning/early lunch alternative on Tokyo Day 2, near Ginza but not near Asakusa; allow subway travel if combined. The pin is at the market district/information area, not an individual shop. No reservation needed for wandering."
     }
   ]
 }

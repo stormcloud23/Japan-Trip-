@@ -103,3 +103,16 @@ test('Jiro and Miyamasou reservation tasks are distinct, unbooked and high prior
   assert.match(miyamasou.note,/mountain/);
   assert.equal(plan.confirmedTasks,0);
 });
+
+test('Tokyo sushi and pizza booking research tasks are unbooked and linked to real stops',()=>{
+  const model=planner.buildLogistics(trip.trip,trip.destinations);
+  for(const id of ['400c-pizza-kagurazaka-reservation','sushi-yuu-ginza-omakase']){
+    const task=model.tasks.find(t=>t.id===id);
+    assert.ok(task,id);
+    assert.equal(task.status,'research');
+    assert.equal(task.type,'experience');
+    assert.ok(task.destinationId);
+    assert.ok(task.url);
+  }
+  assert.equal(model.confirmedTasks,0);
+});

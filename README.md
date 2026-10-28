@@ -62,6 +62,18 @@ Three Hakone pins have a new dedicated **Hakone / Kanagawa** region filter. A fu
 
 New booking-research checklist items cover HOSHINOYA Kyoto, Gora Kadan, teamLab Borderless and SHIBUYA SKY. Prices, reservation windows, operating times and ropeway weather closures are subject to change before autumn 2027. No bookings have been made.
 
+## Tokyo food additions (October 2026)
+
+Three more **optional** Tokyo stops are saved, without changing any scheduled day, hotel night, flight or railway connection:
+
+| Stop | Where | Provisional fit | Important booking / timing |
+|---|---|---|---|
+| **400℃ PIZZA TOKYO (Kagurazaka)** | 13-1 Wakamiyacho, Shinjuku, `kif annex` 1F | Alternative early meal / lunch around Day 12 (already busy) | Small counter pizza shop; 2026 budget ~¥4,000–5,000 pp. Official TableCheck: booking opens daily at 12:00 JST for **two days ahead**; 70-min seatings from 11:00 through 17:00. Not a late dinner. Not the Shinagawa or Kyoto branches. |
+| **Sushi Yuu (鮨 由う)** | 1-14-6 Ginza, Chuo, VORT Ginza briller 8F | Special-occasion Tokyo omakase alternative, tentatively Day 2 | Relocated from Roppongi in Dec 2023. Counter omakase 2026 ~¥27,500 (Hanare) or ¥33,000 (main). Dinner starts 17:30/20:00; reservation-only. **Distinct from Roppongi Sushi Yu / 鮨悠 and Ginza Sushi Yuu / 鮨佑.** |
+| **Tsukiji Outer Market** | Tsukiji 4-16-2, Chuo Ward | Day 2 morning/early lunch option if space allows | Seafood, casual sushi, kitchenware and tamagoyaki. Many shops busiest 09:00–13:00 and close in afternoons; individual days vary. The old wholesale market/tuna auctions moved to **Toyosu in 2018**; this pin is for Tsukiji's operating **outer** market. |
+
+The two booking research reminders for 400℃ PIZZA and Ginza Sushi Yuu are deliberately left **unbooked**. Prices, availability and service hours are 2026 references only; reconfirm before the autumn 2027 trip. Maps use precise published street addresses for navigation but restaurant pin coordinates are approximate.
+
 ## Using the map and itinerary
 
 - **Choose a day:** Use the day selector above the map, its Previous/Next buttons, or click a day card below the map. The map zooms to the attractions and incoming travel connections for that day. For longer rail legs, it fits the mapped tracks as well as the stops (without zooming out for long flight paths). Choose **All Japan** to reset the view and filters.

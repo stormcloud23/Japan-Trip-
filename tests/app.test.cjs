@@ -360,3 +360,38 @@ test('optional Kyoto and Tokyo sights have visit labels, not dinner labels',asyn
   search.value='Memory Lane';search.listeners.input({target:search});
   assert.match(app.el('places').innerHTML,/Meal idea: Day 12/);
 });
+
+test('new Kagurazaka pizza, Ginza Sushi Yuu and Tsukiji market stay optional with visible pins',async()=>{
+  const ids=['400c-pizza-tokyo-kagurazaka','sushi-yuu-ginza-itchome','tsukiji-outer-market-chuo'];
+  for(const id of ids){
+    const candidate=data.destinations.find(p=>p.id===id);
+    assert.ok(candidate,'missing '+id);
+    assert.equal(candidate.day,null);
+    assert.equal(candidate.route_preference,'alternative');
+    assert.ok(Number.isFinite(candidate.lat)&&Number.isFinite(candidate.lng));
+    assert.ok(!currentPlan.dayById.has(id));
+  }
+  const app=mount();await flush();app.map.fire('style.load');
+  const points=app.map.sources['trip-places'].data.features;
+  assert.equal(points.length,data.destinations.length);
+  for(const id of ids)assert.ok(points.some(p=>p.properties.id===id),'missing map pin '+id);
+});
+
+test('Ginza Sushi Yuu is a sushi pin and Tsukiji / pizza are food pins with booking guidance',async()=>{
+  const app=mount();await flush();app.map.fire('style.load');
+  const kind=app.el('kind-filter');
+  kind.value='sushi-omakase';kind.listeners.change({target:kind});
+  assert.ok(app.map.sources['trip-places'].data.features.some(f=>f.properties.id==='sushi-yuu-ginza-itchome'));
+  const sushiCard=app.el('places').innerHTML;
+  assert.match(sushiCard,/Sushi Yuu/);
+  assert.match(sushiCard,/¥27,500/);
+  assert.match(sushiCard,/Booking/);
+  kind.value='food';kind.listeners.change({target:kind});
+  const foodPins=app.map.sources['trip-places'].data.features;
+  assert.ok(foodPins.some(f=>f.properties.id==='tsukiji-outer-market-chuo'));
+  assert.ok(foodPins.some(f=>f.properties.id==='400c-pizza-tokyo-kagurazaka'));
+  const foodCard=app.el('places').innerHTML;
+  assert.match(foodCard,/TableCheck/);
+  assert.match(foodCard,/Tsukiji Outer Market/);
+  assert.match(foodCard,/Meal idea: Day 2/);
+});
