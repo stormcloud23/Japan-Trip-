@@ -358,7 +358,7 @@ test('optional Kyoto and Tokyo sights have visit labels, not dinner labels',asyn
   search.value='Gora Kadan';search.listeners.input({target:search});
   assert.match(app.el('places').innerHTML,/Possible stay around Day 12/);
   search.value='Memory Lane';search.listeners.input({target:search});
-  assert.match(app.el('places').innerHTML,/Meal idea: Day 12/);
+  assert.match(app.el('places').innerHTML,/Nightlife idea: Day 12/);
 });
 
 test('new Kagurazaka pizza, Ginza Sushi Yuu and Tsukiji market stay optional with visible pins',async()=>{
