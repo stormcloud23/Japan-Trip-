@@ -116,3 +116,15 @@ test('Tokyo sushi and pizza booking research tasks are unbooked and linked to re
   }
   assert.equal(model.confirmedTasks,0);
 });
+
+test('BAR CENTIFOLIA premium booking-fee reminder is linked and unbooked',()=>{
+  const model=planner.buildLogistics(trip.trip,trip.destinations);
+  const task=model.tasks.find(t=>t.id==='bar-centifolia-reservation-costs');
+  assert.ok(task);
+  assert.equal(task.priority,'high');
+  assert.equal(task.status,'research');
+  assert.equal(task.destinationId,'bar-centifolia-azabujuban');
+  assert.match(task.note,/NONREFUNDABLE/);
+  assert.match(task.note,/¥70,000/);
+  assert.equal(model.confirmedTasks,0);
+});

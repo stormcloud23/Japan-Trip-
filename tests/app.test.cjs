@@ -395,3 +395,43 @@ test('Ginza Sushi Yuu is a sushi pin and Tsukiji / pizza are food pins with book
   assert.match(foodCard,/Tsukiji Outer Market/);
   assert.match(foodCard,/Meal idea: Day 2/);
 });
+
+test('five Tokyo shopping and bar additions remain unscheduled and appear as optional map pins',async()=>{
+  const ids=[
+    'bar-centifolia-azabujuban','shibuya-loft','daikanyama-t-site-tsutaya',
+    'ginza-itoya-main-store','kappabashi-dougu-street'
+  ];
+  assert.equal(new Set(ids).size,5);
+  for(const id of ids){
+    const stop=data.destinations.find(p=>p.id===id);
+    assert.ok(stop,'missing '+id);
+    assert.equal(stop.day,null);
+    assert.equal(stop.route_preference,'alternative');
+    assert.ok(Number.isFinite(stop.lat)&&Number.isFinite(stop.lng));
+    assert.ok(!currentPlan.dayById.has(id));
+  }
+  const app=mount();await flush();app.map.fire('style.load');
+  const mapPins=app.map.sources['trip-places'].data.features;
+  assert.equal(mapPins.length,data.destinations.length);
+  for(const id of ids)assert.ok(mapPins.some(f=>f.properties.id===id),'missing pin '+id);
+});
+
+test('shopping filter includes all four new retail destinations; bar is categorized as food and nightlife',async()=>{
+  const app=mount();await flush();app.map.fire('style.load');
+  const kind=app.el('kind-filter');
+  kind.value='shopping';kind.listeners.change({target:kind});
+  const shopping=app.map.sources['trip-places'].data.features.map(f=>f.properties.id);
+  for(const id of ['shibuya-loft','daikanyama-t-site-tsutaya','ginza-itoya-main-store','kappabashi-dougu-street']){
+    assert.ok(shopping.includes(id),'shopping filter missing '+id);
+  }
+  const search=app.el('search');search.value='Kappabashi Dougu Street';
+  search.listeners.input({target:search});
+  assert.equal(app.map.sources['trip-places'].data.features.length,1);
+  assert.match(app.el('places').innerHTML,/Possible visit: Day 2/);
+  kind.value='food';kind.listeners.change({target:kind});
+  search.value='BAR CENTIFOLIA';search.listeners.input({target:search});
+  assert.equal(app.map.sources['trip-places'].data.features.length,1);
+  assert.match(app.el('places').innerHTML,/Nightlife idea: Day 2/);
+  assert.match(app.el('places').innerHTML,/¥35,000/);
+  assert.match(app.el('places').innerHTML,/Booking/);
+});

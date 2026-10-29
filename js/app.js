@@ -100,6 +100,7 @@ function optionalDayLabel(p){
   if(!Number.isInteger(p.proposed_day))return '';
   const category=String(p.category||'').toLowerCase();
   if(/hotel|ryokan|onsen/.test(category))return 'Possible stay around Day '+p.proposed_day;
+  if(/cocktail|bar|nightlife/.test(category))return 'Nightlife idea: Day '+p.proposed_day;
   if(/food|sushi|restaurant|cafe|dining/.test(category))return 'Meal idea: Day '+p.proposed_day;
   return 'Possible visit: Day '+p.proposed_day;
 }

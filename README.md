@@ -74,6 +74,20 @@ Three more **optional** Tokyo stops are saved, without changing any scheduled da
 
 The two booking research reminders for 400℃ PIZZA and Ginza Sushi Yuu are deliberately left **unbooked**. Prices, availability and service hours are 2026 references only; reconfirm before the autumn 2027 trip. Maps use precise published street addresses for navigation but restaurant pin coordinates are approximate.
 
+## Tokyo shopping and nightlife wishlist additions (October 2026)
+
+Five more stops are retained as **optional** Tokyo destinations; the number of scheduled attractions, the 14-day itinerary, and the precomputed train geometry do not change.
+
+| New destination | Area | Planning notes |
+|---|---|---|
+| **BAR CENTIFOLIA** | Azabu-Jūban, Minato City | Tiny theatrical cocktail bar, suggested as a possible Day 2 late evening; reserve table vs. counter deliberately. **Nonrefundable booking fees: ¥10,000 per person for a table or ¥35,000 for counter seating**, *before* cocktails (¥4,000+), tax or other charges. At two guests, fees alone can reach **¥20,000 or ¥70,000**. Official TableCheck shows bookings up to two weeks in advance, closed Wed/Sun. Research reminder added, nothing booked. |
+| **Shibuya LOFT** | 21-1 Udagawachō, Shibuya | Seven-floor lifestyle/stationery/gift shop near Shibuya Scramble; good to swap into Day 13 rather than piling onto an already busy day. Confirm opening hours closer to the trip. |
+| **Daikanyama T-SITE / Tsutaya Books** | 17-5 Sarugakuchō, Shibuya | Distinctive three-building bookstore for photography, design, literature, music and coffee. 5-minute walk from Daikanyama Station. Further from Shibuya Crossing than LOFT; allow a deliberate detour. |
+| **Ginza Itoya (G.Itoya)** | 2-7-15 Ginza, Chūō City | Famous multi-floor stationery flagship for notebooks, paper, fountain pens, art supplies and gifts; close to the other Ginza food stops. |
+| **Kappabashi Dougu Street** | 3-18-2 Matsugaya, Taitō City | An approximately 800-meter district of 170+ kitchenware shops for Japanese knives, tableware, baking tools and replica food displays. Close to Sensō-ji, ideal optional Day 2 daytime shopping. |
+
+All five have mapped coordinates, official destination links, realistic time allowances and `route_preference: "alternative"`. The cocktail bar is categorized as nightlife under the food filter and receives a **Nightlife idea** label instead of being called dinner. Retail destinations are selectable under the existing **Shopping / games** filter. No hotel nights or reservations have been changed.
+
 ## Using the map and itinerary
 
 - **Choose a day:** Use the day selector above the map, its Previous/Next buttons, or click a day card below the map. The map zooms to the attractions and incoming travel connections for that day. For longer rail legs, it fits the mapped tracks as well as the stops (without zooming out for long flight paths). Choose **All Japan** to reset the view and filters.
