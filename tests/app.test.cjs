@@ -23,6 +23,10 @@ function mount(options={}){
   const selectedHash=options.hash||'';
   const rootUrl='https://stormcloud23.github.io/Japan-Trip-/';
   const browser={
+    localStorage:{
+      getItem(){if(options.storageError)throw Error('Storage blocked');return options.savedChoices||null},
+      setItem(key,value){if(options.storageError)throw Error('Storage blocked');browser.savedChoices=value}
+    },
     location:{href:rootUrl+selectedHash,pathname:'/Japan-Trip-/',search:'',hash:selectedHash},
     printCalls:0,copied:[],listeners:{},
     addEventListener(type,fn){this.listeners[type]=fn},
@@ -97,6 +101,32 @@ function mount(options={}){
   return {map:maps[0],el,queried,browser,requests};
 }
 const flush=async()=>{await new Promise(resolve=>setImmediate(resolve))};
+
+test('choices persist, filter markers and export the entire shortlist independently of filters',async()=>{
+  const app=mount();await flush();
+  const place=optionalPlaces[0];
+  const originalDays=app.el('days').innerHTML;
+  app.el('places').listeners.change({target:{dataset:{decisionId:place.id},value:'shortlist'}});
+  assert.equal(JSON.parse(app.browser.savedChoices)[place.id],'shortlist');
+  app.el('decision-filter').listeners.change({target:{value:'shortlist'}});
+  assert.ok(app.el('places').innerHTML.includes(place.name));
+  assert.equal(app.el('visible-count').textContent,'1 shown');
+  assert.equal(app.el('days').innerHTML,originalDays);
+  await app.el('copy-shortlist').listeners.click();
+  assert.ok(app.browser.copied[0].includes(place.name));
+  const restored=mount({savedChoices:app.browser.savedChoices});await flush();
+  assert.ok(restored.el('decision-summary').textContent.startsWith('1 shortlisted'));
+});
+
+test('blocked or malformed storage leaves choices usable and reports failed persistence',async()=>{
+  for(const options of [{storageError:true},{savedChoices:'invalid json'}]){
+    const app=mount(options);await flush();
+    assert.ok(app.el('decision-summary').textContent.includes('could not be read'));
+    app.el('places').listeners.change({target:{dataset:{decisionId:optionalPlaces[0].id},value:'later'}});
+    assert.ok(app.el('decision-summary').textContent.includes('1 set aside'));
+    if(options.storageError)assert.ok(app.el('decision-summary').textContent.includes('session only'));
+  }
+});
 
 test('all controls exist and initial map clusters all saved destinations',async()=>{
   const app=mount();await flush();app.map.fire('style.load');

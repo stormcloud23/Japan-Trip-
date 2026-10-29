@@ -106,6 +106,19 @@
           <h2 id="wishlist-heading">Destination wishlist</h2>
           <span class="pill" id="visible-count">0 shown</span>
         </div>
+        <div class="decision-tools">
+          <p>Start with the places you most want to experience. Shortlisting does not add a stop to the itinerary.</p>
+          <label for="decision-filter">Your choices</label>
+          <select id="decision-filter">
+            <option value="all">All saved places</option>
+            <option value="shortlist">Shortlisted</option>
+            <option value="undecided">Still deciding</option>
+            <option value="later">Set aside</option>
+          </select>
+          <button id="copy-shortlist" type="button">Copy shortlist</button>
+          <p id="decision-summary" role="status" aria-live="polite"></p>
+          <p class="meta">Choices are saved in this browser only. Copy your shortlist to keep a backup or share it with each other.</p>
+        </div>
         <div class="toolbar">
           <label class="sr-only" for="search">Search destinations</label>
           <input id="search" type="search" placeholder="Search places…" autocomplete="off">

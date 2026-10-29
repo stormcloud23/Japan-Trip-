@@ -12,6 +12,23 @@ const color={ground:'#e9a25b',rail:'#008e86',shinkansen:'#1a9d47',flight:'#ff247
 const kindColors={sightseeing:'#dc806a',nature:'#5da977',history:'#b58ad7',food:'#e7ac62',shopping:'#62badd',lodging:'#b99aee',sushi:'#ff6b99',optional:'#919da7'};
 const state={day:null,area:'all',plan:'all',kind:'all',status:'all',search:''};
 const browserWindow=typeof window==='undefined'?null:window;
+const decisionKey='japan-honeymoon-decisions-v1';
+let decisions=Object.create(null),decisionFilter='all',decisionNotice='';
+try{
+  const saved=JSON.parse(browserWindow?.localStorage?.getItem(decisionKey)||'{}');
+  if(saved&&typeof saved==='object'&&!Array.isArray(saved)){
+    for(const [id,value] of Object.entries(saved))if(['shortlist','later'].includes(value))decisions[id]=value;
+  }
+}catch{decisionNotice='Saved choices could not be read. You can still choose places for this session.'}
+function decisionFor(p){return decisions[p.id]||'undecided'}
+function saveDecision(id,value){
+  if(value==='undecided')delete decisions[id];else decisions[id]=value;
+  try{
+    if(!browserWindow?.localStorage)throw Error('Storage unavailable');
+    browserWindow.localStorage.setItem(decisionKey,JSON.stringify(decisions));
+    decisionNotice='Choice saved in this browser.';
+  }catch{decisionNotice='Choice kept for this session only. Browser storage is unavailable; copy your shortlist to keep it.'}
+}
 // Shareable, reload-safe day URLs; never save private trip information in the URL.
 function parseDayHash(hash){
   const matched=/^#day=(\d{1,2})$/.exec(String(hash||''));
@@ -70,6 +87,7 @@ function kindOf(p){
 function assigned(p){return routePlan?.dayById.get(p.id)||null}
 function matches(p){
   const a=assigned(p);
+  if(decisionFilter!=='all'&&decisionFor(p)!==decisionFilter)return false;
   if(state.day!==null&&a?.day!==state.day)return false;
   if(state.area!=='all'&&areaOf(p)!==state.area)return false;
   if(state.plan==='scheduled'&&!a)return false;
@@ -271,6 +289,9 @@ function updateMap(shown,fit=false){
   focusMap(points,fit);
 }
 function renderPlaces(shown){
+  const shortlisted=destinations.filter(p=>decisionFor(p)==='shortlist').length;
+  const later=destinations.filter(p=>decisionFor(p)==='later').length;
+  $('#decision-summary').textContent=shortlisted+' shortlisted · '+(destinations.length-shortlisted-later)+' still deciding · '+later+' set aside. '+decisionNotice;
   $('#visible-count').textContent=shown.length+' shown';
   $('#places').innerHTML=shown.length?shown.map(p=>{
     const a=assigned(p),link=safeUrl(p.url),reservation=safeUrl(p.reservation_url);
@@ -284,6 +305,9 @@ function renderPlaces(shown){
       (!a&&optionalDayLabel(p)?'<span class="pill">'+escapeHtml(optionalDayLabel(p))+'</span>':'')+
       (p.price_guide_jpy?'<p class="meta">'+escapeHtml(p.price_guide_jpy)+'</p>':'')+
       (p.notes?'<p>'+escapeHtml(p.notes)+'</p>':'')+
+      '<div class="place-decision"><label for="choice-'+escapeHtml(p.id)+'">Our choice</label> '+
+      '<select id="choice-'+escapeHtml(p.id)+'" data-decision-id="'+escapeHtml(p.id)+'" aria-label="Choice for '+escapeHtml(p.name)+'">'+
+      [['undecided','Still deciding'],['shortlist','Shortlist'],['later','Set aside']].map(([value,label])=>'<option value="'+value+'"'+(decisionFor(p)===value?' selected':'')+'>'+label+'</option>').join('')+'</select></div>'+
       '<div class="actions"><button type="button" data-focus-id="'+escapeHtml(p.id)+'">Show on map</button>'+
       (link?'<a href="'+escapeHtml(link)+'" target="_blank" rel="noopener noreferrer">Details ↗</a>':'')+
       (reservation&&reservation!==link?'<a href="'+escapeHtml(reservation)+'" target="_blank" rel="noopener noreferrer">Booking ↗</a>':'')+'</div></article>';
@@ -350,6 +374,7 @@ function renderFiltered(fit=true){
   renderDayControls();renderPlaces(shown);updateMap(shown,fit);
 }
 function changeDay(value,scroll,updateUrl=true){
+  decisionFilter='all';$('#decision-filter').value='all';
   state.day=value===null?null:Math.max(1,Math.min(14,Number(value)));
   state.plan='all';$('#plan-filter').value='all';
   if(state.day!==null){
@@ -363,6 +388,7 @@ function changeDay(value,scroll,updateUrl=true){
   if(scroll)$('#map').scrollIntoView({behavior:'smooth',block:'center'});
 }
 function clearFilters(){
+  decisionFilter='all';$('#decision-filter').value='all';
   state.day=null;state.area='all';state.plan='all';state.kind='all';state.status='all';state.search='';
   $('#day-select').value='all';$('#area-filter').value='all';$('#plan-filter').value='all';
   $('#kind-filter').value='all';$('#status').value='all';$('#search').value='';
@@ -371,6 +397,24 @@ function clearFilters(){
   render(true);
 }
 function setupEvents(){
+  $('#decision-filter').addEventListener('change',event=>{decisionFilter=event.target.value;renderFiltered(true)});
+  $('#places').addEventListener('change',event=>{
+    const id=event.target.dataset?.decisionId,value=event.target.value;
+    if(!destinations.some(p=>p.id===id)||!['undecided','shortlist','later'].includes(value))return;
+    saveDecision(id,value);renderFiltered(false);
+  });
+  $('#copy-shortlist').addEventListener('click',async()=>{
+    const selected=destinations.filter(p=>decisionFor(p)==='shortlist');
+    if(!selected.length){$('#decision-summary').textContent='Shortlist a place first, then copy your choices.';return}
+    const text='Our Japan honeymoon shortlist\n'+selected.map(p=>'- '+p.name+' ('+[p.city,p.region].filter(Boolean).join(', ')+')'+(safeUrl(p.url)?'\n  '+safeUrl(p.url):'')).join('\n');
+    try{
+      if(!browserWindow?.navigator?.clipboard?.writeText)throw Error('Clipboard unavailable');
+      await browserWindow.navigator.clipboard.writeText(text);
+      $('#decision-summary').textContent='Copied '+selected.length+' shortlisted places. Choices are not bookings or itinerary assignments.';
+    }catch{
+      $('#decision-summary').textContent='Clipboard unavailable. Select and copy your shortlist below:\n'+text;
+    }
+  });
   $('#day-select').addEventListener('change',event=>changeDay(event.target.value==='all'?null:Number(event.target.value),false));
   $('#previous-day').addEventListener('click',()=>state.day!==null&&changeDay(state.day-1,false));
   $('#next-day').addEventListener('click',()=>state.day!==null&&changeDay(state.day+1,false));

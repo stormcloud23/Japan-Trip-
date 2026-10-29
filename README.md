@@ -90,6 +90,9 @@ All five have mapped coordinates, official destination links, realistic time all
 
 ## Using the map and itinerary
 
+- **Narrow down the wishlist:** Each destination has an **Our choice** selector: Still deciding, Shortlist, or Set aside. The **Your choices** filter shows those groups on the map and in the list. Every saved destination remains in the source data; choices do not change day assignments, workloads, reservations or routes.
+- Choices persist in this browser's local storage. They do **not** sync across devices or between partners, and clearing browser data removes them. **Copy shortlist** exports all shortlisted names, regions and safe destination links, regardless of current filters. Keep a copy to share or back up decisions. If storage or clipboard access is blocked, the page explains the limitation and provides selectable export text.
+
 - **Choose a day:** Use the day selector above the map, its Previous/Next buttons, or click a day card below the map. The map zooms to the attractions and incoming travel connections for that day. For longer rail legs, it fits the mapped tracks as well as the stops (without zooming out for long flight paths). Choose **All Japan** to reset the view and filters.
 - **Share a specific day:** Click **Copy Day N link** to share a URL ending in `#day=N` (for example, `#day=12`). Opening the URL restores that selected day automatically. The URL includes no private travel data; browsers without clipboard access display the link for manual copying.
 - **Print / Save PDF:** Click the button above the 14-day itinerary to open your browser's print dialog. Print styles omit the interactive map and include all itinerary cards, proposed overnight bases and the booking checklist. Most browsers can use **Save as PDF** as the print destination.
